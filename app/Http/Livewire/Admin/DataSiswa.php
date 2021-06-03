@@ -49,11 +49,27 @@ class DataSiswa extends Component
         }
     }
 
-    public function delSiswa($id, $name)
+    public function loadByID($id, $name)
     {
         $this->ids = $id;
         $this->name = $name;
-        $delSiswa = Siswa::find($id);
+        // $loadSiswa = Siswa::find($id);
+        // foreach ($data as $d) {
+        // $this->nama_jurusan = $data['nama_jurusan'];
+        // }
+        // $jurusan = DB::select('select * from jurusans where id = ?', [$idj]);
+        // foreach ($jurusan as $i) {
+        //     $this->idj = $i->id;
+        //     $this->nama_jurusan = $i->nama_jurusan;
+        // }
+        // return $jurusan;
+    }
+
+    public function delSiswa($ids)
+    {
+        // $this->ids = $id;
+        // $this->name = $name;
+        $delSiswa = Siswa::find($ids);
         // dd($delSiswa);
         $delSiswa->delete();
         return redirect(route('dataSiswa'));
@@ -68,13 +84,14 @@ class DataSiswa extends Component
         join users as u on u.id = s.user_id
         join role_user as ru on ru.user_id = u.id 
         join roles AS r on r.id = ru.role_id
-        where r.name = ?', ['siswa']);
+        where r.name = ?
+        order by k.nama_kelas asc', ['siswa']);
         return $siswa;
     }
 
     public function getAllKelas()
     {
-        $kelas = DB::select('select * from kelas');
+        $kelas = DB::select('select * from kelas order by nama_kelas asc');
         return $kelas;
     }
 
@@ -86,6 +103,12 @@ class DataSiswa extends Component
     public function cekJurusan()
     {
         $cek = DB::table('jurusans')->count();
+        return $cek;
+    }
+
+    public function cekDaftarMapel()
+    {
+        $cek = DB::table('mapels')->count();
         return $cek;
     }
 
@@ -130,6 +153,7 @@ class DataSiswa extends Component
         ])->layout('layouts.layt', [
             'cekJurusan' => $this->cekJurusan(),
             'jmlKelas' => $this->countKelas(),
+            'cekDaftarMapel' => $this->cekDaftarMapel(),
         ]);
     }
 }

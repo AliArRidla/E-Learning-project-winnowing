@@ -103,7 +103,7 @@ class ProfilUser extends Component
                 ]);
             } else if (Auth::user()->hasRole('siswa')) {
                 $valDataa = $this->validate([
-                    'nis' => 'numeric|min:5',
+                    // 'nis' => 'numeric|min:5',
                     'no_hp' => 'numeric|min:5',
                     'name' => 'min:3',
                     'email' => 'required|email',
@@ -161,7 +161,7 @@ class ProfilUser extends Component
             ];
         } else if (Auth::user()->hasRole('siswa')) {
             return [
-                'nis' => $this->nis,
+                // 'nis' => $this->nis,
                 'jenis_kelamin' => $this->jenis_kelamin,
                 'no_hp' => $this->no_hp,
                 'alamat' => $this->alamat,
@@ -178,6 +178,12 @@ class ProfilUser extends Component
         return $cek;
     }
 
+    public function cekDaftarMapel()
+    {
+        $cek = DB::table('mapels')->count();
+        return $cek;
+    }
+
     public function countKelas()
     {
         $jmlKelas = DB::table('kelas')->count();
@@ -185,14 +191,60 @@ class ProfilUser extends Component
         return $jmlKelas;
     }
 
+    public function getDMap()
+    {
+        $dMap = DB::select(
+            'select dm.id as dmid, u.name, m.nama_mapel, k.nama_kelas 
+            from detail_mapels as dm
+            join gurus as g on dm.id_guru = g.id
+            join users as u on g.user_id = u.id
+            join mapels as m on dm.id_mapel = m.id
+            join kelas as k on dm.id_kelas = k.id
+            where g.user_id = ?
+            order by k.nama_kelas asc',
+            [Auth::user()->id]
+        );
+        return $dMap;
+    }
+
+    public function getNavMap()
+    {
+        $dMap = DB::select(
+            'select dm.id as dmid, m.nama_mapel
+            from siswas as s
+            join detail_mapels as dm on dm.id_kelas = s.id_kelas
+            join mapels as m on dm.id_mapel = m.id
+            where s.user_id = ?
+            order by m.nama_mapel asc',
+            [Auth::user()->id]
+        );
+
+        return $dMap;
+    }
+
     public function render()
     {
         // return view('livewire.profil-user')->layout('layouts.layt');
-        return view('livewire.profil-user', [
-            'dataAcc' => $this->getAcc(Auth::user()->id),
-        ])->layout('layouts.layt', [
-            'cekJurusan' => $this->cekJurusan(),
-            'jmlKelas' => $this->countKelas(),
-        ]);
+        if (Auth::user()->hasRole('admin')) {
+            return view('livewire.profil-user', [
+                'dataAcc' => $this->getAcc(Auth::user()->id),
+            ])->layout('layouts.layt', [
+                'cekJurusan' => $this->cekJurusan(),
+                'jmlKelas' => $this->countKelas(),
+                'cekDaftarMapel' => $this->cekDaftarMapel(),
+            ]);
+        } else if (Auth::user()->hasRole('guru')) {
+            return view('livewire.profil-user', [
+                'dataAcc' => $this->getAcc(Auth::user()->id),
+            ])->layout('layouts.layt', [
+                'getDMapGuru' => $this->getDMap(),
+            ]);
+        } else if (Auth::user()->hasRole('siswa')) {
+            return view('livewire.profil-user', [
+                'dataAcc' => $this->getAcc(Auth::user()->id),
+            ])->layout('layouts.layt', [
+                'getNavMapSiswa' => $this->getNavMap(),
+            ]);
+        }
     }
 }

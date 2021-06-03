@@ -126,6 +126,12 @@ class DataGuru extends Component
         return $cek;
     }
 
+    public function cekDaftarMapel()
+    {
+        $cek = DB::table('mapels')->count();
+        return $cek;
+    }
+
     public function countKelas()
     {
         $jmlKelas = DB::table('kelas')->count();
@@ -149,12 +155,6 @@ class DataGuru extends Component
         } else {
             return redirect(route('login'));
         }
-        // else if (Auth::user()->hasRole('siswa')) {
-        //     // $data = DB::select('select a.id, a.user_id as uid, a.foto
-        //     // from siswas as a
-        //     // join users as u on u.id = a.user_id
-        //     // where a.id = ?', [$id]);
-        // }
         return $data;
     }
 
@@ -166,6 +166,7 @@ class DataGuru extends Component
         ])->layout('layouts.layt', [
             'cekJurusan' => $this->cekJurusan(),
             'jmlKelas' => $this->countKelas(),
+            'cekDaftarMapel' => $this->cekDaftarMapel(),
         ]);
     }
 }

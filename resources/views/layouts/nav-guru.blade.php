@@ -4,19 +4,9 @@
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 @auth
-                    {{-- @if (Auth::user()->hasRole('admin'))
-                    <a class="logo" href="{{ route('dashboardAdm') }}">
-                        <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
-                    </a>
-                    @elseif (Auth::user()->hasRole('guru')) --}}
                     <a class="logo" href="{{ route('dashboardGuru') }}">
                         <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
                     </a>
-                    {{-- @elseif (Auth::user()->hasRole('siswa'))
-                    <a class="logo" href="#">
-                        <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
-                    </a>
-                    @endif --}}
                 @endauth
                 <button class="hamburger hamburger--slider" type="button">
                     <span class="hamburger-box">
@@ -30,47 +20,30 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 @auth
-                    {{-- @if (Auth::user()->hasRole('admin'))
-                    <li class="active">
-                        <a href="{{ route('dashboardAdm') }}" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataJurusan') }}" id="dj">
-                            <i class="fas fa-chart-bar"></i>Data Jurusan</a>
-                    </li>
-                    @if ($cekJurusan > 0)
-                    <li>
-                        <a href="{{ route('dataKelas') }}" id="dk">
-                            <i class="fas fa-chart-bar"></i>Data Kelas</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataGuru') }}" id="dg">
-                            <i class="fas fa-chart-bar"></i>Data Guru</a>
-                    </li>
-                    @if ($cekKelas > 0)
-                    <li>
-                        <a href="{{ route('dataSiswa') }}" id="ds">
-                            <i class="fas fa-chart-bar"></i>Data Siswa</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataMapel') }}" id="dmp">
-                            <i class="fas fa-chart-bar"></i>Data Mata Pelajaran</a>
-                    </li>
-                    @endif
-                    @endif
-                    
-                    @elseif (Auth::user()->hasRole('guru')) --}}
                     <li class="active">
                         <a href="{{ route('dashboardGuru') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
-                    {{-- @elseif (Auth::user()->hasRole('siswa'))
-                    <li class="active">
-                        <a href="#" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
+                    @foreach ($getDMapGuru as $item)
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-table"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Presensi</a>
+                                {{-- <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                    <li>
+                                        <a href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('listPresensiGuru', ['nav_dmid' => $item->dmid]) }}">List Presensi</a>
+                                    </li>
+                                </ul> --}}
+                            </li>
+                        </ul>
                     </li>
-                    @endif --}}
+                    @endforeach
                 @endauth
             </ul>
         </div>
@@ -88,48 +61,30 @@
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list" id="nalist">
                 @auth
-                    {{-- @if (Auth::user()->hasRole('admin')) --}}
-                    {{-- <li class="active">
-                        <a href="{{ route('dashboardAdm') }}" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataJurusan') }}" id="dj">
-                            <i class="fas fa-chart-bar"></i>Data Jurusan</a>
-                    </li>
-                    @if ($cekJurusan > 0)
-                    <li>
-                        <a href="{{ route('dataKelas') }}" id="dk">
-                            <i class="fas fa-chart-bar"></i>Data Kelas</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataGuru') }}" id="dg">
-                            <i class="fas fa-chart-bar"></i>Data Guru</a>
-                    </li>
-                    @if ($cekKelas > 0)
-                    <li>
-                        <a href="{{ route('dataSiswa') }}" id="ds">
-                            <i class="fas fa-chart-bar"></i>Data Siswa</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dataMapel') }}" id="dmp">
-                            <i class="fas fa-chart-bar"></i>Data Mata Pelajaran</a>
-                    </li>
-                    @endif
-                    @endif --}}
-
-                    {{-- @elseif (Auth::user()->hasRole('guru')) --}}
                     <li class="active">
                         <a href="{{ route('dashboardGuru') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
-                    
-                    {{-- @elseif (Auth::user()->hasRole('siswa'))
-                    <li class="active">
-                        <a href="#" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li> --}}
-                    {{-- @endif --}}
+                    @foreach ($getDMapGuru as $item)
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Presensi</a>
+                                {{-- <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                    <li>
+                                        <a href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('listPresensiGuru', ['nav_dmid' => $item->dmid]) }}">List Presensi</a>
+                                    </li>
+                                </ul> --}}
+                            </li>
+                        </ul>
+                    </li>
+                    @endforeach
                 @endauth
             </ul>
         </nav>

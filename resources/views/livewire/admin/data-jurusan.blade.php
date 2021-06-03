@@ -123,7 +123,7 @@
           Apakah Anda yakin ingin menghapus jurusan <strong>{{ $nama_jurusan }}</strong> ?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" wire:click="deleteJurusan({{ $idj }})">Yakin!</button>
+            <button type="button" class="btn btn-danger mr-auto" wire:click="deleteJurusan({{ $idj }})">Yakin!</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
         </div>
         {{-- @endforeach --}}
@@ -158,7 +158,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
                                 wire:click="reload()">Close</button>
                             @if ($add)
                             <button type="button" class="btn btn-primary" wire:click="addJurusan()">Tambah</button>

@@ -97,21 +97,14 @@
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </a>
                                                             <button name="delete" id="delete" class="btn btn-danger"
-                                                            wire:click="delSiswa({{ $item->id }}, '{{ $item->name }}')" 
+                                                            wire:click="loadByID({{ $item->id }}, '{{ $item->name }}')" 
                                                             data-toggle="modal" data-target="#mdlDelSiswa">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </button>
                                                         </td>
-
                                                     </tr>
                                                     @endforeach
-                                                    {{-- @endif --}}
                                                 </tbody>
-                                                {{-- <tfoot>
-                                                    <tr>
-                                                        <th>Role</th>
-                                                    </tr>
-                                                </tfoot> --}}
                                             </table>
                                         </div>
 
@@ -139,7 +132,7 @@
           Apakah Anda yakin ingin menghapus user <strong>{{ $name }}</strong> ?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" wire:click="deleteUser({{ $ids }})">Yakin!</button>
+            <button type="button" class="btn btn-danger mr-auto" wire:click="delSiswa({{ $ids }})">Yakin!</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
         </div>
       </div>
@@ -219,7 +212,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
                                 wire:click="reload()">Close</button>
                             <button type="button" class="btn btn-primary" wire:click="addSiswa()">Daftarkan</button>
                         </div>

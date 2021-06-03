@@ -186,7 +186,7 @@
                         </div>
                         {{-- @endforeach --}}
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-warning" wire:click="updateSiswa()">Edit</button>
                         </div>
                     </form>

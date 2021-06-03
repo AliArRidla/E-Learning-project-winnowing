@@ -18,7 +18,7 @@ class CreateSiswasTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('id_kelas');
             $table->string('foto')->nullable();
-            $table->string('nis')->nullable();
+            $table->string('nis')->nullable()->unique();
             $table->string('jenis_kelamin')->nullable();
             $table->string('no_hp')->nullable();
             $table->string('alamat')->nullable();

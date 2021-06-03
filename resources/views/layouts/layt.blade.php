@@ -47,6 +47,10 @@
     <link href="{{ asset('lms/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('lms/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
 
+    {{-- timepicker --}}
+    {{-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css"> --}}
+    <link href="{{ asset('lms/timepicker/jquery.timepicker.css') }}" rel="stylesheet">
+
     <!-- Main CSS-->
     <link href="{{ asset('lms/css/theme.css') }}" rel="stylesheet" media="all">
 
@@ -61,6 +65,15 @@
     {{-- ijabo --}}
     <link rel="stylesheet" href="{{ asset('lms/ijaboCropTool/ijaboCropTool.min.css') }}">
 
+    {{-- datepicker --}}
+    {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
+    {{-- <link rel="stylesheet" href="//resources/demos/style.css"> --}}
+
+    <style>
+        #error-msg{
+            color: red;
+        }
+    </style>
     
     @livewireStyles
 
@@ -123,6 +136,14 @@
     <script src="{{ asset('lms/vendor/select2/select2.min.js') }}">
     </script>
 
+    {{-- datepicker --}}
+    {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> --}}
+
+    <!-- timepicker-->
+    {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> --}}
+    <script src="{{ asset('lms/timepicker/jquery.timepicker.js') }}"></script>
+
     <!-- Main JS-->
     <script src="{{ asset('lms/js/main.js') }}"></script>
 
@@ -144,12 +165,12 @@
     </script> --}}
     {{-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script> --}}
 
-    {{-- ijabo --}}
+    <!-- ijabo crop-->
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  --}}
-    <script type="text/javascript" src="{{ asset('lms/ijaboCropTool/jquery-1.7.1.min.js') }}"></script> 
+    {{-- <script type="text/javascript" src="{{ asset('lms/ijaboCropTool/jquery-1.7.1.min.js') }}"></script>  --}}
     <script type="text/javascript" src="{{ asset('lms/ijaboCropTool/ijaboCropTool.min.js') }}"></script> 
 
-    {{-- datatable --}}
+    <!-- datatable-->
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
@@ -181,78 +202,101 @@
                             columns: ':visible:not(.not-export-col)'
                         }
                     },
-                    // {
-                    //     extend: 'pdfHtml5',
-                    //     exportOptions: {
-                    //         columns: ':visible:not(.not-export-col)'
-                    //     }
-                    // },
                     {
                         extend: 'pdf',
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
                         }
                     },
-                    // 'colvis'
                 ]
-                // buttons: [ 'pdf', 'excel' ]
-            } );
-        });
-        // $(document).ready(function () {
-        //     $('#table').DataTable({
-        //         "scrollX": true
-                
-        //     });
-        // });
+            });
 
-        // $(document).off('focusin.modal');
+            $('#tabel').DataTable({
+                "scrollX": true,
+                "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                dom: 'Bflrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible:not(.not-export-col)'
+                        }
+                    },
+                ]
+            });
+
+            var d = new Date();
+            var month_name = function(dt){
+                mlist = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+                return mlist[dt.getMonth()];
+            };
+            var month = month_name(d);
+            $('#tbl_siswa').DataTable( {
+                "scrollX": true,
+                "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ],
+                "search": {
+                    "search": month,
+                }
+            });
+        });
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('#tabel').DataTable({
-            "scrollX": true,
-            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-            dom: 'Bflrtip',
-            buttons: [
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible:not(.not-export-col)'
-                    }
-                },
-                // {
-                //     extend: 'pdfHtml5',
-                //     exportOptions: {
-                //         columns: ':visible:not(.not-export-col)'
-                //     }
-                // },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible:not(.not-export-col)'
-                    }
-                },
-                // 'colvis'
-            ]
-            // buttons: [ 'csv', 'excel' ]
-        });
-    });
-    // $(document).ready(function () {
-    //     $('#table').DataTable({
-    //         "scrollX": true
-            
-    //     });
-    // });
-
-    // $(document).off('focusin.modal');
-</script>
-
     {{-- <script>
-        Livewire.on('crop');
+        $(document).ready(function() {
+            $( "#datepicker" ).datepicker();
+        });
     </script> --}}
 
-    {{-- @livewireScripts --}}
+    <script>
+        $(document).ready(function() {
+            $('#waktu').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 10,
+                minTime: '00',
+                maxTime: '11:59pm',
+                defaultTime: '11',
+                startTime: '10:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true,
+                zindex: '999',
+                change: function(time) {
+                    var x = $("#waktu").val();
+                    var element = document.getElementById('twaktu');
+                    element.value = x;
+                    element.dispatchEvent(new Event('input'));
+                }
+            });
+
+            $('#waktus').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 10,
+                minTime: '00',
+                maxTime: '11:59pm',
+                defaultTime: '11',
+                startTime: '10:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true,
+                zindex: '999',
+                change: function(time) {
+                    var x = $("#waktus").val();
+                    var el = document.getElementById('twaktus');
+                    el.value = x;
+                    el.dispatchEvent(new Event('input'));
+                }
+            });
+
+            var elm = document.getElementById('tujuan');
+            elm.dispatchEvent(new Event('change'));
+        });
+    </script>
     
     <script>
         $('#foto').ijaboCropTool({

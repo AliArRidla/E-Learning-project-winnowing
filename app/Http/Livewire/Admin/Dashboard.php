@@ -43,15 +43,15 @@ class Dashboard extends Component
         return $cek;
     }
 
+    public function cekDaftarMapel()
+    {
+        $cek = DB::table('mapels')->count();
+        return $cek;
+    }
+
     public function getAcc($id)
     {
         $data = '';
-        // if (Auth::user()->hasRole('guru')) {
-        //     $data = DB::select('select g.id as rid, g.user_id as uid, g.foto
-        //     from gurus as g
-        //     join users as u on u.id = g.user_id
-        //     where u.id = ?', [$id]);
-        // } else 
         if (Auth::user()->hasRole('admin')) {
             $data = DB::select('select a.id as rid, a.user_id as uid, a.foto
             from admins as a
@@ -60,12 +60,6 @@ class Dashboard extends Component
         } else {
             return redirect(route('login'));
         }
-        // else if (Auth::user()->hasRole('siswa')) {
-        //     // $data = DB::select('select a.id, a.user_id as uid, a.foto
-        //     // from siswas as a
-        //     // join users as u on u.id = a.user_id
-        //     // where a.id = ?', [$id]);
-        // }
         return $data;
     }
 
@@ -80,6 +74,7 @@ class Dashboard extends Component
         ])->layout('layouts.layt', [
             'cekJurusan' => $this->cekJurusan(),
             'jmlKelas' => $this->countKelas(),
+            'cekDaftarMapel' => $this->cekDaftarMapel(),
         ]);
     }
 }

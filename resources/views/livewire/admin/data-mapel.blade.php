@@ -64,8 +64,8 @@
                                                     <tr>
                                                         <th>No.</th>
                                                         <th>Nama MaPel</th>
-                                                        <th>Kelas</th>
-                                                        <th>Guru</th>
+                                                        {{-- <th>Kelas</th>
+                                                        <th>Guru</th> --}}
                                                         <th class="not-export-col">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -78,8 +78,8 @@
                                                     <tr>
                                                         <td>{{ $count++ }}</td>
                                                         <td>{{ $item->nama_mapel }}</td>
-                                                        <td>{{ $item->nama_kelas }}</td>
-                                                        <td>{{ $item->name }}</td>
+                                                        {{-- <td>{{ $item->nama_kelas }}</td>
+                                                        <td>{{ $item->name }}</td> --}}
                                                         <td>
                                                             <button name="edit" id="edit" class="btn btn-warning"
                                                                 wire:click="toogleModalAddEdit('edit', {{ $item->id }})"
@@ -92,19 +92,11 @@
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </button>
                                                         </td>
-
                                                     </tr>
                                                     @endforeach
-                                                    {{-- @endif --}}
                                                 </tbody>
-                                                {{-- <tfoot>
-                                                    <tr>
-                                                        <th>Role</th>
-                                                    </tr>
-                                                </tfoot> --}}
                                             </table>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -115,6 +107,7 @@
             <!-- END MAIN CONTENT-->
         </div>
         {{-- @include('layouts.modals') --}}
+
         <!-- Modal delete kelas -->
         <div wire:ignore.self class="modal fade" id="mdlDelMapel" tabindex="-1" aria-labelledby="mdlDeMapelLabel"
             aria-hidden="true">
@@ -131,8 +124,8 @@
                         Apakah Anda yakin ingin menghapus mata pelajaran <strong>{{ $nama_mapel }}</strong> ?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger"
-                            wire:click="deleteMapel({{ $dmid }})">Yakin!</button>
+                        <button type="button" class="btn btn-danger mr-auto"
+                            wire:click="deleteMapel({{ $mid }})">Yakin!</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                     </div>
                     {{-- @endforeach --}}
@@ -146,9 +139,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         @if ($add)
-                        <h5 class="modal-title" id="staticBackdropLabel">Tambah MaPel {{ $dmid }}</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Tambah MaPel {{ $mid }}</h5>
                         @elseif ($edit)
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit MaPel {{ $dmid }}</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit MaPel {{ $mid }}</h5>
                         @endif
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                             wire:click="reload()">
@@ -173,7 +166,7 @@
                             {{-- @else
                             
                         @endif --}}
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div>
                                     <label for="id_kelas" class=" form-control-label">Kelas</label>
                                 </div>
@@ -206,10 +199,10 @@
                                 @error('id_guru')
                                 <span id="error-msg">{{ $message }}</span>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
                                 wire:click="reload()">Close</button>
                             @if ($add)
                             <button type="button" class="btn btn-primary" wire:click="addMapel()">Tambah</button>

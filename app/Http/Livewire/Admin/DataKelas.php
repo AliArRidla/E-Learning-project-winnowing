@@ -140,6 +140,12 @@ class DataKelas extends Component
         return $cek;
     }
 
+    public function cekDaftarMapel()
+    {
+        $cek = DB::table('mapels')->count();
+        return $cek;
+    }
+
     public function countKelas()
     {
         $jmlKelas = DB::table('kelas')->count();
@@ -181,6 +187,7 @@ class DataKelas extends Component
         ])->layout('layouts.layt', [
             'cekJurusan' => $this->cekJurusan(),
             'jmlKelas' => $this->countKelas(),
+            'cekDaftarMapel' => $this->cekDaftarMapel(),
         ]);
     }
 }

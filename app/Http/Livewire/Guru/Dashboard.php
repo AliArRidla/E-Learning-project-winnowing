@@ -9,13 +9,7 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    // public $idg;
-    // public function countGuru()
-    // {
-    //     $jmlGuru = DB::table('gurus')->count();
-    //     // dd($jmlGuru);
-    //     return $jmlGuru;
-    // }
+    public $countDM = 0;
 
     public function getAcc($id)
     {
@@ -25,22 +19,9 @@ class Dashboard extends Component
             from gurus as g
             join users as u on u.id = g.user_id
             where u.id = ?', [$id]);
-        }
-        // else if (Auth::user()->hasRole('admin')) {
-        //     $data = DB::select('select a.id as rid, a.user_id as uid, a.foto
-        //     from admins as a
-        //     join users as u on u.id = a.user_id
-        //     where u.id = ?', [$id]);
-        // } 
-        else {
+        } else {
             return redirect(route('login'));
         }
-        // else if (Auth::user()->hasRole('siswa')) {
-        //     // $data = DB::select('select a.id, a.user_id as uid, a.foto
-        //     // from siswas as a
-        //     // join users as u on u.id = a.user_id
-        //     // where a.id = ?', [$id]);
-        // }
         return $data;
     }
 
@@ -80,11 +61,34 @@ class Dashboard extends Component
         return $jmlMapel;
     }
 
+    public function getDMap()
+    {
+        $dMap = DB::select(
+            'select dm.id as dmid, u.name, m.nama_mapel, k.nama_kelas 
+            from detail_mapels as dm
+            join gurus as g on dm.id_guru = g.id
+            join users as u on g.user_id = u.id
+            join mapels as m on dm.id_mapel = m.id
+            join kelas as k on dm.id_kelas = k.id
+            where g.user_id = ?
+            order by k.nama_kelas asc',
+            [Auth::user()->id]
+        );
+
+        foreach ($dMap as $k) {
+            $this->countDM++;
+        }
+
+        return $dMap;
+    }
+
     public function render()
     {
         return view('livewire.guru.dashboard', [
             'jmlMapel' => $this->countMapel(),
             'dataAcc' => $this->getAcc(Auth::user()->id),
-        ])->layout('layouts.layt');
+        ])->layout('layouts.layt', [
+            'getDMapGuru' => $this->getDMap(),
+        ]);
     }
 }

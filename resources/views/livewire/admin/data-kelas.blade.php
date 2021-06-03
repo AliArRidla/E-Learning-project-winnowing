@@ -130,7 +130,7 @@
                         SEMUA YANG TERDAFTAR DI KELAS <strong>{{ $nama_kelas }}</strong> AKAN TERHAPUS!
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger"
+                        <button type="button" class="btn btn-danger mr-auto"
                             wire:click="deleteKelas({{ $idk }})">Yakin!</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                     </div>
@@ -187,7 +187,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
                                 wire:click="reload()">Close</button>
                             @if ($add)
                             <button type="button" class="btn btn-primary" wire:click="addKelas()">Tambah</button>

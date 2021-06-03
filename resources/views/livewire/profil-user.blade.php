@@ -187,27 +187,6 @@
                                     <p id="error-msg">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                @if (Auth::user()->hasRole('siswa'))
-                                <div class="form-group col-md-6">
-                                    <label for="name">NIS</label>
-                                    <input type="text" class="form-control" id="nis" name="nis"
-                                        wire:model.debounce.800ms="nis">
-                                        @error('nis')
-                                        <p id="error-msg">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                @else
-                                <div class="form-group col-md-6">
-                                    <label for="name">NIP</label>
-                                    <input type="text" class="form-control" id="nip" name="nip"
-                                        wire:model.debounce.800ms="nip">
-                                        @error('nip')
-                                        <p id="error-msg">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                @endif
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="email">Email</label>
                                     <input wire:model.debounce.800ms="email" type="email" class="form-control"
@@ -215,6 +194,19 @@
                                         @error('email')
                                         <p id="error-msg">{{ $message }}</p>
                                         @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 form-group">
+                                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                                    <select wire:model="jenis_kelamin" name="jenis_kelamin" class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                        <option value="">--Jenis Kelamin--</option>
+                                        <option value="Laki-laki">Laki-laki</option>
+                                        <option value="Perempuan">Perempuan</option>
+                                    </select>
+                                    @error('jenis_kelamin') 
+                                    <p id="error-msg">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="no_hp">No. HP</label>
@@ -230,7 +222,26 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                @if (Auth::user()->hasRole('admin')||Auth::user()->hasRole('guru'))
+                                {{-- <div class="form-group col-md-6">
+                                    <label for="name">NIS</label>
+                                    <input type="text" class="form-control" id="nis" name="nis"
+                                        wire:model.debounce.800ms="nis">
+                                        @error('nis')
+                                        <p id="error-msg">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                @else --}}
+                                @if (!Auth::user()->hasRole('siswa'))
+                                <div class="form-group col-md-6">
+                                    <label for="name">NIP</label>
+                                    <input type="text" class="form-control" id="nip" name="nip"
+                                        wire:model.debounce.800ms="nip">
+                                        @error('nip')
+                                        <p id="error-msg">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                {{-- @endif
+                                @if (!Auth::user()->hasRole('siswa')) --}}
                                 <div class="form-group col-md-6">
                                     <label for="role">Jabatan</label>
                                     <input type="text" class="form-control" id="jabatan" name="jabatan"
@@ -240,30 +251,21 @@
                                     @enderror
                                 </div>
                                 @endif
-                                <div class="col-md-6 form-group">
-                                    <label for="jenis_kelamin">Jenis Kelamin</label>
-                                    <select wire:model="jenis_kelamin" name="jenis_kelamin" class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                        <option value="">--Jenis Kelamin--</option>
-                                        <option value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
-                                    @error('jenis_kelamin') 
-                                    <p id="error-msg">{{ $message }}</p>
-                                    @enderror
-                                </div>
                             </div>
                             <div class="form-row">
-                                <label for="alamat">Alamat</label>
+                                <div class="form-group col-md-12">
+                                    <label for="alamat">Alamat</label>
                                 <textarea class="form-control" name="alamat" rows="2"
                                     wire:model.debounce.800ms="alamat"></textarea>
                                 @error('alamat')
                                 <p id="error-msg">{{ $message }}</p>
                                 @enderror
+                                </div>
                             </div>
                         </div>
                         {{-- @endforeach --}}
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-warning" wire:click="updateProfil()">Edit</button>
                         </div>
                     </form>

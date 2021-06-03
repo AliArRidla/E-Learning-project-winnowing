@@ -19,26 +19,30 @@ class DashboardSiswa extends Component
         } else {
             return redirect(route('login'));
         }
-        // else if (Auth::user()->hasRole('admin')) {
-        //     $data = DB::select('select a.id as rid, a.user_id as uid, a.foto
-        //     from admins as a
-        //     join users as u on u.id = a.user_id
-        //     where u.id = ?', [$id]);
-        // } 
-
-        // else if (Auth::user()->hasRole('siswa')) {
-        //     // $data = DB::select('select a.id, a.user_id as uid, a.foto
-        //     // from siswas as a
-        //     // join users as u on u.id = a.user_id
-        //     // where a.id = ?', [$id]);
-        // }
         return $data;
+    }
+
+    public function getNavMap()
+    {
+        $dMap = DB::select(
+            'select dm.id as dmid, m.nama_mapel
+            from siswas as s
+            join detail_mapels as dm on dm.id_kelas = s.id_kelas
+            join mapels as m on dm.id_mapel = m.id
+            where s.user_id = ?
+            order by m.nama_mapel asc',
+            [Auth::user()->id]
+        );
+
+        return $dMap;
     }
 
     public function render()
     {
         return view('livewire.siswa.dashboard-siswa', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
-        ])->layout('layouts.layt');
+        ])->layout('layouts.layt', [
+            'getNavMapSiswa' => $this->getNavMap(),
+        ]);
     }
 }

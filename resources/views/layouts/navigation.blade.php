@@ -4,19 +4,9 @@
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 @auth
-                    {{-- @if (Auth::user()->hasRole('admin')) --}}
                     <a class="logo" href="{{ route('dashboardAdm') }}">
                         <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
                     </a>
-                    {{-- @elseif (Auth::user()->hasRole('guru'))
-                    <a class="logo" href="{{ route('dashboardGuru') }}">
-                        <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
-                    </a>
-                    @elseif (Auth::user()->hasRole('siswa'))
-                    <a class="logo" href="#">
-                        <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
-                    </a>
-                    @endif --}}
                 @endauth
                 <button class="hamburger hamburger--slider" type="button">
                     <span class="hamburger-box">
@@ -30,7 +20,6 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 @auth
-                    {{-- @if (Auth::user()->hasRole('admin')) --}}
                     <li class="active">
                         <a href="{{ route('dashboardAdm') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
@@ -53,24 +42,26 @@
                         <a href="{{ route('dataSiswa') }}" id="ds">
                             <i class="fas fa-chart-bar"></i>Data Siswa</a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('dataMapel') }}" id="dmp">
                             <i class="fas fa-chart-bar"></i>Data Mata Pelajaran</a>
+                    </li> --}}
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Data Mata Pelajaran</a>
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                            <li>
+                                <a href="{{ route('dataMapel') }}">Mata Pelajaran</a>
+                            </li>
+                            @if ($cekDaftarMapel > 0)
+                            <li>
+                                <a href="{{ route('detailMapel') }}">Detail Mata Pelajaran</a>
+                            </li>
+                            @endif
+                        </ul>
                     </li>
                     @endif
                     @endif
-                    
-                    {{-- @elseif (Auth::user()->hasRole('guru'))
-                    <li class="active">
-                        <a href="{{ route('dashboardGuru') }}" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li>
-                    @elseif (Auth::user()->hasRole('siswa'))
-                    <li class="active">
-                        <a href="#" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li>
-                    @endif --}}
                 @endauth
             </ul>
         </div>
@@ -111,25 +102,26 @@
                         <a href="{{ route('dataSiswa') }}" id="ds">
                             <i class="fas fa-chart-bar"></i>Data Siswa</a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('dataMapel') }}" id="dmp">
                             <i class="fas fa-chart-bar"></i>Data Mata Pelajaran</a>
-                    </li>
-                    @endif
-                    @endif
-
-                    {{-- @elseif (Auth::user()->hasRole('guru'))
-                    <li class="active">
-                        <a href="{{ route('dashboardGuru') }}" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
-                    </li>
-                    
-                    @elseif (Auth::user()->hasRole('siswa'))
-                    <li class="active">
-                        <a href="#" id="dash">
-                            <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li> --}}
-                    {{-- @endif --}}
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Data Mata Pelajaran</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                <a href="{{ route('dataMapel') }}">Mata Pelajaran</a>
+                            </li>
+                            @if ($cekDaftarMapel > 0)
+                            <li>
+                                <a href="{{ route('detailMapel') }}">Detail Mata Pelajaran</a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                    @endif
                 @endauth
             </ul>
         </nav>

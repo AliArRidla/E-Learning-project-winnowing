@@ -139,7 +139,7 @@
           Apakah Anda yakin ingin menghapus user <strong>{{ $names }}</strong> ?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" wire:click="deleteUser({{ $idDel }})">Yakin!</button>
+            <button type="button" class="btn btn-danger mr-auto" wire:click="deleteUser({{ $idDel }})">Yakin!</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
         </div>
       </div>
@@ -193,7 +193,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
                                 wire:click="reload()">Close</button>
                             <button type="button" class="btn btn-primary" wire:click="addGuru()">Daftarkan</button>
                         </div>
