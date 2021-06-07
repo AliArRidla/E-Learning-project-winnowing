@@ -79,9 +79,12 @@ class DataJurusan extends Component
     {
         $this->idj = $idj;
         $data = Jurusan::find($this->idj);
-        // foreach ($data as $d) {
-        $this->nama_jurusan = $data['nama_jurusan'];
-        // }
+        if($data== null){
+            $this->nama_jurusan = '';
+        }
+        else{
+            $this->nama_jurusan = $data['nama_jurusan'];
+        }
         // $jurusan = DB::select('select * from jurusans where id = ?', [$idj]);
         // foreach ($jurusan as $i) {
         //     $this->idj = $i->id;

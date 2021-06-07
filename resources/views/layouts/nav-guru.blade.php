@@ -24,6 +24,7 @@
                         <a href="{{ route('dashboardGuru') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
+                    
                     @foreach ($getDMapGuru as $item)
                     <li class="has-sub">
                         <a class="js-arrow" href="#">
@@ -32,14 +33,16 @@
                             <li class="has-sub">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
-                                {{-- <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                    <li>
-                                        <a href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('listPresensiGuru', ['nav_dmid' => $item->dmid]) }}">List Presensi</a>
-                                    </li>
-                                </ul> --}}
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('dataMateri', ['nav_dmid' => $item->dmid]) }}">
+                                {{-- <a href="{{ route('dataMateri') }}"> --}}
+                                    <i class="fas fa-chart-bar"></i>Materi</a>
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('dataTugas', ['nav_dmid' => $item->dmid]) }}">
+                                {{-- <a href="{{ route('dataMateri') }}"> --}}
+                                    <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
                         </ul>
                     </li>
@@ -73,14 +76,16 @@
                             <li class="has-sub">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
-                                {{-- <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                    <li>
-                                        <a href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('listPresensiGuru', ['nav_dmid' => $item->dmid]) }}">List Presensi</a>
-                                    </li>
-                                </ul> --}}
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('dataMateri', ['nav_dmid' => $item->dmid]) }}">
+                                {{-- <a href="{{ route('dataMateri') }}"> --}}
+                                    <i class="fas fa-chart-bar"></i>Materi</a>
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('dataTugas', ['nav_dmid' => $item->dmid]) }}">
+                                {{-- <a href="{{ route('dataMateri') }}"> --}}
+                                    <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
                         </ul>
                     </li>
