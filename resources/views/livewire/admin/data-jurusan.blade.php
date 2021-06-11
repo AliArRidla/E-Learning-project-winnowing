@@ -56,6 +56,7 @@
                         
                                             <br><br> --}}
 
+                                        <input type="text" id="fn_table" value="List Jurusan" hidden>
                                         <div wire:ignore>
                                             <table wire:ignore id="table" class="table table-striped table-bordered"
                                                 style="width:100%">
@@ -150,8 +151,9 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="nama_jurusan">Nama Jurusan</label>
-                                <input wire:model.defer="nama_jurusan" type="text" class="form-control" id="nama_jurusan"
-                                        name="nama_jurusan">
+                                <input wire:model.defer="nama_jurusan" type="text" 
+                                class="form-control @error('nama_jurusan') is-invalid @enderror" 
+                                id="nama_jurusan" name="nama_jurusan">
                                 @error('nama_jurusan')
                                     <span id="error-msg">{{ $message }}</span>
                                 @enderror

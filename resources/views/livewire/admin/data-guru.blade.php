@@ -65,8 +65,9 @@
                         
                                             <br><br> --}}
 
+                                        <input type="text" id="fn_table" value="List Guru" hidden>
                                         <div wire:ignore>
-                                            <table wire:ignore id="tabel" class="table table-striped table-bordered"
+                                            <table id="tabel" class="table table-striped table-bordered"
                                                 style="width:100%">
                                                 <thead>
                                                     <tr>
@@ -162,7 +163,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nama Lengkap</label>
-                                    <input wire:model.debounce.800ms="name" type="text" class="form-control" id="name"
+                                    <input wire:model.debounce.800ms="name" type="text" 
+                                        class="form-control @error('name') is-invalid @enderror" id="name"
                                         name="name">
                                     @error('name')
                                     <span id="error-msg">{{ $message }}</span>
@@ -176,7 +178,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="email">Email</label>
-                                    <input wire:model.debounce.800ms="email" type="email" class="form-control"
+                                    <input wire:model.debounce.800ms="email" type="email" 
+                                        class="form-control @error('email') is-invalid @enderror"
                                         id="email" name="email">
                                     @error('email')
                                     <span id="error-msg">{{ $message }}</span>
@@ -184,7 +187,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="password">Password</label>
-                                    <input wire:model.debounce.800ms="password" type="password" class="form-control"
+                                    <input wire:model.debounce.800ms="password" type="password" 
+                                        class="form-control @error('password') is-invalid @enderror"
                                         id="password" name="password">
                                     @error('password')
                                     <span id="error-msg">{{ $message }}</span>
@@ -203,3 +207,10 @@
         </div>
     </div>
 </main>
+{{-- @push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    // window.location.reload();
+    window.onbeforeunload();
+});
+</script> --}}

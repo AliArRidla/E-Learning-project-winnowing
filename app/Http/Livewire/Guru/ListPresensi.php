@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ListPresensi extends Component
 {
-    public $id_pres, $countDM, $sid, $dpid, $keterangan;
+    public $id_pres, $sid, $dpid, $keterangan;
 
     public function mount($id_pres)
     {
@@ -70,9 +70,10 @@ class ListPresensi extends Component
     {
         if (Auth::user()->hasRole('guru')) {
             $dPres = DB::select('select dp.id as dpid, u.name, 
-            dp.keterangan, dp.waktu_absen, s.id as sid
+            dp.keterangan, dp.waktu_absen, s.id as sid, k.nama_kelas
             from detail_presensis as dp
             join siswas as s on s.id = dp.id_siswa
+            join kelas as k on s.id_kelas = k.id
             join users as u on u.id = s.user_id
             where id_presensi = ?', [$this->id_pres]);
 
@@ -96,32 +97,6 @@ class ListPresensi extends Component
         return $data;
     }
 
-    public function countMapel()
-    {
-        $dataGuru = DB::select('select * from gurus where user_id = ?', [Auth::user()->id]);
-        foreach ($dataGuru as $key) {
-            $idg = $key->id;
-        }
-
-        $jmlMapel = DB::select(
-            'select COUNT(*) AS jml FROM (
-                SELECT mapels.nama_mapel FROM detail_mapels 
-                JOIN mapels ON detail_mapels.id_mapel = mapels.id 
-                WHERE detail_mapels.id_guru = ? 
-                GROUP BY mapels.nama_mapel
-            ) jml',
-            [$idg]
-        );
-
-        // select COUNT(*) AS jml FROM ( SELECT kelas.nama_kelas FROM detail_mapels JOIN kelas ON detail_mapels.id_kelas = kelas.id WHERE detail_mapels.id_guru = 4 GROUP BY detail_mapels.id_kelas ) jml
-
-        foreach ($jmlMapel as $key) {
-            $jmlMap = $key->jml;
-        }
-
-        return $jmlMap;
-    }
-
     public function getDMap()
     {
         $dMap = DB::select(
@@ -136,9 +111,9 @@ class ListPresensi extends Component
             [Auth::user()->id]
         );
 
-        foreach ($dMap as $k) {
-            $this->countDM++;
-        }
+        // foreach ($dMap as $k) {
+        //     $this->countDM++;
+        // }
 
         return $dMap;
     }
@@ -146,7 +121,6 @@ class ListPresensi extends Component
     public function render()
     {
         return view('livewire.guru.list-presensi', [
-            'jmlMapel' => $this->countMapel(),
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataDetPres' => $this->getDetPres(),
             'dataPres' => $this->getPres(),

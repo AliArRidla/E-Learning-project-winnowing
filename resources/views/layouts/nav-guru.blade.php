@@ -44,6 +44,10 @@
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Ulangan</a>
+                            </li>
                         </ul>
                     </li>
                     @endforeach
@@ -86,6 +90,10 @@
                                 <a class="js-arrow" href="{{ route('dataTugas', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Ulangan</a>
                             </li>
                         </ul>
                     </li>

@@ -274,3 +274,61 @@
         </div>
     </div>
 </main>
+@push('ijabo')
+<script>
+    $('#foto').ijaboCropTool({
+    //    preview : '',
+       setRatio:1,
+       allowedExtensions: ['jpg', 'jpeg','png'],
+       buttonsText:['CROP','QUIT'],
+       buttonsColor:['#30bf7d','#ee5155', -15],
+       processUrl:'{{ route("pcrop") }}',
+       withCSRF:['_token','{{ csrf_token() }}'],
+       onSuccess:function(message, element, status){
+        alert(message);
+        location.reload();
+       },
+       onError:function(message, element, status){
+         alert(message);
+       }
+    });
+</script>
+@push('scripts')
+        <script>
+            $('#foto').ijaboCropTool({
+            //    preview : '',
+            setRatio:1,
+            allowedExtensions: ['jpg', 'jpeg','png'],
+            buttonsText:['CROP','QUIT'],
+            buttonsColor:['#30bf7d','#ee5155', -15],
+            processUrl:'{{ route("pcrop") }}',
+            withCSRF:['_token','{{ csrf_token() }}'],
+            onSuccess:function(message, element, status){
+                alert(message);
+                location.reload();
+            },
+            onError:function(message, element, status){
+                alert(message);
+            }
+            });
+        </script>
+@endpush
+{{-- @push('scripts')
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+
+    if (window.history && window.history.pushState) {
+
+    window.history.pushState('forward', null, './#forward');
+
+    $(window).on('popstate', function() {
+        alert('Back button was pressed.');
+    });
+
+    }
+});
+// $(document).ready(function() {
+//     // window.location.reload();
+//     // window.onbeforeunload();
+// });
+</script> --}}

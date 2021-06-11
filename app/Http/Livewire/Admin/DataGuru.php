@@ -14,6 +14,11 @@ class DataGuru extends Component
     public $name, $email, $password;
     public $idDel, $names;
 
+    // public function mount()
+    // {
+    //     $this->reload();
+    // }
+
     public function addGuru()
     {
         // return redirect(route('dashboardAdm'));
@@ -160,6 +165,7 @@ class DataGuru extends Component
 
     public function render()
     {
+        // $this->reload();
         return view('livewire.admin.data-guru', [
             'dataGuru' => $this->getAll(),
             'dataAcc' => $this->getAcc(Auth::user()->id),

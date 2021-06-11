@@ -65,6 +65,7 @@
                         
                                             <br><br> --}}
 
+                                        <input type="text" id="fn_tabel" value="List Siswa" hidden>
                                         <div wire:ignore>
                                             <table wire:ignore id="tabel" class="table table-striped table-bordered"
                                                 style="width:100%">
@@ -155,8 +156,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nama Lengkap</label>
-                                    <input wire:model.debounce.800ms="name" type="text" class="form-control" id="name"
-                                        name="name">
+                                    <input wire:model.debounce.800ms="name" type="text" id="name"
+                                    class="form-control @error('name') is-invalid @enderror" name="name">
                                     @error('name')
                                     <span id="error-msg">{{ $message }}</span>
                                     @enderror
@@ -169,8 +170,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="nis">NIS</label>
-                                    <input wire:model.debounce.800ms="nis" type="text" class="form-control" id="nis"
-                                        name="nis">
+                                    <input wire:model.debounce.800ms="nis" type="text" id="nis"
+                                    class="form-control @error('nis') is-invalid @enderror" name="nis">
                                     @error('nis')
                                     <span id="error-msg">{{ $message }}</span>
                                     @enderror
@@ -180,7 +181,8 @@
                                         <label for="id_kelas" class=" form-control-label">Kelas</label>
                                     </div>
                                     <div>
-                                        <select wire:model.debounce.800ms="id_kelas" name="id_kelas" id="id_kelas" class="form-control-sm form-control">
+                                        <select wire:model.debounce.800ms="id_kelas" name="id_kelas" id="id_kelas" 
+                                        class="form-control-sm form-control @error('id_kelas') is-invalid @enderror">
                                             <option value="">-- Pilih Kelas --</option>
                                             @foreach ($dataKelas as $item)
                                             <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
@@ -195,7 +197,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="email">Email</label>
-                                    <input wire:model.debounce.800ms="email" type="email" class="form-control"
+                                    <input wire:model.debounce.800ms="email" type="email" 
+                                        class="form-control @error('email') is-invalid @enderror"
                                         id="email" name="email">
                                     @error('email')
                                     <span id="error-msg">{{ $message }}</span>
@@ -203,7 +206,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="password">Password</label>
-                                    <input wire:model.debounce.800ms="password" type="password" class="form-control"
+                                    <input wire:model.debounce.800ms="password" type="password" 
+                                        class="form-control @error('password') is-invalid @enderror"
                                         id="password" name="password">
                                     @error('password')
                                     <span id="error-msg">{{ $message }}</span>

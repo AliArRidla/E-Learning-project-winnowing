@@ -166,18 +166,19 @@ class DetailMapel extends Component
 
     public function getAllMapel()
     {
-        return DB::table('mapels')->get();
+        return DB::table('mapels')->orderBy('nama_mapel', 'asc')->get();
     }
 
     public function getAllKelas()
     {
-        return DB::table('kelas')->get();
+        return DB::table('kelas')->orderBy('nama_kelas', 'asc')->get();
     }
 
     public function getAllGuru()
     {
         $guru = DB::select('select g.id, u.name from gurus as g
-        join users as u on u.id = g.user_id');
+        join users as u on u.id = g.user_id
+        order by name asc');
         return $guru;
     }
 

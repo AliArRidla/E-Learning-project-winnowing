@@ -56,9 +56,9 @@
                                             </button>
                         
                                             <br><br> --}}
-
+                                        
                                         <div wire:ignore>
-                                            <table wire:ignore id="table" class="table table-striped table-bordered"
+                                            <table wire:ignore id="tbl_no_ex" class="table table-striped table-bordered"
                                                 style="width:100%">
                                                 <thead>
                                                     <tr>
@@ -150,56 +150,15 @@
                     </div>
                     <form wire:submit.prevent="submit">
                         <div class="modal-body">
-                            {{-- @if ($add) --}}
-                            {{-- @if ($add)
-                        @php
-                            
-                        @endphp --}}
                             <div class="form-group">
                                 <label for="nama_mapel">Nama Mata Pelajaran</label>
-                                <input wire:model.defer="nama_mapel" type="text" class="form-control" id="nama_mapel"
+                                <input wire:model.defer="nama_mapel" type="text"  id="nama_mapel"
+                                class="form-control @error('nama_mapel') is-invalid @enderror"
                                     name="nama_mapel" placeholder="Contoh: Sejarah">
                                 @error('nama_mapel')
                                 <span id="error-msg">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- @else
-                            
-                        @endif --}}
-                            {{-- <div class="form-group">
-                                <div>
-                                    <label for="id_kelas" class=" form-control-label">Kelas</label>
-                                </div>
-                                <div>
-                                    <select wire:model.defer="id_kelas" name="id_kelas" id="id_kelas"
-                                        class="form-control-sm form-control">
-                                        <option value="">-- Pilih Kelas --</option>
-                                        @foreach ($dataKelas as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('id_kelas')
-                                <span id="error-msg">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <div>
-                                    <label for="id_guru" class=" form-control-label">Guru</label>
-                                </div>
-                                <div>
-                                    <select wire:model.defer="id_guru" name="id_guru" id="id_guru"
-                                        class="form-control-sm form-control">
-                                        <option value="">-- Pilih Guru --</option>
-                                        @foreach ($dataGuru as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('id_guru')
-                                <span id="error-msg">{{ $message }}</span>
-                                @enderror
-                            </div> --}}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"

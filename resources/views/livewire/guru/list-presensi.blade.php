@@ -47,6 +47,7 @@
                                         </div>
                                         @endif
 
+                                        <input type="text" id="fn_table" value="List Siswa" hidden>
                                         <div wire:ignore>
                                             <table wire:ignore id="table" class="table table-striped table-bordered"
                                                 style="width:100%">

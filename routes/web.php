@@ -11,14 +11,20 @@ use App\Http\Livewire\Admin\DataSiswa;
 use App\Http\Livewire\Admin\DetailGuru;
 use App\Http\Livewire\Admin\DetailMapel;
 use App\Http\Livewire\Admin\DetailSiswa;
+use App\Http\Livewire\Guru\CustomSoal;
 use App\Http\Livewire\Guru\Dashboard as GuruDashboard;
 use App\Http\Livewire\Guru\DataMateri;
 use App\Http\Livewire\Guru\DataMateriEdit;
 use App\Http\Livewire\Guru\DataMateriTambah;
 use App\Http\Livewire\Guru\DataTugas;
 use App\Http\Livewire\Guru\DataTugasTambah;
+use App\Http\Livewire\Guru\EditSoal;
+use App\Http\Livewire\Guru\EditUlangan;
 use App\Http\Livewire\Guru\ListPresensi;
+use App\Http\Livewire\Guru\ListSoal;
 use App\Http\Livewire\Guru\PresensiGuru;
+use App\Http\Livewire\Guru\SoalUlangan;
+use App\Http\Livewire\Guru\TambahUlangan;
 use App\Http\Livewire\ProfilUser;
 use App\Http\Livewire\ShowPosts;
 use App\Http\Livewire\Siswa\DashboardSiswa;
@@ -108,8 +114,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     // ----------- GURU START --------------------------------
-    Route::get('/guru/tambah-presensi/{nav_dmid}', PresensiGuru::class)->name('presensiGuru');
+    // PRESENSI
+    Route::get('/guru/presensi/{nav_dmid}', PresensiGuru::class)->name('presensiGuru');
     Route::get('/guru/detail-presensi/{id_pres}', ListPresensi::class)->name('listPresensiGuru');
+    // ULANGAN
+    Route::get('/guru/ulangan/{nav_dmid}', TambahUlangan::class)->name('ulanganGuru');
+    // Route::get('/guru/ulangan/{nav_dmid}/{id_ul}', EditUlangan::class)->name('editUlanganGuru');
+    // Route::get('/guru/custom-soal-ulangan/{id_ul}', CustomSoal::class)->name('customSoalGuru');
+    Route::get('/guru/soal-ulangan/{id_ul}', SoalUlangan::class)->name('soalGuru');
+    Route::get('/guru/list-soal-ulangan/{id_ul}', ListSoal::class)->name('listSoalGuru');
+    Route::get('/guru/edit-soal-ulangan/{id_ul}/{noc}/{ids}', EditSoal::class)->name('editSoalGuru');
     // ----------- GURU END --------------------------------
 
     // ----------- SISWA START --------------------------------

@@ -160,7 +160,8 @@
                         <div class="modal-body">
                             @if ($er_msg)
                             <div class="alert alert-warning" role="alert">
-                                Mata Pelajaran <strong>{{ $nMapel }}</strong> sudah ada di kelas <strong>{{ $nKelas }}</strong> !
+                                Mata Pelajaran <strong>{{ $nMapel }}</strong> sudah ada di kelas 
+                                <strong>{{ $nKelas }}</strong> !
                             </div>
                             @endif
                             <div class="form-group">
@@ -169,7 +170,7 @@
                                 </div>
                                 <div>
                                     <select wire:model.defer="id_mapel" name="id_mapel" id="id_mapel"
-                                        class="form-control-sm form-control">
+                                        class="form-control-sm form-control @error('id_mapel') is-invalid @enderror">
                                         <option value="">-- Pilih Mapel --</option>
                                         @foreach ($dataMapel as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_mapel }}</option>
@@ -194,7 +195,7 @@
                                 </div>
                                 <div>
                                     <select wire:model.defer="id_kelas" name="id_kelas" id="id_kelas"
-                                        class="form-control-sm form-control">
+                                        class="form-control-sm form-control @error('id_kelas') is-invalid @enderror">
                                         <option value="">-- Pilih Kelas --</option>
                                         @foreach ($dataKelas as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
@@ -211,7 +212,7 @@
                                 </div>
                                 <div>
                                     <select wire:model.defer="id_guru" name="id_guru" id="id_guru"
-                                        class="form-control-sm form-control">
+                                        class="form-control-sm form-control @error('id_guru') is-invalid @enderror">
                                         <option value="">-- Pilih Guru --</option>
                                         @foreach ($dataGuru as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>

@@ -56,7 +56,7 @@
                                             </button>
                         
                                             <br><br> --}}
-
+                                        <input type="text" id="fn_table" value="List Kelas" hidden>
                                         <div wire:ignore>
                                             <table wire:ignore id="table" class="table table-striped table-bordered"
                                                 style="width:100%">
@@ -163,7 +163,7 @@
                                 </div>
                                 <div>
                                     <select wire:model.defer="id_jurusan" name="id_jurusan" id="id_jurusan"
-                                        class="form-control-sm form-control">
+                                        class="form-control-sm form-control @error('id_jurusan') is-invalid @enderror">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($dataJurusan as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_jurusan }}</option>
@@ -179,7 +179,8 @@
                         @endif --}}
                             <div class="form-group">
                                 <label for="nama_kelas">Nama Kelas</label>
-                                <input wire:model.defer="nama_kelas" type="text" class="form-control" id="nama_kelas"
+                                <input wire:model.defer="nama_kelas" type="text" id="nama_kelas"
+                                class="form-control @error('nama_kelas') is-invalid @enderror"
                                     name="nama_kelas" placeholder="Contoh: XI IPA 3">
                                 @error('nama_kelas')
                                 <span id="error-msg">{{ $message }}</span>

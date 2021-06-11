@@ -74,6 +74,10 @@ input[type="radio"]{
     border: 1px solid;
 }
 
+input[type="checkbox"]{
+    border: 1px solid;
+}
+
 button {
     border: none;
     background: none;

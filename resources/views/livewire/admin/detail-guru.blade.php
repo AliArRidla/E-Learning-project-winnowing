@@ -12,6 +12,8 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+                        <input type="hidden" id="refresh" value="no">
+
                         @if (session()->has('pesan'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -21,6 +23,7 @@
                             <strong>Berhasil!</strong> {{ session('pesan') }}
                         </div>
                         @endif
+
                         @foreach ($detailGuru as $g)
                         <div>
                             <div class="alert alert-warning" role="alert">
@@ -31,6 +34,22 @@
                                     Kemudian silahkan membuatnya kembali di peran yang diinginkan.
                                 </p>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="overview-wrap">
+                                        {{-- <h2 class="title-1">Data Siswa</h2> --}}
+                                        <a href="{{ route('dataGuru') }}">
+                                            <button type="button" class="au-btn au-btn-icon au-btn--blue">
+                                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-user"></i>
@@ -142,15 +161,16 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        wire:model.defer="name">
-                                        @error('name')
-                                <span id="error-msg">{{ $message }}</span>
-                                @enderror
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                    id="name" name="name" wire:model.defer="name">
+                                    @error('name')
+                                    <span id="error-msg">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="email">Email</label>
-                                    <input wire:model.debounce.800ms="email" type="email" class="form-control"
+                                    <input wire:model.debounce.800ms="email" type="email" 
+                                        class="form-control @error('email') is-invalid @enderror"
                                         id="email" name="email">
                                         @error('email')
                                         <span id="error-msg">{{ $message }}</span>
@@ -169,3 +189,13 @@
         </div>
     </div>
 </main>
+{{-- @push('scripts')
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        var elm = $('#refresh');
+        elm.dispatchEvent(new Event('input'));
+
+        elm.val() == 'yes' ? alert('no') : $input.val('yes');
+    });
+</script>
+@endpush --}}

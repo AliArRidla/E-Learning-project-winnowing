@@ -51,6 +51,9 @@
     {{-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css"> --}}
     <link href="{{ asset('lms/timepicker/jquery.timepicker.css') }}" rel="stylesheet">
 
+    {{-- SUMMERNOTE --}}
+    <link href="{{ asset('lms/vendor/summernote/summernote.min.css') }}" rel="stylesheet" media="all">
+
     <!-- Main CSS-->
     <link href="{{ asset('lms/css/theme.css') }}" rel="stylesheet" media="all">
 
@@ -75,8 +78,6 @@
         }
     </style>
     
-    @livewireStyles
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -96,6 +97,7 @@
             });
         });
     </script> --}}
+    @livewireStyles
 </head>
 
 <body class="animsition">
@@ -143,6 +145,9 @@
     <!-- timepicker-->
     {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> --}}
     <script src="{{ asset('lms/timepicker/jquery.timepicker.js') }}"></script>
+
+    {{-- summernote --}}
+    <script src="{{ asset('lms/vendor/summernote/summernote.min.js') }}"></script>
 
     <!-- Main JS-->
     <script src="{{ asset('lms/js/main.js') }}"></script>
@@ -198,12 +203,20 @@
                 buttons: [
                     {
                         extend: 'excel',
+                        filename: function () {
+                            var fn = document.getElementById('fn_table');
+                            return fn.value;
+                        },
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
                         }
                     },
                     {
                         extend: 'pdf',
+                        filename: function () {
+                            var fn = document.getElementById('fn_table');
+                            return fn.value;
+                        },
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
                         }
@@ -218,12 +231,20 @@
                 buttons: [
                     {
                         extend: 'excel',
+                        filename: function () {
+                            var fn = document.getElementById('fn_tabel');
+                            return fn.value;
+                        },
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
                         }
                     },
                     {
                         extend: 'pdf',
+                        filename: function () {
+                            var fn = document.getElementById('fn_tabel');
+                            return fn.value;
+                        },
                         exportOptions: {
                             columns: ':visible:not(.not-export-col)'
                         }
@@ -243,6 +264,11 @@
                 "search": {
                     "search": month,
                 }
+            });
+
+            $('#tbl_no_ex').DataTable( {
+                "scrollX": true,
+                "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ]
             });
         });
     </script>
@@ -297,29 +323,12 @@
             elm.dispatchEvent(new Event('change'));
         });
     </script>
-    
-    <script>
-        $('#foto').ijaboCropTool({
-        //    preview : '',
-           setRatio:1,
-           allowedExtensions: ['jpg', 'jpeg','png'],
-           buttonsText:['CROP','QUIT'],
-           buttonsColor:['#30bf7d','#ee5155', -15],
-           processUrl:'{{ route("pcrop") }}',
-           withCSRF:['_token','{{ csrf_token() }}'],
-           onSuccess:function(message, element, status){
-            alert(message);
-            location.reload();
-           },
-           onError:function(message, element, status){
-             alert(message);
-           }
-        });
-   </script>
-
-   {{-- @livewireScripts --}}
+    {{-- @livewireScripts --}}
     {{-- @include('layouts.modals') --}}
+    @stack('scripts')
     @livewireScripts
+    {{-- @stack('ijabo') --}}
+    {{-- @stack('scripts') --}}
 </body>
 
 </html>
