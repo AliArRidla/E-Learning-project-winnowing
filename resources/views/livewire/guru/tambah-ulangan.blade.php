@@ -19,6 +19,7 @@
                                     @if ($dataMapel != null)
                                     @foreach ($dataMapel as $i)
                                     <h2 class="title-1">List Ulangan {{ $i->nama_kelas }} - {{ $i->nama_mapel }}</h2>
+                                    {{-- <button wire:click="ddMee">DDME</button> --}}
                                         {{-- <option value="{{ $i->dmid }}">{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</option> --}}
                                     @endforeach
                                     @endif
@@ -46,7 +47,7 @@
                                                 <tbody>
                                                     @if ($dataUl != null)    
                                                     @foreach ($dataUl as $item)
-                                                    @foreach ($jmlSoal as $j)
+                                                    {{-- @foreach ($jmlSoal as $j) --}}
                                                     <tr>
                                                         @php
                                                             $hari_ini; 
@@ -95,13 +96,15 @@
                                                             $ipoin = $item->is_poin == '0' ? 'Tidak' : 'Ya';
                                                         @endphp
                                                         <td>{{ $ipoin }}</td>
+                                                        @php
+                                                            $listOrCreate = '';
+                                                            $listOrCreate = DB::select('select count(*) as jml from (
+                                                                select id from soals where id_ulangan = ?
+                                                                ) jml', [$item->ulid]);
+                                                        @endphp
                                                         <td>
-                                                            {{-- <a name="detail" id="detail" class="btn btn-primary"
-                                                                href="{{ route('customSoalGuru', ['id_ul' => $item->ulid]) }}"
-                                                                role="button">
-                                                                <i class="fa fa-search" aria-hidden="true"></i>
-                                                            </a> --}}
-                                                            @if ($j->jml == 0)
+                                                            {{-- {{ $listOrCreate }} --}}
+                                                            @if ($listOrCreate[0]->jml == 0)
                                                             <a href="{{ route('soalGuru', ['id_ul' => $item->ulid]) }}">
                                                                 <button type="button" class="btn btn-success btn-sm">
                                                                     Buat Soal
@@ -132,7 +135,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    @endforeach
+                                                    {{-- @endforeach --}}
                                                     @endforeach
                                                     @endif
                                                 </tbody>

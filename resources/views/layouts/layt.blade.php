@@ -76,6 +76,26 @@
         #error-msg{
             color: red;
         }
+
+        .headTImer {
+            padding: 10px 10px;
+            background: #555;
+            color: #f1f1f1;
+        }
+
+        /* .content {
+            padding: 16px;
+        } */
+
+        .stickyTimer {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .stickyTimer + .contentTimer {
+            padding-top: 102px;
+        }
     </style>
     
     <!-- Scripts -->

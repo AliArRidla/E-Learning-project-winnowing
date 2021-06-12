@@ -86,6 +86,7 @@
                                                     <th>No.</th>
                                                     <th>Tanggal</th>
                                                     <th>Waktu Mulai - Selesai</th>
+                                                    <th>Keterangan</th>
                                                     <th class="not-export-col">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -95,41 +96,6 @@
                                                 @endphp
                                                 @foreach ($dataAbsen as $item)
                                                 @php
-                                                $hari_ini; 
-                                                $pdays=date('D', strtotime($item->hari_absen));
-                                                switch($pdays){
-                                                    case 'Sun':
-                                                    $hari_ini = "Minggu";
-                                                    break;
-
-                                                    case 'Mon':
-                                                    $hari_ini = "Senin";
-                                                    break;
-
-                                                    case 'Tue':
-                                                    $hari_ini = "Selasa";
-                                                    break;
-
-                                                    case 'Wed':
-                                                    $hari_ini = "Rabu";
-                                                    break;
-
-                                                    case 'Thu':
-                                                    $hari_ini = "Kamis";
-                                                    break;
-
-                                                    case 'Fri':
-                                                    $hari_ini = "Jumat";
-                                                    break;
-
-                                                    case 'Sat':
-                                                    $hari_ini = "Sabtu";
-                                                    break;
-
-                                                    default:
-                                                    $hari_ini = "Tidak di ketahui";
-                                                    break;
-                                                }
                                                 $pday = date('l', strtotime($item->hari_absen));
                                                 $pdate = date('j F Y', strtotime($item->hari_absen));
                                                 $btime = date('H:i', strtotime($item->waktu_mulai));
@@ -150,6 +116,22 @@
                                                     <td>{{ $count++ }}</td>
                                                     <td>{{ date("M d, Y", $startdate) }}</td>
                                                     <td>{{ $btime }} - {{ $etime }}</td>
+                                                    <td>
+                                                        @php
+                                                        $ids = DB::select('select id from siswas where user_id = ?', [Auth::user()->id]);
+                                                        $sid = $ids[0]->id;
+                                                        $std = date('Y-m-d', $startdate);
+                                                        $cekPres = DB::select('select * from detail_presensis where id_siswa = ?
+                                                        AND id_presensi = ? AND date(waktu_absen) = ?', [$sid, $id_pres, $std]);
+                                                        @endphp
+                                                            @if ($cekPres == null)
+                                                            -
+                                                            @else
+                                                            @foreach ($cekPres as $ic)
+                                                            {{ $ic->keterangan }}
+                                                            @endforeach
+                                                            @endif
+                                                    </td>
                                                     <td>
                                                         @if ($datenow == date("M d", $startdate))
                                                             @if ($daynow == $startday)
@@ -173,7 +155,7 @@
                                                                     @endif
                                                                 @endif
                                                             @endif
-                                                        @elseif (date("Y-m-d", $startdate) < date("Y-m-d"))
+                                                        {{-- @elseif (date("Y-m-d", $startdate) < date("Y-m-d"))
                                                         @php
                                                         $ids = DB::select('select id from siswas where user_id = ?', [Auth::user()->id]);
                                                         $sid = $ids[0]->id;
@@ -187,7 +169,7 @@
                                                             @foreach ($cekPres as $ic)
                                                             {{ $ic->keterangan }}
                                                             @endforeach
-                                                            @endif
+                                                            @endif --}}
                                                         @endif
                                                     </td>
                                                     </tr>

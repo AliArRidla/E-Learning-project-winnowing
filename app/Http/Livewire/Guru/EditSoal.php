@@ -15,6 +15,7 @@ class EditSoal extends Component
 
     public function mount($id_ul, $noc, $ids)
     {
+        $this->id_ul = $id_ul;
         $this->ids = $ids;
         $this->noc = $noc;
 

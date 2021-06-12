@@ -28,7 +28,9 @@ use App\Http\Livewire\Guru\TambahUlangan;
 use App\Http\Livewire\ProfilUser;
 use App\Http\Livewire\ShowPosts;
 use App\Http\Livewire\Siswa\DashboardSiswa;
+use App\Http\Livewire\Siswa\KerjakanUlangan;
 use App\Http\Livewire\Siswa\ListPresensi as SiswaListPresensi;
+use App\Http\Livewire\Siswa\ListUlangan;
 use App\Http\Livewire\Siswa\PresensiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -129,6 +131,9 @@ Route::middleware(['auth'])->group(function () {
     // ----------- SISWA START --------------------------------
     Route::get('/siswa/list-presensi', SiswaListPresensi::class)->name('listPresensiSiswa');
     Route::get('/siswa/presensi/{id_pres}', PresensiSiswa::class)->name('presensiSiswa');
+    // ULANGAN
+    Route::get('/siswa/ulangan/{nav_dmid}', ListUlangan::class)->name('ulanganSiswa');
+    Route::get('/siswa/kerjakan-ulangan/{nav_dmid}/{id_ul}', KerjakanUlangan::class)->name('kerjakanUlSiswa');
     // ----------- SISWA END --------------------------------
 
     // ----------- PROFIL START --------------------------------

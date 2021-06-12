@@ -58,7 +58,7 @@
                                             <h4>Soal nomor {{ $noc }}</h4>
                                             <hr>
                                             {{-- @foreach ($soals as $s) --}}
-                                            @if ($dataUl['is_poin'] == '1')
+                                            @if ($poin != null)
                                             {{-- @php
                                                 $this->poin = $s->poin;
                                             @endphp --}}

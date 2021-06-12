@@ -175,22 +175,27 @@ class TambahUlangan extends Component
             join mapels as m on dm.id_mapel = m.id
             where ul.id_det_mapel = ?', [$this->nav_dmid]);
 
-            foreach ($data as $d) {
-                $this->jmlSoal = DB::select(
-                    'select COUNT(*) AS jml FROM (
-                        SELECT soals.id FROM soals
-                        JOIN ulangans ON soals.id_ulangan = ulangans.id
-                        WHERE soals.id_ulangan = ?
-                    ) jml',
-                    [$d->ulid]
-                );
-            }
+            // foreach ($data as $d) {
+            //     $this->jmlSoal = DB::select(
+            //         'select COUNT(*) AS jml FROM (
+            //             SELECT soals.id FROM soals
+            //             JOIN ulangans ON soals.id_ulangan = ulangans.id
+            //             WHERE soals.id_ulangan = ?
+            //         ) jml',
+            //         [$d->ulid]
+            //     );
+            // }
 
             return $data;
         } else {
             return redirect(route('login'));
         }
     }
+
+    // public function ddMee()
+    // {
+    //     dd($this->jmlSoal);
+    // }
 
     public function getAcc($id)
     {

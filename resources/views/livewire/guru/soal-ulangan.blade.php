@@ -73,7 +73,7 @@
                                             @endif
                                             <div class="form-group">
                                                 <label for="kunci_jawaban" class="form-control-label">Kunci Jawaban</label>
-                                                <select name="kunci_jawaban" id="kunci_jawaban" class="form-control" wire:model.debounced.800ms="kunci_jawaban">
+                                                <select name="kunci_jawaban" id="kunci_jawaban" class="form-control" wire:model.defer="kunci_jawaban">
                                                     <option value="">-- Pilih Kunci --</option>
                                                     <option value="pilihan_a">A</option>
                                                     <option value="pilihan_b">B</option>
@@ -178,23 +178,6 @@
                                                     @error('pilE')
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror
-
-                                                    {{-- <div class="form-group">
-                                                        <label for="kunci_jawaban" class="form-control-label">Kunci Jawaban</label>
-                                                        <select name="kunci_jawaban" id="kunci_jawaban" class="form-control" wire:model.debounced.800ms="kunci_jawaban">
-                                                            <option value="">-- Pilih Kunci --</option>
-                                                            <option value="pilihan_a">A</option>
-                                                            <option value="pilihan_b">B</option>
-                                                            <option value="pilihan_c">C</option>
-                                                            <option value="pilihan_d">D</option>
-                                                            <option value="pilihan_e">E</option>
-                                                        </select>
-                                                        @error('kunci_jawaban')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                        @enderror
-                                                    </div> --}}
-                                                    {{-- @endif
-                                                    @endif --}}
                                         </form>
                                     </div>
                                 </div>
@@ -202,20 +185,6 @@
                         </div>
 
                         <div class="row">
-                            {{-- @if ($no_soal > 5)
-                            <div class="col-md-6">
-                                <div class="overview-wrap"> --}}
-                                    {{-- <h2 class="title-1"> </h2> --}}
-                                    {{-- <a href="#"> --}}
-                                        {{-- <button type="button" class="au-btn au-btn-icon au-btn--green"
-                                        wire:click="soalPage">
-                                        <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
-                                        </button> --}}
-                                    {{-- </a> --}}
-                                {{-- </div>
-                            </div>
-                            @endif --}}
-                            {{-- <div class="@if ($no_soal > 5) col-md-6 @else col-md-12 @endif"> --}}
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <h2 class="title-1"> </h2>
