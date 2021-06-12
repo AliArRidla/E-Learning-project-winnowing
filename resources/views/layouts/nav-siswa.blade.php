@@ -24,18 +24,6 @@
                         <a href="{{ route('dashboardSiswa') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
-                    {{-- <li class="has-sub">
-                        <a class="js-arrow" href="#">
-                            <i class="fas fa-table"></i>Presensi</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li>
-                                <a href="{{ route('presensiSiswa', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('presensiSiswa') }}">List Presensi</a>
-                            </li>
-                        </ul>
-                    </li> --}}
                     <li>
                         <a href="{{ route('listPresensiSiswa') }}" id="pres">
                             <i class="fas fa-chart-bar"></i>Presensi</a>
@@ -43,11 +31,15 @@
                     @foreach ($getNavMapSiswa as $item)
                     <li class="has-sub">
                         <a class="js-arrow" href="#">
-                            <i class="fas fa-table"></i>{{ $item->nama_mapel }}</a>
+                            <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
                         <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                             <li class="has-sub">
-                                <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
-                                    <i class="fas fa-table"></i>Presensi</a>
+                                <a class="js-arrow" href="{{ route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Materi dan Tugas</a>
+                            </li>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Ulangan</a>
                             </li>
                         </ul>
                     </li>
@@ -83,29 +75,16 @@
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li class="has-sub">
+                                <a class="js-arrow" href="{{ route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Materi dan Tugas</a>
+                            </li>
+                            <li class="has-sub">
                                 <a class="js-arrow" href="{{ route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
                         </ul>
                     </li>
                     @endforeach
-                    {{-- @foreach ($getNavMapSiswa as $item)
-                    <li class="has-sub">
-                        <a class="js-arrow" href="#">
-                            <i class="fas fa-table"></i>{{ $item->nama_mapel }}</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li class="has-sub">
-                                <a class="js-arrow" href="#">
-                                    <i class="fas fa-table"></i>Presensi</a>
-                                <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                    <li>
-                                        <a href="{{ route('presensiSiswa', ['nav_dmid' => $item->dmid]) }}">Tambah Presensi</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    @endforeach --}}
                 @endauth
             </ul>
         </nav>

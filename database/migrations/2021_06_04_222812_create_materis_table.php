@@ -18,7 +18,7 @@ class CreateMaterisTable extends Migration
             $table->unsignedBigInteger('id_detMapel');
             $table->string('nama_materi')->nullable();
             $table->string('file_materi')->nullable();
-            $table->text('content')->nullable();
+            $table->longText('content')->nullable();
             $table->timestamps();
 
             $table->foreign('id_detMapel')->references('id')->on('detail_mapels')

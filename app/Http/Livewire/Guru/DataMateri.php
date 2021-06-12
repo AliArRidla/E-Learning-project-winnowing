@@ -30,7 +30,7 @@ class DataMateri extends Component
         unlink('storage/content/' . $materi->file_materi);
         $materi->delete();
         return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
-        session()->flash('msg', 'Data berhasil dihapus');
+        session()->flash('pesan', 'Data berhasil dihapus');
     }
 
     public function getAll($id)

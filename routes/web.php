@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfilAcc;
+use App\Http\Controllers\TugasController;
 use App\Http\Livewire\Admin\Dashboard;
 use App\Http\Livewire\Admin\DataGuru;
 use App\Http\Livewire\Admin\DataJurusan;
@@ -18,6 +19,7 @@ use App\Http\Livewire\Guru\DataMateriEdit;
 use App\Http\Livewire\Guru\DataMateriTambah;
 use App\Http\Livewire\Guru\DataTugas;
 use App\Http\Livewire\Guru\DataTugasTambah;
+use App\Http\Livewire\Guru\DataTugasEdit;
 use App\Http\Livewire\Guru\EditSoal;
 use App\Http\Livewire\Guru\EditUlangan;
 use App\Http\Livewire\Guru\ListPresensi;
@@ -28,9 +30,13 @@ use App\Http\Livewire\Guru\TambahUlangan;
 use App\Http\Livewire\ProfilUser;
 use App\Http\Livewire\ShowPosts;
 use App\Http\Livewire\Siswa\DashboardSiswa;
+use App\Http\Livewire\Siswa\DataMateri as SiswaDataMateri;
+use App\Http\Livewire\Siswa\DataTugas as SiswaDataTugas;
+use App\Http\Livewire\Siswa\DetDataMateri;
 use App\Http\Livewire\Siswa\KerjakanUlangan;
 use App\Http\Livewire\Siswa\ListPresensi as SiswaListPresensi;
 use App\Http\Livewire\Siswa\ListUlangan;
+use App\Http\Livewire\Siswa\PengumpulanTugas;
 use App\Http\Livewire\Siswa\PresensiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -142,31 +148,39 @@ Route::middleware(['auth'])->group(function () {
     // ----------- PROFIL END --------------------------------
 
     // ----------- MATERI GURU START NO LIVEWIRE--------------------------------
-    // Route::get('/guru/materi', [MateriController::class, 'index'])->name('dataMateri');
-    // Route::get('/guru/materi/create', [MateriController::class, 'create'])->name('create');
-    // Route::post('/store', [MateriController::class, 'store'])->name('materiTambah');
-    // Route::get('/guru/materi/edit/{materi}', [MateriController::class, 'edit'])->name('materiEdit');
-    // Route::patch('/guru/materi/{materi}', [MateriController::class, 'update'])->name('materiUpdate');
-    // Route::delete('/guru/materi/{materi}', [MateriController::class, 'destroy'])->name('materiHapus');
-    // Route::get('/guru/materi/show/{id}', [MateriController::class, 'show']);
+    
     Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
     // ----------- MATERI GURU END --------------------------------
 
     // ----------- MATERI GURU LIVEWIRE START --------------------------------
     Route::get('/guru/data-materi/{nav_dmid}', DataMateri::class)->name('dataMateri');
     Route::get('/guru/data-materi-tambah/{nav_dmid}', DataMateriTambah::class)->name('dataMateriTambah');
-    Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah');
+    Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah
+    ');
     Route::get('/guru/data-materi-edit/{nav_dmid}/{idMat}', DataMateriEdit::class)->name('dataMateriEdit');
     Route::patch('/guru/data-materi-edit/{nav_dmid}/{idMat}', [MateriController::class, 'update'])->name('materiUpdate');
     // ----------- MATERI GURU END --------------------------------
 
-    // ----------- MATERI GURU LIVEWIRE START --------------------------------
+    // ----------- MATERI SISWA LIVEWIRE START --------------------------------
+    Route::get('/siswa/data-materi/{nav_dmid}', SiswaDataMateri::class)->name('dataMateriSiswa');
+    Route::get('/siswa/det-data-materi/{nav_dmid}/{id_mats}', DetDataMateri::class)->name('materiSiswa');
+    // Route::get('/siswa/det-data-materi/{nav_dmid}/{id_tgs}', DetDataMateri::class)->name('tugasSiswa');
+    // Route::get('download{id}', DetDataMateri::class, 'download')->name('download');
+    // ----------- MATERI SISWA END --------------------------------
+
+    // ----------- TUGAS GURU LIVEWIRE START --------------------------------
     Route::get('/guru/data-tugas/{nav_dmid}', DataTugas::class)->name('dataTugas');
     Route::get('/guru/data-tugas-tambah/{nav_dmid}', DataTugasTambah::class)->name('dataTugasTambah');
-    // Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah');
-    // Route::get('/guru/data-materi-edit/{nav_dmid}/{idMat}', DataMateriEdit::class)->name('dataMateriEdit');
-    // Route::patch('/guru/data-materi-edit/{nav_dmid}/{idMat}', [MateriController::class, 'update'])->name('materiUpdate');
-    // ----------- MATERI GURU END --------------------------------
+    Route::post('/store/{nav_dmid}', [TugasController::class, 'store'])->name('tugasTambah');
+    Route::get('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', DataTugasEdit::class)->name('dataTugasEdit');
+    Route::patch('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', [TugasController::class, 'update'])->name('tugasUpdate');
+    // ----------- TUGAS GURU END --------------------------------
+
+     // ----------- TUGAS SISWA LIVEWIRE START --------------------------------
+     Route::get('/siswa/data-tugas/{nav_dmid}', SiswaDataTugas::class)->name('dataTugasSiswa');
+     Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
+     // ----------- TUGAS SISWA END --------------------------------
+
 });
 
 require __DIR__ . '/auth.php';

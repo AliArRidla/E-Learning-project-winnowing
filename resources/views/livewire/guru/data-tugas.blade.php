@@ -17,7 +17,7 @@
                                 <div class="overview-wrap">
                                     <h2 class="title-1">Data Tugas</h2>
                                     {{-- @foreach ($getDMapGuru as $item) --}}
-                                        <a href="{{ route('dataMateriTambah', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue"
+                                        <a href="{{ route('dataTugasTambah', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue"
                                             >
                                             <i class="zmdi zmdi-plus"></i>tambah Tugas
                                         </a>
@@ -76,9 +76,9 @@
                                                         <td>{{ $item->nama_tugas }}</td>
                                                         <td>{{ $item->tanggal }}</td>
                                                         <td>
-                                                             {{-- <a href="{{ route('dataTugasEdit', ['nav_dmid' => $nav_dmid, 'idMat' => $item->matid])}}"  
+                                                            <a href="{{ route('dataTugasEdit', ['nav_dmid' => $nav_dmid, 'idTgs' => $item->tid])}}"  
                                                                 class="btn btn-warning">
-                                                                <i class="fas fa-edit"></i></a> --}}
+                                                                <i class="fas fa-edit"></i></a>
                                                             <button name="delete" id="delete" class="btn btn-danger"
                                                                 wire:click="loadByID({{ $item->tid }})"
                                                                 data-toggle="modal" data-target="#mdlDelTugas">

@@ -263,16 +263,9 @@ class MateriController extends Controller
     }
 
 
-    public function destroy($nav_dmid, Request $request, Materi $materi)
+    public function destroy()
     {
-        if($request->file('file_materi')){
-            $gambar_name = Materi::where('id', $materi->id)->first();
-            unlink('storage/content/' . $gambar_name->file_materi);
-            Materi::destroy($materi->id);
-        } else {
-            Materi::where('id', $materi->id)->delete();
-        }
-        return redirect(route('dataMateri', ['nav_dmid' => $nav_dmid]))->with('status', 'Data Materi berhasil di Hapus !! ');
+       
     }
     
     public function download($id)

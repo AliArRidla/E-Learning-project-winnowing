@@ -36,15 +36,13 @@ class DataTugas extends Component
     public function getTugas($id)
     {
         if (Auth::user()->hasRole('guru')) {
-            $tgs = DB::select('select u.name, m.nama_mapel, k.nama_kelas, dm.id as dmid, 
-            t.nama_tugas,t.tanggal, mat.nama_materi, mat.id as matid, t.id as tid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
+            $tgs = DB::select('select dm.id as dmid, t.nama_tugas, t.tanggal, t.id as tid, mat.id as mid,
+            mat.nama_materi
+            from detail_mapels as dm
             join gurus as g on g.id = dm.id_guru
             join users as u on u.id = g.user_id
             join materis as mat on mat.id_detMapel = dm.id
-            JOIN tugas as t on t.id_materi = m.id 
+            JOIN tugas as t on t.id_materi = mat.id 
             where g.user_id = ?', [$id]);
             return $tgs;
         } else {
@@ -116,7 +114,7 @@ class DataTugas extends Component
         unlink('storage/file_tugas/' . $tugas->file_tugas);
         $tugas->delete();
         return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
-        session()->flash('msg', 'Data berhasil dihapus');
+        session()->flash('pesan', 'Data berhasil dihapus');
     }
 
     public function render()

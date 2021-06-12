@@ -17,7 +17,7 @@ class CreateTugasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_materi');
             $table->string('nama_tugas')->nullable();
-            $table->text('content')->nullable();
+            $table->longText('content')->nullable();
             $table->string('file_tugas')->nullable();
             $table->datetime('tanggal')->nullable();
             $table->timestamps();

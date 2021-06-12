@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class DataTugasTambah extends Component
+class DataTugasEdit extends Component
 {
-    public $nav_dmid;
+    public $nav_dmid, $idTgs;
     public $countDM = 0;
 
     public function getAll($id)
@@ -23,10 +23,11 @@ class DataTugasTambah extends Component
             return redirect(route('login'));
         }
     }
-
-    public function mount($nav_dmid)
+    
+    public function mount($nav_dmid, $idTgs)
     {
         $this->nav_dmid = $nav_dmid;
+        $this->idTgs = $idTgs;
     }
 
     public function reload()
@@ -68,10 +69,10 @@ class DataTugasTambah extends Component
 
         return $dMap;
     }
-
+    
     public function render()
     {
-        return view('livewire.guru.data-tugas-tambah', [
+        return view('livewire.guru.data-tugas-edit', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'tugas' => $this->getAll($this->nav_dmid),
             'getDMapGuru' => $this->getDMap(),
