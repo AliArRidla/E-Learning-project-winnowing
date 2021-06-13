@@ -8,20 +8,20 @@
             @include('layouts.header', ['fotoP' => $i->foto])
             @endforeach
 
+            @if ($showSoal)
+            <div class="headTimer" id="myTimer">
+                {{-- <h2>WAKTUNYA</h2> --}}
+            </div>
+            @endif
+
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-                                {{-- <div class="overview-wrap"> --}}
                                     <h2 class="title-1">@yield('title') - {{ $dataUl[0]->judul_ulangan }}</h2>
                                     <h4>{{ $dataUl[0]->nama_kelas }} / {{ $dataUl[0]->nama_mapel }}</h4>
-                                    {{-- <button type="button" class="au-btn au-btn-icon au-btn--blue" wire:click="toogleModalAddEdit('add', 0)" data-toggle="modal"
-                                        data-target="#mdlJurusan">
-                                        <i class="zmdi zmdi-plus"></i>tambah Jurusan
-                                    </button> --}}
-                                {{-- </div> --}}
                             </div>
                         </div>
 
@@ -32,7 +32,7 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
 
-                                        @if (session()->has('pesan'))
+                                        {{-- @if (session()->has('pesan'))
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -40,21 +40,25 @@
                                             </button>
                                             <strong>Berhasil!</strong> {{ session('pesan') }}
                                         </div>
+                                        @endif --}}
+
+                                        @if ($pesan == '1')
+                                        <div class="alert alert-success" role="alert">
+                                            <strong>Berhasil!</strong> Anda telah berhasil melakukan ujian! Silakan <a href="{{ route('ulanganSiswa', ['nav_dmid' => $this->nav_dmid]) }}" class="alert-link">KLIK DISINI</a> untuk melihat nilai Anda.
+                                        </div>
+                                        @elseif ($pesan == '0')
+                                        <div class="alert alert-danger" role="alert">
+                                            <strong>GAGAL!</strong> Ujian GAGAL! Segera hubungi guru Anda! Silakan <a href="{{ route('ulanganSiswa', ['nav_dmid' => $this->nav_dmid]) }}" class="alert-link">KLIK DISINI</a> untuk keluar dari laman ujian.
+                                        </div>
                                         @endif
 
+                                        @if ($showSoal)
                                         @php
-                                            $count = 1;
+                                        $count = 1;
                                         @endphp
                                         @foreach ($dataSoal as $item)
                                         <div>
                                             <h4>Soal nomor {{ $count }}</h4>
-                                            {{-- <input type="text" value="{{$item->id}}" class="ids"> --}}
-                                            {{-- <script>
-                                                document.addEventListener('livewire:load', function () {
-                                                    var ids = document.getElementsByClassName('ids');
-                                                    ids.dispatchEvent(new Event('input'));
-                                                })
-                                            </script> --}}
                                         </div>
                                         <br>
                                         <div>
@@ -65,82 +69,50 @@
                                         <div>
                                             <form>
                                                 <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $count }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil1" value="pilihan_a">
+                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil1" value="pilihan_a">
                                                     <label class="form-check-label" for="exampleRadios1">
-                                                        {!! $item->pilihan_a !!}
+                                                        A. {!! $item->pilihan_a !!}
                                                     </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $count }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil2" value="pilihan_b">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil2" value="pilihan_b">
                                                     <label class="form-check-label" for="exampleRadios2">
-                                                        {!! $item->pilihan_b !!}
+                                                        B. {!! $item->pilihan_b !!}
                                                     </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $count }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil3" value="pilihan_c">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil3" value="pilihan_c">
                                                     <label class="form-check-label" for="exampleRadios2">
-                                                        {!! $item->pilihan_c !!}
+                                                        C. {!! $item->pilihan_c !!}
                                                     </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $count }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil4" value="pilihan_d">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil4" value="pilihan_d">
                                                     <label class="form-check-label" for="exampleRadios2">
-                                                        {!! $item->pilihan_d !!}
+                                                        D. {!! $item->pilihan_d !!}
                                                     </label>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $count }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil5" value="pilihan_e">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil5" value="pilihan_e">
                                                     <label class="form-check-label" for="exampleRadios2">
-                                                        {!! $item->pilihan_e !!}
+                                                        E. {!! $item->pilihan_e !!}
                                                     </label>
-                                                  </div>
-                                                {{-- <div class="form-check">
-                                                    <div class="radio{{ $count }}">
-                                                        <label for="radio1" class="form-check-label ">
-                                                            <input type="radio" id="radio1" name="radios{{ $count }}" value="A"
-                                                                class="form-check-input">{!! $item->pilihan_a !!}
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio{{ $count }}">
-                                                        <label for="radio2" class="form-check-label ">
-                                                            <input type="radio" id="radio2" name="radios{{ $count }}" value="B"
-                                                                class="form-check-input">{!! $item->pilihan_b !!}
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio{{ $count }}">
-                                                        <label for="radio3" class="form-check-label ">
-                                                            <input type="radio" id="radio3" name="radios{{ $count }}" value="C"
-                                                                class="form-check-input">{!! $item->pilihan_c !!}
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio{{ $count }}">
-                                                        <label for="radio4" class="form-check-label ">
-                                                            <input type="radio" id="radio4" name="radios{{ $count }}" value="D"
-                                                                class="form-check-input">{!! $item->pilihan_d !!}
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio{{ $count }}">
-                                                        <label for="radio5" class="form-check-label ">
-                                                            <input type="radio" id="radio5" name="radios{{ $count }}" value="E"
-                                                                class="form-check-input">{!! $item->pilihan_e !!}
-                                                        </label>
-                                                    </div>
-                                                </div> --}}
+                                                </div>
                                             </form>
                                         </div>
-                                        {{-- @endforeach --}}
-                                        {{-- <br> --}}
                                         <hr>
                                         <br>
                                         @php
                                             $count++;
                                         @endphp
                                         @endforeach
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        @if ($showSoal)
                         <div class="row pr-md-4">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
@@ -154,15 +126,74 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener('livewire:load', function () {
+                        window.onscroll = function() {myFunction()};
+
+                        var header = document.getElementById("myTimer");
+                        var sticky = header.offsetTop;
+
+                        function myFunction() {
+                            if (window.pageYOffset > sticky) {
+                                header.classList.add("sticky");
+                            } else {
+                                header.classList.remove("sticky");
+                            }
+                        }
+
+                        var tgw = @this.tgl_waktu;
+                        // Set the date we're counting down to
+                        var countDownDate = new Date(tgw).getTime();
+
+                        // Update the count down every 1 second
+                        var x = setInterval(function() {
+
+                        // Get today's date and time
+                        var now = new Date().getTime();
+                            
+                        // Find the distance between now and the count down date
+                        var distance = countDownDate - now;
+                            
+                        // Time calculations for days, hours, minutes and seconds
+                        // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            
+                        // Output the result in an element with id="demo"
+                        document.getElementById("myTimer").innerHTML = "Waktu Tersisa " + hours + " jam : "
+                        + minutes + " menit : " + seconds + " detik ";
+                            
+                        // If the count down is over, write some text 
+                        if (distance < 0) {
+                            clearInterval(x);
+                            document.getElementById("myTimer").innerHTML = "WAKTU BERAKHIR!";
+                            @this.simpanJawaban();
+                        }
+                        }, 1000);
+
+                            window.addEventListener("beforeunload", function( event ) {
+                                if (@this.saveMe == true) {
+                                    event.preventDefault();
+                                } else {
+                                    event.returnValue = "\o/";
+                                }
+                            });
+                        // }
+                    });
+                </script>
+
             </div>
             <!-- END MAIN CONTENT-->
         </div>
 
         <!-- Modal delete jurusan -->
         <div wire:ignore.self class="modal fade" id="mdlSimpan" tabindex="-1" aria-labelledby="mdlSimpanLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="mdlSimpanLabel">Konfirmasi Simpan jawaban</h5>
@@ -172,7 +203,7 @@
                 </div>
                 <div class="modal-body">
                     Apakah Anda yakin ingin <strong>MENYELESAIKAN</strong> ulangan <strong>SEKARANG</strong>?
-                    <br> Waktu Anda tersisa <strong>X MENIT</strong>!
+                    {{-- <br> Waktu Anda tersisa <strong><span id="myTimer"></span></strong>! --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger mr-auto" wire:click="simpanJawaban">Yakin!</button>

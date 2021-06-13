@@ -42,6 +42,7 @@
                                                         <th>Waktu Mulai - Selesai</th>
                                                         <th>Poin</th>
                                                         <th class="not-export-col">Aksi</th>
+                                                        <th class="not-export-col">#</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -133,6 +134,13 @@
                                                                 Delete
                                                                 {{-- <i class="fa fa-trash" aria-hidden="true"></i> --}}
                                                             </button>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('listHasilGuru', ['id_ul' => $item->ulid, 'nav_dmid' => $nav_dmid]) }}">
+                                                                <button type="button" class="btn btn-success btn-sm">
+                                                                    Hasil <br> Ujian
+                                                                </button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                     {{-- @endforeach --}}
@@ -418,7 +426,7 @@
                 $(document).ready(function() {
                     $('#emtwaktu_mulai').timepicker({
                         timeFormat: 'HH:mm',
-                        interval: 10,
+                        interval: 5,
                         minTime: '00',
                         maxTime: '11:59pm',
                         defaultTime: '11',
@@ -437,7 +445,7 @@
         
                     $('#emtwaktu_selesai').timepicker({
                         timeFormat: 'HH:mm',
-                        interval: 10,
+                        interval: 5,
                         minTime: '00',
                         maxTime: '11:59pm',
                         defaultTime: '11',

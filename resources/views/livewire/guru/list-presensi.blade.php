@@ -16,7 +16,7 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     @foreach ($dataPres as $item)
-                                    <h2 class="title-1">List Presensi Guru - {{ $item->nama_mapel }} / {{ $item->nama_kelas }}</h2>
+                                    <h2 class="title-1">@yield('title') Siswa - {{ $item->nama_mapel }} / {{ $item->nama_kelas }}</h2>
                                     @endforeach
                                 </div>
                             </div>

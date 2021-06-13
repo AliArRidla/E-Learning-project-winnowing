@@ -303,7 +303,7 @@
         $(document).ready(function() {
             $('#waktu').timepicker({
                 timeFormat: 'HH:mm',
-                interval: 10,
+                interval: 5,
                 minTime: '00',
                 maxTime: '11:59pm',
                 defaultTime: '11',
@@ -322,7 +322,7 @@
 
             $('#waktus').timepicker({
                 timeFormat: 'HH:mm',
-                interval: 10,
+                interval: 5,
                 minTime: '00',
                 maxTime: '11:59pm',
                 defaultTime: '11',

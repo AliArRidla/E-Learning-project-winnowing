@@ -78,7 +78,6 @@
                                                         <td>{{ $count++ }}</td>
                                                         <td>{{ $item->judul_ulangan }}</td>
                                                         @php
-                                                        date_default_timezone_set('Asia/Jakarta');
                                                         $hari_ini; 
                                                         $pdays=date('D', strtotime($item->tgl_ulangan));
                                                         switch($pdays){
@@ -114,6 +113,8 @@
                                                             $hari_ini = "Tidak di ketahui";
                                                             break;
                                                         }
+
+                                                        date_default_timezone_set('Asia/Jakarta');
                                                         $btime = date('H:i', strtotime($item->waktu_mulai));
                                                         $etime = date('H:i', strtotime($item->waktu_selesai));
                                                         $pday = date('l', strtotime($item->tgl_ulangan));
@@ -134,9 +135,9 @@
                                                             @endif
                                                         </td>
                                                         <td>
+                                                            @if ($cekNilai == null)
                                                             @if ($datenow == date("M d", $startdate))
                                                             @if ($timenow >= $btime && $timenow <= $etime)
-                                                            @if ($cekNilai == null)
                                                             <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
                                                                 <button type="button" class="btn btn-primary btn-md">
                                                                     Kerjakan Soal
@@ -158,6 +159,11 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    document.addEventListener('livewire:load', function () {
+                        // document.location.reload(true);
+                    })
+                </script>
             </div>
             <!-- END MAIN CONTENT-->
         </div>

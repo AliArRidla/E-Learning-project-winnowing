@@ -22,6 +22,7 @@ use App\Http\Livewire\Guru\DataTugasTambah;
 use App\Http\Livewire\Guru\DataTugasEdit;
 use App\Http\Livewire\Guru\EditSoal;
 use App\Http\Livewire\Guru\EditUlangan;
+use App\Http\Livewire\Guru\HasilUjian;
 use App\Http\Livewire\Guru\ListPresensi;
 use App\Http\Livewire\Guru\ListSoal;
 use App\Http\Livewire\Guru\PresensiGuru;
@@ -123,15 +124,14 @@ Route::middleware(['auth'])->group(function () {
 
     // ----------- GURU START --------------------------------
     // PRESENSI
-    Route::get('/guru/presensi/{nav_dmid}', PresensiGuru::class)->name('presensiGuru');
+    Route::get('/guru/{nav_dmid}/presensi', PresensiGuru::class)->name('presensiGuru');
     Route::get('/guru/detail-presensi/{id_pres}', ListPresensi::class)->name('listPresensiGuru');
     // ULANGAN
-    Route::get('/guru/ulangan/{nav_dmid}', TambahUlangan::class)->name('ulanganGuru');
-    // Route::get('/guru/ulangan/{nav_dmid}/{id_ul}', EditUlangan::class)->name('editUlanganGuru');
-    // Route::get('/guru/custom-soal-ulangan/{id_ul}', CustomSoal::class)->name('customSoalGuru');
+    Route::get('/guru/{nav_dmid}/ulangan', TambahUlangan::class)->name('ulanganGuru');
     Route::get('/guru/soal-ulangan/{id_ul}', SoalUlangan::class)->name('soalGuru');
     Route::get('/guru/list-soal-ulangan/{id_ul}', ListSoal::class)->name('listSoalGuru');
     Route::get('/guru/edit-soal-ulangan/{id_ul}/{noc}/{ids}', EditSoal::class)->name('editSoalGuru');
+    Route::get('/guru/list-hasil-ulangan/{id_ul}/{nav_dmid}', HasilUjian::class)->name('listHasilGuru');
     // ----------- GURU END --------------------------------
 
     // ----------- SISWA START --------------------------------
@@ -148,15 +148,14 @@ Route::middleware(['auth'])->group(function () {
     // ----------- PROFIL END --------------------------------
 
     // ----------- MATERI GURU START NO LIVEWIRE--------------------------------
-    
+
     Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
     // ----------- MATERI GURU END --------------------------------
 
     // ----------- MATERI GURU LIVEWIRE START --------------------------------
     Route::get('/guru/data-materi/{nav_dmid}', DataMateri::class)->name('dataMateri');
     Route::get('/guru/data-materi-tambah/{nav_dmid}', DataMateriTambah::class)->name('dataMateriTambah');
-    Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah
-    ');
+    Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah');
     Route::get('/guru/data-materi-edit/{nav_dmid}/{idMat}', DataMateriEdit::class)->name('dataMateriEdit');
     Route::patch('/guru/data-materi-edit/{nav_dmid}/{idMat}', [MateriController::class, 'update'])->name('materiUpdate');
     // ----------- MATERI GURU END --------------------------------
@@ -176,10 +175,10 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', [TugasController::class, 'update'])->name('tugasUpdate');
     // ----------- TUGAS GURU END --------------------------------
 
-     // ----------- TUGAS SISWA LIVEWIRE START --------------------------------
-     Route::get('/siswa/data-tugas/{nav_dmid}', SiswaDataTugas::class)->name('dataTugasSiswa');
-     Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
-     // ----------- TUGAS SISWA END --------------------------------
+    // ----------- TUGAS SISWA LIVEWIRE START --------------------------------
+    Route::get('/siswa/data-tugas/{nav_dmid}', SiswaDataTugas::class)->name('dataTugasSiswa');
+    Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
+    // ----------- TUGAS SISWA END --------------------------------
 
 });
 

@@ -20,17 +20,17 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 @auth
-                    <li class="active">
+                    <li class="{{ (request()->is('guru/dashboard')) ? 'active' : '' }}">
                         <a href="{{ route('dashboardGuru') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
                     
                     @foreach ($getDMapGuru as $item)
-                    <li class="has-sub">
+                    <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-table"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
                         <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li class="has-sub">
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/presensi')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
                             </li>
@@ -44,7 +44,7 @@
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
-                            <li class="has-sub">
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/ulangan')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
@@ -68,16 +68,19 @@
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list" id="nalist">
                 @auth
-                    <li class="active">
+                    <li class="{{ (request()->is('guru/dashboard')) ? 'active' : '' }}">
                         <a href="{{ route('dashboardGuru') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
                     @foreach ($getDMapGuru as $item)
-                    <li class="has-sub">
+                    {{-- @php
+                        $uriNow = 'guru/'.$item->dmid
+                    @endphp --}}
+                    <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
-                            <li class="has-sub">
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/presensi')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
                             </li>
@@ -91,7 +94,7 @@
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
-                            <li class="has-sub">
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/ulangan')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
