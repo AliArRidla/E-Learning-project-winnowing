@@ -354,6 +354,7 @@
 
    {{-- @livewireScripts --}}
     {{-- @include('layouts.modals') --}}
+    @stack('scripts')
     @livewireScripts
 </body>
 

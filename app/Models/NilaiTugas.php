@@ -9,6 +9,6 @@ class NilaiTugas extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_tugas', 'id_siswa', 'file_tugas','content', 'nilai', 'waktu_pengumpulan',
+        'id_tugas', 'id_siswa', 'fileTgs_siswa','contentSiswa', 'nilai', 
     ];
 }

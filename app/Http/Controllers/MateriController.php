@@ -182,13 +182,6 @@ class MateriController extends Controller
     {
         if (Auth::user()->hasRole('guru')) {
             $materi = Materi::find($idMat);
-            // $mt='';
-            // if($materi != null){
-            //      dd($materi->file_materi);
-            //     // // foreach ($materi as $mat) {
-            //     //     $mt = $mat['file_materi'];
-            //     // }
-            // }
            
             $gambar_name = '';
             $gambar = $request->file('file_materi');

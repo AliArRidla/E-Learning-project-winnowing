@@ -17,10 +17,9 @@ class CreateNilaiTugasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_tugas');
             $table->unsignedBigInteger('id_siswa');
-            $table->string('file_tugas')->nullable();
-            $table->longText('content')->nullable();
+            $table->string('fileTgs_siswa')->nullable();
+            $table->longText('contentSiswa')->nullable();
             $table->string('nilai')->nullable();
-            $table->datetime('waktu_pengumpulan')->nullable();
             $table->timestamps();
 
             $table->foreign('id_tugas')->references('id')->on('tugas')

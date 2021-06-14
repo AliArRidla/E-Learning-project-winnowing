@@ -1,4 +1,3 @@
-<body class="hold-transition sidebar-mini" onload="realtimeClock()">
 @section('title', 'Data Tugas')
 <main id="main">
     <div>
@@ -24,7 +23,7 @@
                         @endif
                         {{-- @foreach ($dataAcc as $acc) --}}
                         <div>
-                            <form wire:submit.prevent="submit">
+                            
                                 <div class="card">
                                     <div class="card-header">
                                         {{-- <i class="fa fa-user"></i> --}}
@@ -32,7 +31,7 @@
                                         
                                     </div>
                                     <div class="card-body">
-                                        @foreach ($dataTgs as $dt)
+                                        @foreach ($dataTugas as $dt)
                                         <div class="mx-auto d-block">
                                             <h5 class="text-sm-center mt-2 mb-1">{{ $dt->nama_tugas }}</h5>
                                         </div>
@@ -41,9 +40,11 @@
                                         <p>{!! $dt->content !!}</p>
                                         <hr>
                                         <label><strong>File Tugas</strong></label>
+                                        <br>
+                                        <label>Silahkan unduh file dibawah ini!</label>
                                         @php
                                             $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
-    
+
                                             $explodeImage = explode('.', $dt->file_tugas);
                                             $extension = end($explodeImage);
                                         @endphp
@@ -55,82 +56,106 @@
                                             <a href= "" wire:click="download({{ $dt->tid}})" target="_blank"> {{ $dt->file_tugas }} </a>
                                         </p>
                                         @endif
+                                        <form wire:submit.prevent>
                                         <hr>
+                                        
+                                        
                                         <h4>Pengumpulan Tugas</h4>
+                                        <br>
+                                            <div class="form-group">
+                                                <label for ="fileTgs_siswa">Tugas : </label>
+                                                <br>
+                                                <input type="file" wire:model = "fileTgs_siswa" name="fileTgs_siswa" class="form-control"
+                                                id="fileTgs_siswa">
+                                
+                                                @if($errors->has('fileTgs_siswa'))
+                                                <div class="text-danger">
+                                                    {{ $errors->first('fileTgs_siswa')}}
+                                                </div>
+                                                @endif
+                                            </div>
+                                        
+                                        <hr>
                                         <div class="form-group">
-                                            <label for ="content">Catatan untuk tugas yang ingin dikumpulkan </label>
-                                            <textarea id="summernote" class="form-control" name="content" 
-                                            @error('content') is-invalid @enderror value="{{ old('content') }}">Deskripsikan Tugas</textarea>
+                                            <label for ="contentSiswa">Catatan untuk tugas yang ingin dikumpulkan </label>
+                                            <textarea wire:model ="contentSiswa" id="contentSiswa" class="form-control" name="contentSiswa" 
+                                            @error('contentSiswa') is-invalid @enderror ></textarea>
+                                            <small>opsional</small>
                             
-                                            @if($errors->has('content'))
+                                            @if($errors->has('contentSiswa'))
                                             <div class="text-danger">
-                                                {{ $errors->first('content')}}
+                                                {{ $errors->first('contentSiswa')}}
                                             </div>
                                             @endif
                                         </div>
                                         <hr>
-                                            <div class="form-group">
-                                                <label for ="file_tugas">Tugas : </label>
-                                                <br>
-                                                <input wire:ignore.self type="file" name="file_tugas" id="file_tugas" 
-                                                @error('file_tugas') is-invalid @enderror value="{{ old('file_tugas') }}">
-                                
-                                                @if($errors->has('file_tugas'))
-                                                <div class="text-danger">
-                                                    {{ $errors->first('file_tugas')}}
-                                                </div>
-                                                @endif
-                                            </div>
-                                        <hr>
-                                        <div class = "form-gorup">
-                                            <label for="waktu_pengumpulan"></label>
-                                            <label id="clock"></label>
-                                        </div>
-                                        <br>
-                                        <hr>
                                         <div>
-                                            {{ $datenow }}
+                                            <label>Tenggat Pengumpulan : </label>
+                                           {{$dt->tanggal}}
                                         </div>
-                                        {{-- <div>
+                                        <div>
                                             <p id="countdown"></p>
-                                        </div> --}}
-
+                                        </div>
                                         <script>
                                             // Set the date we're counting down to
                                             var countDownDate = new Date("{{$dt->tanggal}}").getTime();
-                
-                                            // Update the count down every 1 second
                                             var x = setInterval(function() {
-                
-                                                  // Get today's date and time
                                                   var now = new Date().getTime();
-                
-                                                  // Find the distance between now and the count down date
                                                   var distance = countDownDate - now;
-                
-                                                  // Time calculations for days, hours, minutes and seconds
                                                   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                                                   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                                   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                                                   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                                              // Display the result in the element with id="demo"
                                                   document.getElementById("countdown").innerHTML = days + " Hari " + hours + " Jam "
                                                   + minutes + " Menit " + seconds + " Detik ";
-                
-                                                  // If the count down is finished, write some text
                                                   if (distance < 0) {
                                                     clearInterval(x);
                                                     document.getElementById("countdown").innerHTML = "Tugas Sudah Berakhir";
                                                   }
                                             }, 1000);
                                             </script>
-                                        
+                                        <br>
+                                        @foreach($dataTgs as $dg)
+                                        @if ($dg->ntid == true)
+                                            <button type="button" class="btn btn-primary" wire:click="updateKumpulTugas()">Edit Tugas</button>
+                                            <button name="delete" id="delete" class="btn btn-danger"
+                                                wire:click="loadByID({{ $id_nt }})" data-toggle="modal" data-target="#mdlDelTugas">
+                                                Hapus Tugas
+                                                {{-- <i class="fa fa-trash" aria-hidden="true"></i> --}}
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-primary" wire:click="addKumpulTugas()">Kerjakan</button>
+                                        @endif
                                         @endforeach
+                                    </form>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                
+                                <div wire:ignore.self class="modal fade" id="mdlDelTugas" tabindex="-1" aria-labelledby="mdlDelTugasLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="mdlDelTugasLabel">Delete Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            {{-- @foreach ($jurusanByID as $item) --}}
+                                            <div class="modal-body">
+                                                Apakah Anda yakin ingin menghapus tugas anda <strong>{{ $fileTgs_siswa }}</strong> ?
+                                                SEMUA YANG TERDAFTAR DI TUGAS <strong>{{ $fileTgs_siswa }}</strong> AKAN TERHAPUS!
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger mr-auto"
+                                                    wire:click="delTugas({{ $id_nt }})">Yakin!</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                            </div>
+                                            {{-- @endforeach --}}
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                            
                         </div>
                         
                         <div class="row">
