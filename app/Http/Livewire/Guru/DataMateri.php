@@ -6,102 +6,52 @@ use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class DataMateri extends Component
 {
-    use WithFileUploads;
-    public $tujuan, $idMat, $id_detMapel, $nama_materi, $file_materi, $content, $nav_dmid, $idMatr;
-    public $tefm = false;
-    public $telm = false;
-    public $add = false, $edit = false;
-    public $togglePage = false;
-    public $countDM = 0;
-    
+    public $nav_dmid, $nama_materi, $id_mat, $nama_mapel, $nama_kelas;
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
+
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas 
+        from detail_mapels as dm 
+        join mapels as m on dm.id_mapel = m.id
+        join kelas as k on dm.id_kelas = k.id
+        where dm.id = ?', [$nav_dmid]);
+
+        foreach ($dm as $d) {
+            $this->nama_mapel = $d->nama_mapel;
+            $this->nama_kelas = $d->nama_kelas;
+        }
     }
 
-
-    public function deleteMateri($idMatr)
+    public function loadMat($id)
     {
-        $materi = Materi::find($idMatr);
-        unlink('storage/content/' . $materi->file_materi);
-        $materi->delete();
-        return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+        $dMap = Materi::find($id)->get();
+        foreach ($dMap as $key) {
+            $this->nama_materi = $key->nama_materi;
+            $this->id_mat = $key->id;
+        }
+    }
+
+    public function delMat()
+    {
+        // $file_mat = null;
+        $dMap = Materi::find($this->id_mat);
+        // $file_mat = $dMap->file_materi;
+        // dd();
+        unlink('storage/file-materi/' . $dMap['file_materi']);
+        $dMap->delete();
         session()->flash('pesan', 'Data berhasil dihapus');
-    }
-
-    public function getAll($id)
-    {
-        if (Auth::user()->hasRole('guru')) {
-            $materi = DB::select('select m.nama_mapel, k.nama_kelas, dm.id as dmid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
-            where dm.id = ?', [$id]);
-            return $materi;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    public function getMateri($id)
-    {
-        if (Auth::user()->hasRole('guru')) {
-            $materi = DB::select('select u.name, m.nama_mapel, k.nama_kelas, dm.id as dmid, 
-            mat.nama_materi, mat.id as matid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
-            join gurus as g on g.id = dm.id_guru
-            join users as u on u.id = g.user_id
-            join materis as mat on mat.id_detMapel = dm.id
-            where g.user_id = ?', [$id]);
-            return $materi;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    //buat edit
-    public function loadByID($idMatr)
-    {
-        $this->idMatr = $idMatr;
-        $data = Materi::find($this->idMatr);
-        // 'id_detMapel', 'nama_materi', 'desc_materi','content',
-        $this->id_detMapel = $data['id_detMapel'];
-        $this->nama_materi = $data['nama_materi'];
-        $this->file_materi = $data['file_materi'];
-        $this->content = $data['content'];
-    }
-
-    public function toogleModalAddEdit($act, $idMat)
-    {
-        $this->idMat = null;
-        if ($act == 'add') {
-            $this->add = true;
-            $this->edit = false;
-        } else if ($act == 'edit') {
-            $this->add = false;
-            $this->edit = true;
-            if ($idMat > 0) {
-                $this->idMatr = $idMat;
-                $this->loadByID($this->idMatr);
-            }
-        }
-    }
-
-    public function reload()
-    {
         return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
     }
 
-    public function getDetMap()
+    public function getMateri()
     {
-        return DB::select('select * from detail_mapels');
+        return DB::select('select * from materis where id_detMapel = ? order by created_at ASC', [$this->nav_dmid]);
     }
+
 
     public function getAcc($id)
     {
@@ -131,9 +81,9 @@ class DataMateri extends Component
             [Auth::user()->id]
         );
 
-        foreach ($dMap as $k) {
-            $this->countDM++;
-        }
+        // foreach ($dMap as $k) {
+        //     $this->countDM++;
+        // }
 
         return $dMap;
     }
@@ -141,12 +91,9 @@ class DataMateri extends Component
     public function render()
     {
         return view('livewire.guru.data-materi', [
-            'dataMateri' => $this->getAll($this->nav_dmid),
-            'dataMat' => $this->getMateri(Auth::user()->id),
             'dataAcc' => $this->getAcc(Auth::user()->id),
-            'dataDetMap' => $this->getDetMap(Auth::user()->id),
-            'getDMapGuru' => $this->getDMap(),
-        ])->layout('layouts.layapp', [
+            'dataMat' => $this->getMateri(),
+        ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);
     }

@@ -2,37 +2,68 @@
 
 namespace App\Http\Livewire\Guru;
 
+use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class DataMateriTambah extends Component
 {
-    public $nav_dmid;
-    public $countDM = 0;
+    use WithFileUploads;
 
-    public function getAll($id)
-    {
-        if (Auth::user()->hasRole('guru')) {
-            $materi = DB::select('select m.nama_mapel, k.nama_kelas, dm.id as dmid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
-            where dm.id = ?', [$id]);
-            return $materi;
-        } else {
-            return redirect(route('login'));
-        }
-    }
+    public $nav_dmid, $nama_materi, $content, $file_materi;
+    public $nama_mapel, $nama_kelas, $eror, $psn, $extensi, $fname;
 
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
+
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas 
+        from detail_mapels as dm 
+        join mapels as m on dm.id_mapel = m.id
+        join kelas as k on dm.id_kelas = k.id
+        where dm.id = ?', [$nav_dmid]);
+
+        foreach ($dm as $d) {
+            $this->nama_mapel = $d->nama_mapel;
+            $this->nama_kelas = $d->nama_kelas;
+        }
     }
 
-    public function reload()
+    public function saveMateri()
     {
-        return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+        // dd($this->nama_materi, $this->file_materi, $this->content);
+        // dd($this->file_materi->getClientOriginalName());
+        $this->validate([
+            'nama_materi' => 'required',
+        ]);
+
+        if ($this->file_materi == null && $this->content == null) {
+            $this->eror = true;
+            $this->psn = "Harus mengisi salah satu!";
+        } else {
+            if ($this->file_materi != null) {
+                $ori = $this->file_materi->getClientOriginalName();
+                $this->fname = uniqid() . '_Materi_' . $this->nama_mapel . '_' . $ori;
+                $this->file_materi->storeAs('file-materi', $this->fname, 'public');
+            }
+
+            $cMat = Materi::create([
+                'id_detMapel' => $this->nav_dmid,
+                'nama_materi' => $this->nama_materi,
+                'file_materi' => $this->fname,
+                'content' => $this->content,
+            ]);
+
+            if ($cMat) {
+                session()->flash('pesan', 'Materi berhasil ditambah');
+                return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+            } else {
+                session()->flash('pesan', 'Materi GAGAL ditambah');
+                return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+            }
+        }
     }
 
     public function getAcc($id)
@@ -62,19 +93,13 @@ class DataMateriTambah extends Component
             order by k.nama_kelas asc',
             [Auth::user()->id]
         );
-
-        foreach ($dMap as $k) {
-            $this->countDM++;
-        }
-
         return $dMap;
     }
-    
+
     public function render()
     {
         return view('livewire.guru.data-materi-tambah', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
-            'materi' => $this->getAll($this->nav_dmid),
             'getDMapGuru' => $this->getDMap(),
         ])->layout('layouts.layapp', [
             'getDMapGuru' => $this->getDMap(),

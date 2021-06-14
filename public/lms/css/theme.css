@@ -550,11 +550,13 @@ section {
 }
 
 .au-btn--yellow {
-    background: #c0c763;
+    background: #f5d12f;
+    color: rgba(0, 0, 0, 0);
 }
 
 .au-btn--yellow:hover {
-    background: #b6bd59;
+    background: #f3cc1c;
+    /* color: rgba(27, 27, 27, 0); */
 }
 
 .au-btn--blue {

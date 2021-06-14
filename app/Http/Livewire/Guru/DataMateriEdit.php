@@ -2,39 +2,107 @@
 
 namespace App\Http\Livewire\Guru;
 
+use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class DataMateriEdit extends Component
 {
-    public $nav_dmid, $idMat;
-    public $countDM = 0;
+    use WithFileUploads;
 
-    public function getAll($id)
+    public $nav_dmid, $nama_materi, $content, $file_materi, $old_file_materi;
+    public $nama_mapel, $nama_kelas, $eror, $psn, $id_mat, $extensi, $del_psn = false;
+
+    public function mount($nav_dmid, $id_mat)
     {
-        if (Auth::user()->hasRole('guru')) {
-            $materi = DB::select('select m.nama_mapel, k.nama_kelas, dm.id as dmid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
-            where dm.id = ?', [$id]);
-            return $materi;
+        $this->nav_dmid = $nav_dmid;
+        $this->id_mat = $id_mat;
+
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas 
+        from detail_mapels as dm 
+        join mapels as m on dm.id_mapel = m.id
+        join kelas as k on dm.id_kelas = k.id
+        where dm.id = ?', [$nav_dmid]);
+
+        foreach ($dm as $d) {
+            $this->nama_mapel = $d->nama_mapel;
+            $this->nama_kelas = $d->nama_kelas;
+        }
+
+        $dmat = Materi::find($id_mat);
+        $this->nama_materi = $dmat['nama_materi'];
+        $this->content = $dmat['content'];
+        $this->old_file_materi = $dmat['file_materi'];
+    }
+
+    public function saveMateri()
+    {
+        // if ($this->file_materi != null) {
+        //     // dd($this->nama_materi, $this->file_materi->getClientOriginalName(), $this->content);
+
+        // } else {
+        //     // dd($this->nama_materi, $this->old_file_materi, $this->content);
+        // }
+        // dd($this->file_materi->getClientOriginalName());
+        $this->validate([
+            'nama_materi' => 'required',
+        ]);
+        // dd($this->nama_materi, $this->file_materi, $this->old_file_materi, $this->content);
+
+        if ($this->old_file_materi == null && $this->file_materi == null && $this->content == null) {
+            $this->eror = true;
+            $this->psn = "Harus mengisi salah satu!";
         } else {
-            return redirect(route('login'));
+            if ($this->file_materi == null) {
+                $this->hydrate();
+                $uMat = Materi::find($this->id_mat)->update([
+                    'nama_materi' => $this->nama_materi,
+                    'content' => $this->content,
+                ]);
+                if ($uMat) {
+                    session()->flash('pesan', 'Materi berhasil diubah');
+                    return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+                } else {
+                    session()->flash('pesan', 'Materi GAGAL diubah');
+                    return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+                }
+            } else {
+                $this->hydrate();
+                $ori = $this->file_materi->getClientOriginalName();
+                $this->fname = uniqid() . '_Materi_' . $this->nama_mapel . '_' . $ori;
+                $this->file_materi->storeAs('file-materi', $this->fname, 'public');
+                $uMat = Materi::find($this->id_mat)->update([
+                    'nama_materi' => $this->nama_materi,
+                    'file_materi' => $this->fname,
+                    'content' => $this->content,
+                ]);
+                if ($uMat) {
+                    session()->flash('pesan', 'Materi berhasil diubah');
+                    return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+                } else {
+                    session()->flash('pesan', 'Materi GAGAL diubah');
+                    return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+                }
+            }
         }
     }
 
-    public function mount($nav_dmid, $idMat)
+    public function hydrate()
     {
-        $this->nav_dmid = $nav_dmid;
-        $this->idMat = $idMat;
+        $this->resetErrorBag();
+        $this->resetValidation();
     }
 
-
-    public function reload()
+    public function delFileMat()
     {
-        return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
+        unlink('storage/file-materi/' . $this->old_file_materi);
+        Materi::find($this->id_mat)->update([
+            'file_materi' => null,
+        ]);
+        $this->old_file_materi = null;
+        $this->del_psn = true;
     }
 
     public function getAcc($id)
@@ -64,39 +132,13 @@ class DataMateriEdit extends Component
             order by k.nama_kelas asc',
             [Auth::user()->id]
         );
-
-        foreach ($dMap as $k) {
-            $this->countDM++;
-        }
-
         return $dMap;
     }
 
-    public function getMateri($id)
-    {
-        if (Auth::user()->hasRole('guru')) {
-            $materi = DB::select('select u.name, m.nama_mapel, k.nama_kelas, dm.id as dmid, 
-            mat.nama_materi, mat.id as matid
-            from detail_mapels as dm 
-            join kelas as k on k.id = dm.id_kelas
-            join mapels as m on m.id = dm.id_mapel
-            join gurus as g on g.id = dm.id_guru
-            join users as u on u.id = g.user_id
-            join materis as mat on mat.id_detMapel = dm.id
-            where g.user_id = ?', [$id]);
-            return $materi;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-    
     public function render()
     {
         return view('livewire.guru.data-materi-edit', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
-            'dataMat' => $this->getMateri(Auth::user()->id),
-            'materi' => $this->getAll($this->nav_dmid),
-            'getDMapGuru' => $this->getDMap(),
         ])->layout('layouts.layapp', [
             'getDMapGuru' => $this->getDMap(),
         ]);

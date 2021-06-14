@@ -14,7 +14,6 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-                                {{-- <div class="overview-wrap"> --}}
                                     <h2 class="title-1">@yield('title') - {{ $judul_ulangan }}</h2>
                                     <h4>{{ $nama_mapel }} / {{ $nama_kelas }}</h4>
                                     {{-- @foreach ($dataUl as $item) --}}
@@ -52,7 +51,7 @@
                                         {{-- <h2 class="title-1">@yield('title') - {{ $judul_ulangan }}</h2>
                                     <h4>{{ $nama_mapel }} / {{ $nama_kelas }}</h4> --}}
                                         @php
-                                            $fileName = @yield('title') . '-' . $judul_ulangan . '('.$nama_kelas.'-'.$nama_mapel.')';
+                                            $fileName = 'Hasil Ujian' . '-' . $judul_ulangan . '('.$nama_kelas.'-'.$nama_mapel.')';
                                         @endphp
                                         <input type="text" id="fn_table" value="{{ $fileName }}" hidden>
                                         <div wire:ignore>

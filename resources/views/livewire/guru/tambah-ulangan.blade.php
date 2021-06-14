@@ -331,7 +331,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="mdlDelUlaGuruLabel">Delete Confirmation {{ $ulid }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="reload()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -344,7 +344,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger mr-auto" wire:click="delUl({{ $ulid }})">Yakin!</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="reload()">Tidak</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                 </div>
             </div>
             </div>

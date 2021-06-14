@@ -1,4 +1,4 @@
-@section('title', 'Data Materi')
+@section('title', 'Edit Materi')
     <main id="main">
         <div>
             <div class="page-container">
@@ -9,83 +9,201 @@
                 <div class="main-content">
                     <div class="section__content section__content--p30">
                         <div class="container-fluid">
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="overview-wrap">
-                                        <h2 class="title-1">Edit Data Materi</h2>
-                                    </div>
-                                    {{-- @foreach ($getDMapGuru as $item) --}}
-                                        <div class="card-body">
-                                            <a href="{{ route('dataMateri', ['nav_dmid' => $nav_dmid]) }}" class="btn btn-primary">Kembali</a>
+                                        <div>
+                                            <h2 class="title-1">@yield('title')</h2>
+                                            <h4>{{ $nama_mapel }} / {{ $nama_kelas }}</h4>
                                         </div>
-                                    {{-- @endforeach --}}
+                                    </div>
                                 </div>
                             </div>
+
+                            <hr>
+                            <a href="{{ route('dataMateri', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                            </a>
     
                             <div class="py-6">
                                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                         <div class="p-6 bg-white border-b border-gray-200">
-                                            <form wire:ignore method="post" action="{{ route('materiUpdate', ['nav_dmid' => $nav_dmid, 'idMat'=> $idMat])}} " enctype="multipart/form-data">
-                                                @csrf
-                                                @method('patch')
-                                                <div>
-                                                    
-                                                    <div class="form-group">
-                                                        <label for="nama_materi">Nama Materi</label>
-                                                        <input type="text" class="form-control" id="nama_materi"
-                                                            name="nama_materi" value="{{ old('nama_materi') }}" placeholder="Contoh: Trigonometri">
-                                                        @error('nama_materi')
+                                            <form wire:submit.prevent>
+                                                <div class="form-group">
+                                                    <label for="nama_materi">Nama Materi</label>
+                                                    <input type="text" class="form-control" id="nama_materi" wire:model="nama_materi"
+                                                        name="nama_materi" placeholder="Contoh: Trigonometri" autofocus>
+                                                    @error('nama_materi')
                                                         <span id="error-msg">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                    
-                        
-                                                    <div class="form-group">
-                                                        <label for ="content">Deskripsi Materi</label>
-                                                        <textarea id="summernote" class="form-control" name="content" 
-                                                        @error('content') is-invalid @enderror value="{{ old('content') }}">Deskripsikan Materi</textarea>
-                                        
-                                                        @if($errors->has('content'))
-                                                        <div class="text-danger">
-                                                            {{ $errors->first('content')}}
-                                                        </div>
-                                                        @endif
-                                                    </div>
-                            
-                                                    <div class="form-group">
-                                                        <label for="file_materi">Materi</label>
-                                                        <input id="file_materi" name="file_materi" type="file" class="form-control" 
-                                                            @error('file_materi') is-invalid @enderror >
-                                                            @if($errors->has('file_materi'))
-                                                            <div class="text-danger">
-                                                                {{ $errors->first('file_materi')}}
-                                                            </div>
-                                                            @endif
-                                                    </div>
-
-                                                    {{-- <div class="form-group">
-                                                        <img src="{{ asset('storage/content/'. $materi->file_materi) }}" height="50%" width="100%">
-                                                        @if($errors->has('file_materi'))
-                                                            <div class="text-danger">
-                                                                {{ $errors->first('file_materi')}}
-                                                            </div>
-                                                        @endif
-                                                    </div> --}}
+                                                    @enderror
                                                 </div>
+
+                                                @if ($old_file_materi == null)
+                                                <div class="form-group">
+                                                    {{-- <label for="file_materi">File Materi</label> --}}
+                                                    <label>Jenis file apa yang ingin Anda unggah?</label>
+                                                    <small>Sisipkan File Materi (opsional).</small>
+                                                    <div class="form-check">
+                                                        <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="dok">
+                                                        <label class="form-check-label" for="exampleRadios1">
+                                                        Dokumen (PDF, Ms. Word, PPT, EXCEL)
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="gbr">
+                                                        <label class="form-check-label" for="exampleRadios2">
+                                                        Gambar (JPG, JPEG, PNG)
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="zr">
+                                                        <label class="form-check-label" for="exampleRadios3">
+                                                        ZIP
+                                                        </label>
+                                                    </div>
+                                                    @if ($extensi != null)
+                                                    <div
+                                                        x-data="{ isUploading: false, progress: 0 }"
+                                                        x-on:livewire-upload-start="isUploading = true"
+                                                        x-on:livewire-upload-finish="isUploading = false"
+                                                        x-on:livewire-upload-error="isUploading = false"
+                                                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                                    >
+                                                        @if ($extensi == "dok")
+                                                        <input id="file_materi" name="file_materi" type="file" class="form-control" @error('file_materi') is-invalid @enderror wire:model="file_materi"
+                                                        accept=".pptx,.ppt,.xls,.xlsx,.pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                                        <small>Hanya menerima: pdf, word, ppt, excel</small>
+                                                        @elseif ($extensi == "gbr")
+                                                        <input id="file_materi" name="file_materi" type="file" class="form-control" @error('file_materi') is-invalid @enderror wire:model="file_materi"
+                                                        accept="image/png,image/jpeg,image/jpg">
+                                                        <small>Hanya menerima: png, jpg, jpeg</small>
+                                                        @elseif ($extensi == "zr")
+                                                        <input id="file_materi" name="file_materi" type="file" class="form-control" @error('file_materi') is-invalid @enderror wire:model="file_materi"
+                                                        accept=".zip">
+                                                        <small>Hanya menerima: zip</small>
+                                                        @endif
+                                                        <div x-show="isUploading">
+                                                            <progress max="100" x-bind:value="progress"></progress>
+                                                            <div wire:loading wire:target="file_materi">Uploading...</div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @if ($eror)
+                                                    <p style="color:red;">{{ $psn }}</p>
+                                                    @endif
+                                                    @error('file_materi')
+                                                        <span id="error-msg">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                @endif
+                                                @if ($old_file_materi != null && $del_psn == false)
+                                                    <button name="delete" id="delete" class="btn btn-danger btn-sm" 
+                                                    data-toggle="modal" data-target="#mdlDelMat">
+                                                        Hapus File Sebelumnya
+                                                    </button>
+                                                    <span>Berikut adalah file yang sebelumnya: <a href="{{ route('downloadFileMatLama', ['foldname' => $old_file_materi]) }}">{{ $old_file_materi }}</a></span>
+                                                @endif
                                                 
-                                                <button type="submit" class="btn btn-primary" 
-                                                    onClick= "return confirm('Yakin Data Akan Disimpan ?')" >Simpan
-                                                </button>
-                                            {{-- </form> --}}
+                                                <div class="form-group" wire:ignore>
+                                                    <label for ="content">Deskripsi Materi</label>
+                                                    {{-- <br><small>Deskripsikan Materi</small> --}}
+                                                    <textarea id="ed_content" class="form-control" name="content" wire:model="content">
+                                                        {{-- {!! $content !!} --}}
+                                                    </textarea>
+                                                </div>
+                                                @if ($eror)
+                                                    <p style="color:red;">{{ $psn }}</p>
+                                                @endif
+                                                @error('content')
+                                                    <span id="error-msg">{{ $message }}</span>
+                                                @enderror
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="overview-wrap">
+                                                            <div></div>
+                                                            <div>
+                                                                <button type="button" class="au-btn au-btn-icon au-btn--green"
+                                                                wire:click="saveMateri">
+                                                                    <i class="zmdi zmdi-check"></i> Simpan
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Modal -->
+            <div wire:ignore.self class="modal fade" id="mdlDelMat" tabindex="-1" role="dialog" aria-labelledby="mdlDelMatLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mdlDelMatLabel">Delete Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            @if ($del_psn)
+                            <span style="color:red;">File lama berhasil dihapus!</span>
+                            @else
+                            Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file materi <strong>{{ $old_file_materi }}</strong>?
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            @if ($del_psn == false)
+                            <button type="button" class="btn btn-danger mr-auto" wire:click="delFileMat">Yakin!</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                            @else
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('livewire:load', function () {
+                    $('#ed_content').summernote({
+                        toolbar: [
+                            ['style', ['bold', 'italic', 'underline', 'clear']],
+                            ['font', ['strikethrough', 'superscript', 'subscript']],
+                            ['fontsize', ['fontsize']],
+                            ['color', ['color']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['insert', ['link', 'picture']],
+                        ],
+                        height: 100,                 // set editor height
+                        width: "100%",                 // set editor height
+                        minHeight: null,             // set minimum height of editor
+                        maxHeight: null,             // set maximum height of editor
+                        dialogsInBody: true,
+                        popatmouse:true,
+                        callbacks: {
+                            onChange: function(e) {
+                                @this.set('content', e);
+                            }
+                        }
+                    });
+
+                    $('#mdlDelMat').on('hidden.bs.modal', function () {
+                        @this.render();
+                    });
+                });
+            </script>
+
         </div>
     </main>
     

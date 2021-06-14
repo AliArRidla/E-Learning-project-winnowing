@@ -123,8 +123,8 @@ class PresensiGuru extends Component
         $delPres = Presensi::find($this->pid);
         // dd($delMapel);
         $delPres->delete();
+        session()->flash('pesan', 'Data berhasil dihapus');
         return redirect(route('presensiGuru', ['nav_dmid' => $this->nav_dmid]));
-        session()->flash('msg', 'Data berhasil dihapus');
     }
 
     public function getMapel()

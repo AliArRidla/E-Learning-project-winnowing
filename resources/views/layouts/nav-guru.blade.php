@@ -84,7 +84,7 @@
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
                             </li>
-                            <li class="has-sub">
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/data-materi') || request()->is('guru/'.$item->dmid.'/data-materi-tambah')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('dataMateri', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Materi</a>
