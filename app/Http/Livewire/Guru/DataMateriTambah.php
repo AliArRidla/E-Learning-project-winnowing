@@ -46,7 +46,6 @@ class DataMateriTambah extends Component
             if ($this->file_materi != null) {
                 $ori = $this->file_materi->getClientOriginalName();
                 $this->fname = uniqid() . '_Materi_' . $this->nama_mapel . '_' . $ori;
-                $this->file_materi->storeAs('file-materi', $this->fname, 'public');
             }
 
             $cMat = Materi::create([
@@ -57,6 +56,7 @@ class DataMateriTambah extends Component
             ]);
 
             if ($cMat) {
+                $this->file_materi->storeAs('file-materi', $this->fname, 'public');
                 session()->flash('pesan', 'Materi berhasil ditambah');
                 return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
             } else {

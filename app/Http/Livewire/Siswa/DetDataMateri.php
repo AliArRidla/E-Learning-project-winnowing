@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Siswa;
 
+use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -69,7 +70,7 @@ class DetDataMateri extends Component
 
         return $dMap;
     }
-    
+
     public function render()
     {
         return view('livewire.siswa.det-data-materi', [

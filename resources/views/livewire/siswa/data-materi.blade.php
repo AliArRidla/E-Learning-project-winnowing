@@ -35,6 +35,7 @@
                                         @endif
                                         
                                         <div class="row">
+                                            @if ($dataMateri != null)
                                             @foreach ($dataMateri as $dm)
                                                 {{-- db find bersadarkan materi ini diconteroller--}}
                                                 {{-- foreach buat tugas --}}
@@ -69,6 +70,9 @@
                                                     </div>
                                                 </div>
                                             @endforeach
+                                            @else
+                                                <h4 class="mx-auto">Materi dan Tugas Mata Pelajaran {{ $nama_mapel }} dari guru Anda belum tersedia.</h4>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

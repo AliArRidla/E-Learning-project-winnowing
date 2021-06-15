@@ -48,6 +48,10 @@
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/daftar-nilai')) ? 'active' : '' }}">
+                                <a class="js-arrow" href="{{ route('daftarNilaiGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Daftar Nilai</a>
+                            </li>
                         </ul>
                     </li>
                     @endforeach
@@ -97,6 +101,10 @@
                             <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/ulangan')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
+                            </li>
+                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/daftar-nilai')) ? 'active' : '' }}">
+                                <a class="js-arrow" href="{{ route('daftarNilaiGuru', ['nav_dmid' => $item->dmid]) }}">
+                                    <i class="fas fa-table"></i>Daftar Nilai</a>
                             </li>
                         </ul>
                     </li>

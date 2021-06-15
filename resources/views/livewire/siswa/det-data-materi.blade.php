@@ -21,6 +21,10 @@
                             <strong>Berhasil!</strong> {{ session('pesan') }}
                         </div>
                         @endif
+                        <a href="{{ route('dataMateriSiswa', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                            <i class="zmdi zmdi-arrow-left"></i>Kembali
+                        </a>
+                        <hr>
                         {{-- @foreach ($dataAcc as $acc) --}}
                         <div>
                             
@@ -35,15 +39,18 @@
                                         <div class="mx-auto d-block">
                                             <h5 class="text-sm-center mt-2 mb-1">{{ $dm->nama_materi }}</h5>
                                         </div>
-                                        <hr>
-                                        <label><strong>Deskripsi Materi</strong></label> 
-                                        <p>{!! $dm->content !!}</p>
+                                        @if ($dm->file_materi != null)
                                         <hr>
                                         <label><strong>File Materi</strong></label>
                                         <br>
                                         <label>Silahkan unduh file dibawah ini!</label>
                                         <br>
                                         <a href="{{ route('downloadMatGuru', ['filemat' => $dm->file_materi]) }}">{{ $dm->file_materi }}</a>
+                                        @endif
+                                        <hr>
+                                        <label><strong>Deskripsi Materi</strong></label> 
+                                        <p>{!! $dm->content !!}</p>
+                                        
                                         {{-- @if ($old_tugas == null)
                                             <label>File Tugas belum ada</label>
                                         @else

@@ -13,6 +13,7 @@ use App\Http\Livewire\Admin\DetailGuru;
 use App\Http\Livewire\Admin\DetailMapel;
 use App\Http\Livewire\Admin\DetailSiswa;
 use App\Http\Livewire\Guru\CustomSoal;
+use App\Http\Livewire\Guru\DaftarNilai;
 use App\Http\Livewire\Guru\Dashboard as GuruDashboard;
 use App\Http\Livewire\Guru\DataMateri;
 use App\Http\Livewire\Guru\DataMateriEdit;
@@ -27,6 +28,7 @@ use App\Http\Livewire\Guru\EditUlangan;
 use App\Http\Livewire\Guru\HasilUjian;
 use App\Http\Livewire\Guru\ListPresensi;
 use App\Http\Livewire\Guru\ListSoal;
+use App\Http\Livewire\Guru\PengumpulanTugas as GuruPengumpulanTugas;
 use App\Http\Livewire\Guru\PresensiGuru;
 use App\Http\Livewire\Guru\SoalUlangan;
 use App\Http\Livewire\Guru\TambahUlangan;
@@ -100,10 +102,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', Dashboard::class)->name('dashboardAdm');
     Route::get('/guru/dashboard', GuruDashboard::class)->name('dashboardGuru');
     Route::get('/siswa/dashboard', DashboardSiswa::class)->name('dashboardSiswa');
-    // Route::get('/admin/profil', function () {
-    //     return view('admin/profile');
-    // });
-    // Route::get('/admin/tambahGuru', [AdminController::class, 'tambahGuru'])->name('tambahGuru');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -141,27 +139,35 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru/data-materi-tambah/{nav_dmid}', DataMateriTambah::class)->name('dataMateriTambah');
     Route::get('/guru/data-materi-edit/{nav_dmid}/{id_mat}', DataMateriEdit::class)->name('dataMateriEdit');
     Route::get('/download-file-materi/{foldname}', function ($foldname) {
-        // dd($file_name);
         return response()->download(public_path('storage/file-materi/' . $foldname));
     })->name('downloadFileMatLama');
-
     // TUGAS
     Route::get('/guru/data-tugas/{nav_dmid}', DataTugas::class)->name('dataTugas');
     Route::get('/guru/detail-tugas/{nav_dmid}/{id_tgs}', DetailTugas::class)->name('detailTugas');
     Route::get('/guru/data-tugas-tambah/{nav_dmid}', DataTugasTambah::class)->name('dataTugasTambah');
     Route::get('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', DataTugasEdit::class)->name('dataTugasEdit');
+    Route::get('/guru/data-pengumpulan-tugas/{nav_dmid}/{id_tgs}', GuruPengumpulanTugas::class)->name('dataPengumpulanTugasGuru');
     Route::get('/download-file-tugas/{oldtugas}', function ($oldtugas) {
-        // dd($file_name);
         return response()->download(public_path('storage/file_tugas/' . $oldtugas));
     })->name('downloadOldTugas');
+    // DAFTAR NILAI
+    Route::get('/guru/data-tugas/{nav_dmid}', DaftarNilai::class)->name('daftarNilaiGuru');
     // ----------- GURU END --------------------------------
 
     // ----------- SISWA START --------------------------------
+    // PRESENSI
     Route::get('/siswa/list-presensi', SiswaListPresensi::class)->name('listPresensiSiswa');
     Route::get('/siswa/presensi/{id_pres}', PresensiSiswa::class)->name('presensiSiswa');
     // ULANGAN
     Route::get('/siswa/ulangan/{nav_dmid}', ListUlangan::class)->name('ulanganSiswa');
     Route::get('/siswa/kerjakan-ulangan/{nav_dmid}/{id_ul}', KerjakanUlangan::class)->name('kerjakanUlSiswa');
+    // MATERI TUGAS
+    Route::get('/siswa/data-materi/{nav_dmid}', SiswaDataMateri::class)->name('dataMateriSiswa');
+    Route::get('/siswa/det-data-materi/{nav_dmid}/{id_mats}', DetDataMateri::class)->name('materiSiswa');
+    Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
+    Route::get('/download-file-tugas-siswa/{oldtugas}', function ($oldtugas) {
+        return response()->download(public_path('storage/tugas_siswa/' . $oldtugas));
+    })->name('downloadOldTugasSiswa');
     // ----------- SISWA END --------------------------------
 
     // ----------- PROFIL START --------------------------------
@@ -171,8 +177,6 @@ Route::middleware(['auth'])->group(function () {
 
 
     // ----------- MATERI SISWA LIVEWIRE START --------------------------------
-    Route::get('/siswa/data-materi/{nav_dmid}', SiswaDataMateri::class)->name('dataMateriSiswa');
-    Route::get('/siswa/det-data-materi/{nav_dmid}/{id_mats}', DetDataMateri::class)->name('materiSiswa');
     Route::get('/download-file-matGuru/{filemat}', function ($filemat) {
         // dd($file_name);
         return response()->download(public_path('storage/file-materi/' . $filemat));
@@ -186,7 +190,6 @@ Route::middleware(['auth'])->group(function () {
 
     // ----------- TUGAS SISWA LIVEWIRE START --------------------------------
     Route::get('/siswa/data-tugas/{nav_dmid}', SiswaDataTugas::class)->name('dataTugasSiswa');
-    Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
 
     // ----------- TUGAS SISWA END --------------------------------
 

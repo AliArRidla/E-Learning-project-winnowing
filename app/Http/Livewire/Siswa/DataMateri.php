@@ -8,13 +8,22 @@ use Livewire\Component;
 
 class DataMateri extends Component
 {
-    public $nav_dmid, $mData, $tData, $nama_tugas, $matid, $tid, $dmid, $id_mats;
+    public $nav_dmid, $mData, $tData, $nama_tugas, $matid, $tid, $dmid, $id_mats, $nama_mapel;
 
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
+
+        $dm = DB::select('select m.nama_mapel
+        from detail_mapels as dm 
+        join mapels as m on dm.id_mapel = m.id
+        where dm.id = ?', [$nav_dmid]);
+
+        foreach ($dm as $d) {
+            $this->nama_mapel = $d->nama_mapel;
+        }
     }
-    
+
     public function getMateri($id)
     {
         if (Auth::user()->hasRole('siswa')) {
@@ -34,38 +43,6 @@ class DataMateri extends Component
         }
     }
 
-    //SELECT t.nama_tugas from tugas as t JOIN materis as m on m.id = t.id_materi WHERE m.id = '1'
-    public function getTugas($id)
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $data = DB::select('select dm.id as dmid, t.nama_tugas
-            from materis as mat
-            join detail_mapels as dm on mat.id_detMapel = dm.id
-            join kelas as k on dm.id_kelas = k.id
-            join siswas as s on k.id = s.id_kelas
-            join tugas as t on t.id_materi = mat.id
-            where s.user_id = ? and mat.id_detMapel = ?', [$id, $this->nav_dmid]);
-            $this->tData = $data;
-            return $data;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    public function getTgs($id)
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $data = DB::select('select t.nama_tugas, t.content 
-                FROM materis as m 
-                join detail_mapels as dm on dm.id= m.id_detMapel 
-                JOIN tugas as t on t.id_materi = m.id 
-                WHERE m.id = ? and dm.id = ?',[$id, $this->dmid]);
-            return $data;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-    
     public function getAcc($id)
     {
         $data = '';
@@ -94,13 +71,12 @@ class DataMateri extends Component
 
         return $dMap;
     }
-    
+
     public function render()
     {
         return view('livewire.siswa.data-materi', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataMateri' => $this->getMateri(Auth::user()->id),
-            'dataTugas' => $this->getTugas(Auth::user()->id),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);

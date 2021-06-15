@@ -198,8 +198,6 @@ class PresensiGuru extends Component
         $dMap = DB::select(
             'select dm.id as dmid, m.nama_mapel, k.nama_kelas 
             from detail_mapels as dm
-            join gurus as g on dm.id_guru = g.id
-            join users as u on g.user_id = u.id
             join mapels as m on dm.id_mapel = m.id
             join kelas as k on dm.id_kelas = k.id
             where dm.id = ?',

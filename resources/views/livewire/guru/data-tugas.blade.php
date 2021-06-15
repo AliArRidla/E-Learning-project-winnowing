@@ -58,7 +58,7 @@
                                         @foreach ($dataTgs as $item)
                                         <div class="card mb-3" style="max-width: 100%;">
                                             <div class="row no-gutters">
-                                                <div class="col-md-8">
+                                                <div class="col-md-7">
                                                     <div class="card-body">
                                                       <h4 class="card-title">{{ $item->nama_tugas }}</h4>
                                                       <p>Materi: {{ $item->nama_materi }}</p>
@@ -68,13 +68,21 @@
                                                       <p class="card-text"><small class="text-muted">Diperbarui pada {{ $tgl }}</small></p>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 p-3" style="background-color: rgb(206, 206, 206);">
+                                                <div class="col-md-3 p-3" style="background-color: rgb(219, 230, 214);">
                                                     {{-- {{ route('detailMateri', ['nav_dmid' => $nav_dmid, 'id_mat' => $item->id]) }} --}}
                                                     <a href="{{ route('detailTugas', ['nav_dmid' => $nav_dmid, 'id_tgs' => $item->id])}}">
                                                         <button type="button" class="btn btn-primary btn-sm">
                                                             Detail Tugas
                                                         </button>
                                                     </a>
+                                                    <hr>
+                                                    <a href="{{ route('dataPengumpulanTugasGuru', ['nav_dmid' => $nav_dmid, 'id_tgs' => $item->id])}}">
+                                                        <button type="button" class="btn btn-success btn-sm">
+                                                            Pengumpulan
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 p-3" style="background-color: rgb(241, 216, 216);">
                                                     <a href="{{ route('dataTugasEdit', ['nav_dmid' => $nav_dmid, 'idTgs' => $item->id])}}">
                                                         <button type="button" class="btn btn-warning btn-sm">
                                                             Edit

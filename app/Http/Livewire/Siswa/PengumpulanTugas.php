@@ -11,31 +11,10 @@ use Livewire\WithFileUploads;
 class PengumpulanTugas extends Component
 {
     use WithFileUploads;
-    // 'id_tugas', 'id_siswa', 'file_tugas','content', 'nilai', 'waktu_pengumpulan',
-    public $nav_dmid, $pData, $id_tgs, $contentSiswa, $fileTgs_siswa, $nilai, $waktu_pengumpulan, $datenow;
-    public $togglePage = false;
-    public $id_nt, $extensi, $eror, $psn, $cek_nilai, $edit, $old_tugas, $del_psn = false;
-
-
-
-    public function getTgs($id)
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $tugas = DB::select('select u.name, dm.id as dmid, t.nama_tugas, t.id as tid, t.file_tugas, t.content, t.tanggal, nt.id as ntid,
-            nt.fileTgs_siswa
-            from nilai_tugas as nt
-            join tugas as t on t.id = nt.id_tugas
-            join materis as mat on mat.id = t.id_materi
-            join detail_mapels as dm on dm.id = id_detMapel
-            join kelas as k on k.id = dm.id_kelas
-            join siswas as s on k.id = s.id_kelas
-            join users as u on u.id = s.user_id
-            where t.id=? and s.user_id = ?', [$this->id_tgs, $id]);
-            return $tugas;
-        } else {
-            return redirect(route('login'));
-        }
-    }
+    public $nav_dmid, $id_tgs, $id_sis;
+    public $nama_tugas, $file_tugas, $tanggal, $content_tugas;
+    public $file_tgs_siswa, $old_tgs_siswa, $content_siswa, $id_nt, $nilai;
+    public $extensi, $del_psn, $fname;
 
     public function mount($nav_dmid, $id_tgs)
     {
@@ -47,180 +26,111 @@ class PengumpulanTugas extends Component
             $this->id_sis = $sis->rid;
         }
 
-        $this->cek_nilai = DB::select('select id from nilai_tugas 
+        $tgs = DB::select('select t.nama_tugas, t.file_tugas, t.content, t.tanggal
+            from tugas as t
+            join materis as mat on mat.id = t.id_materi
+            where t.id = ?', [$id_tgs]);
+        foreach ($tgs as $t) {
+            $this->nama_tugas = $t->nama_tugas;
+            $this->file_tugas  = $t->file_tugas;
+            $this->content_tugas = $t->content;
+            $this->tanggal = $t->tanggal;
+        }
+
+        $cek_nilai = DB::select('select id from nilai_tugas 
                 where id_tugas = ? and id_siswa = ?', [$this->id_tgs, $this->id_sis]);
 
-        if ($this->cek_nilai != null) {
+        if ($cek_nilai != null) {
             //  $this->cek_nilai[0]->id;
-            $edit = NilaiTugas::find($this->cek_nilai[0]->id);
-            $this->old_tugas = $edit['fileTgs_siswa'];
-            $this->contentSiswa = $edit['contentSiswa'];
-            $this->id_nt = $edit['id'];
+            $nt = NilaiTugas::find($cek_nilai[0]->id);
+            $this->nilai = $nt['nilai'];
+            $this->file_tgs_siswa = $nt['fileTgs_siswa'];
+            $this->old_tgs_siswa = $nt['fileTgs_siswa'];
+            $this->content_siswa = $nt['contentSiswa'];
+            $this->id_nt = $nt['id'];
         }
     }
 
-    // menghapus file tugas saja
-    public function delFileTgsSis()
+    protected $messages = [
+        'file_tgs_siswa.required' => 'Mohon kirim Dokumen tugas Anda',
+    ];
+
+    public function saveTugasSiswa()
     {
-        unlink('storage/tugas_siswa/' . $this->old_tugas);
+        // dd($this->file_tgs_siswa, $this->content_siswa);
+        $this->validate([
+            'file_tgs_siswa' => 'required',
+        ]);
+
+        // if ($this->file_materi != null) {
+        $ori = $this->file_tgs_siswa->getClientOriginalName();
+        $this->fname = uniqid() . '_' . $ori;
+        // }
+
+        $cNT = NilaiTugas::create([
+            'id_tugas' => $this->id_tgs,
+            'id_siswa' => $this->id_sis,
+            'fileTgs_siswa' => $this->fname,
+            'contentSiswa' => $this->content_siswa,
+        ]);
+
+        if ($cNT) {
+            $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
+            session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
+            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+        } else {
+            session()->flash('pesan', 'Dokumen Tugas GAGAL diunggah');
+            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+        }
+    }
+
+    public function updateTugasSiswa()
+    {
+        $this->validate([
+            'file_tgs_siswa' => 'required',
+        ]);
+
+        if ($this->file_tgs_siswa == null) {
+            $this->fname = $this->old_tgs_siswa;
+        } else {
+            $ori = $this->file_tgs_siswa->getClientOriginalName();
+            $this->fname = uniqid() . '_' . $ori;
+        }
+
+        $uNT = NilaiTugas::find($this->id_nt)->update([
+            'id_tugas' => $this->id_tgs,
+            'id_siswa' => $this->id_sis,
+            'fileTgs_siswa' => $this->fname,
+            'contentSiswa' => $this->content_siswa,
+        ]);
+
+        if ($uNT) {
+            if ($this->file_tgs_siswa != null) {
+                $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
+            }
+            session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
+            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+        } else {
+            session()->flash('pesan', 'Dokumen Tugas GAGAL diunggah');
+            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+        }
+    }
+
+    public function file_null()
+    {
+        $this->file_tgs_siswa = null;
+        // return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+    }
+
+    public function delFileTgs()
+    {
         NilaiTugas::find($this->id_nt)->update([
             'fileTgs_siswa' => null,
         ]);
-        $this->old_tugas = null;
+        unlink('storage/tugas_siswa/' . $this->old_tgs_siswa);
+        $this->old_tgs_siswa = null;
+        $this->file_tgs_siswa = null;
         $this->del_psn = true;
-    }
-
-    public function hydrate()
-    {
-        $this->resetErrorBag();
-        $this->resetValidation();
-    }
-
-    public function addKumpulTugas()
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $ids = DB::select('select id from siswas where user_id = ?', [Auth::user()->id]);
-            $this->sid = $ids[0]->id;
-
-            $val = $this->validate([
-                'fileTgs_siswa' => 'required',
-            ]);
-            // $this->fsiswa = 'NilaiTugas' . uniqid() . $ori;
-            // dd($this->id_tgs, $this->sid, $this->contentSiswa, $this->fileTgs_siswa);
-            if ($this->fileTgs_siswa == null && $this->contentSiswa == null) {
-                $this->eror = true;
-                $this->psn = "Harus mengisi salah satu!";
-            } else {
-                if ($this->fileTgs_siswa != null) {
-                    $ori = $this->fileTgs_siswa->getClientOriginalName();
-                    $this->fname = uniqid() . '_Tugas_' . $ori;
-                    $st = $this->fileTgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
-                    if ($st) {
-                        $ntg = NilaiTugas::create([
-                            'id_tugas' => $this->id_tgs,
-                            'id_siswa' => $this->sid,
-                            'fileTgs_siswa' => $this->fname,
-                            'contentSiswa' => $this->contentSiswa,
-                        ]);
-                    }
-                }
-
-                // $ntg = NilaiTugas::create([
-                //     'id_tugas' => $this->id_tgs,
-                //     'id_siswa' => $this->sid,
-                //     'fileTgs_siswa' => $this->fname,
-                //     'contentSiswa' => $this->contentSiswa,
-                // ]);
-
-                if ($ntg) {
-                    session()->flash('pesan', 'Tugas berhasil ditambah');
-                    return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                } else {
-                    session()->flash('pesan', 'Tugas GAGAL ditambah');
-                    return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                }
-            }
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    public function loadTgs()
-    {
-        // $this->id_nt = $id_nt;
-        $data = NilaiTugas::find($this->id_nt);
-        // dd($this->id_tgs, $this->sid, $this->contentSiswa, $this->fileTgs_siswa);
-        // $this->id_tgs = $data['id_tgs'];
-        // $this->sid = $data['sid'];
-        $this->contentSiswa = $data['contentSiswa'];
-        $this->fileTgs_siswa = $data['fileTgs_siswa'];
-    }
-
-    public function updateKumpulTugas()
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $ids = DB::select('select id from siswas where user_id = ?', [Auth::user()->id]);
-            $this->sid = $ids[0]->id;
-            $nt = NilaiTugas::find($this->id_nt);
-
-            if ($this->old_tugas == null && $this->fileTgs_siswa == null && $this->contentSiswa == null) {
-                $this->eror = true;
-                $this->psn = "Harus mengisi salah satu!";
-            } else {
-                if ($this->fileTgs_siswa == null) {
-                    $this->hydrate();
-                    $nt = NilaiTugas::find($this->id_nt)->update([
-                        'contentSiswa' => $this->contentSiswa,
-                    ]);
-                    if ($nt) {
-                        session()->flash('pesan', 'Tugas berhasil diubah');
-                        return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                    } else {
-                        session()->flash('pesan', 'Tugas GAGAL diubah');
-                        return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                    }
-                } else {
-                    $this->hydrate();
-                    $ori = $this->fileTgs_siswa->getClientOriginalName();
-                    $this->ftugas = uniqid() . '_Tugas_' . $ori;
-                    $this->fileTgs_siswa->storeAs('file-materi', $this->ftugas, 'public');
-                    $nt = NilaiTugas::find($this->id_nt)->update([
-                        'fileTgs_siswa' => $this->ftugas,
-                        'contentSiswa' => $this->contentSiswa,
-                    ]);
-                    if ($nt) {
-                        session()->flash('pesan', 'Tugas berhasil diubah');
-                        return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                    } else {
-                        session()->flash('pesan', 'Tugas GAGAL diubah');
-                        return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-                    }
-                }
-            }
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    //untuk mengahpus recordnya 
-    public function delTugas()
-    {
-        $tugasSis = NilaiTugas::find($this->id_nt);
-        unlink('storage/tugas_siswa/' . $tugasSis['fileTgs_siswa']);
-        $tugasSis->delete();
-        session()->flash('pesan', 'Data berhasil dihapus');
-        return redirect(route('dataMateriSiswa', ['nav_dmid' => $this->nav_dmid]));
-    }
-
-    public function getTugas($id)
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $tgs = DB::select('select u.name, dm.id as dmid, t.nama_tugas, t.id as tid, t.file_tugas, 
-            t.content, t.tanggal
-            from tugas as t
-            join materis as mat on mat.id = t.id_materi
-            join detail_mapels as dm on dm.id = mat.id_detMapel
-            join kelas as k on k.id = dm.id_kelas
-            join siswas as s on k.id = s.id_kelas
-            join users as u on u.id = s.user_id
-            where t.id=? and s.user_id = ? ', [$this->id_tgs, $id]);
-            return $tgs;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    public function getPTugas()
-    {
-        if (Auth::user()->hasRole('siswa')) {
-            $data = DB::select('select nt.id, nt.created_at
-            from nilai_tugas as nt
-            where nt.id = ?', [$this->id_nt]);
-            $this->pData = $data;
-            return $data;
-        } else {
-            return redirect(route('login'));
-        }
     }
 
     public function getAcc($id)
@@ -256,9 +166,6 @@ class PengumpulanTugas extends Component
     {
         return view('livewire.siswa.pengumpulan-tugas', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
-            'dataTugas' => $this->getTugas(Auth::user()->id),
-            'dataTgs' => $this->getTgs(Auth::user()->id),
-            'dTgs' => $this->getPTugas($this->id_nt),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);

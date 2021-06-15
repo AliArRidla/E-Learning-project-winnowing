@@ -271,24 +271,24 @@
         <!-- Modal delete jurusan -->
         <div wire:ignore.self class="modal fade" id="mdlDelPresGuru" tabindex="-1" aria-labelledby="mdlDelPresGuruLabel" aria-hidden="true">
             <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mdlDelPresGuruLabel">Delete Confirmation {{ $pid }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mdlDelPresGuruLabel">Delete Confirmation {{ $pid }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{-- @foreach ($jurusanByID as $item) --}}
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus presensi pada hari <strong>{{ $hari_absen }}</strong> untuk kelas <strong>{{ $nama_kelas }}</strong> 
+                        dengan mapel <strong>{{ $nama_mapel }}</strong>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mr-auto" wire:click="delPres({{ $pid }})">Yakin!</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                    </div>
+                    {{-- @endforeach --}}
                 </div>
-                {{-- @foreach ($jurusanByID as $item) --}}
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus presensi pada hari <strong>{{ $hari_absen }}</strong> untuk kelas <strong>{{ $nama_kelas }}</strong> 
-                    dengan mapel <strong>{{ $nama_mapel }}</strong>?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger mr-auto" wire:click="delPres({{ $pid }})">Yakin!</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                </div>
-                {{-- @endforeach --}}
-            </div>
             </div>
         </div>
 
