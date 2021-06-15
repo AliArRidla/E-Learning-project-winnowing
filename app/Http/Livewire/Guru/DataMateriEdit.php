@@ -39,13 +39,6 @@ class DataMateriEdit extends Component
 
     public function saveMateri()
     {
-        // if ($this->file_materi != null) {
-        //     // dd($this->nama_materi, $this->file_materi->getClientOriginalName(), $this->content);
-
-        // } else {
-        //     // dd($this->nama_materi, $this->old_file_materi, $this->content);
-        // }
-        // dd($this->file_materi->getClientOriginalName());
         $this->validate([
             'nama_materi' => 'required',
         ]);

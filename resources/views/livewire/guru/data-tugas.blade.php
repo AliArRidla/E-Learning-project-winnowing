@@ -1,4 +1,4 @@
-@section('title', 'Data Tugas')
+@section('title', 'List Tugas')
 <main id="main">
     <div>
         {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
@@ -15,14 +15,16 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Data Tugas</h2>
-                                    {{-- @foreach ($getDMapGuru as $item) --}}
+                                    <div>
+                                        <h2 class="title-1">@yield('title')</h2>
+                                            <h4>{{ $nama_mapel }} / {{ $nama_kelas }}</h4>
+                                    </div>
+                                    <div>
                                         <a href="{{ route('dataTugasTambah', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue"
                                             >
                                             <i class="zmdi zmdi-plus"></i>tambah Tugas
                                         </a>
-                                    {{-- @endforeach --}}
-                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -32,13 +34,13 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
 
-                                        @if (session()->has('msg'))
+                                        @if (session()->has('pesan'))
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                                 <span class="sr-only">Close</span>
                                             </button>
-                                            <strong>Berhasil!</strong> {{ session('msg') }}
+                                            <strong>Berhasil!</strong> {{ session('pesan') }}
                                         </div>
                                         @endif
 
@@ -52,46 +54,45 @@
                                         </div>
                                         @endif
 
-                                        <div wire:ignore>
-                                            <table wire:ignore id="table" class="table table-striped table-bordered"
-                                                style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No.</th>
-                                                        <th>Materi</th>
-                                                        <th>Tugas</th>
-                                                        <th>Tenggat Pengumpulan</th>
-                                                        <th class="not-export-col">Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {{-- @if ($dataGuru->count() > 0) --}}
-                                                    @php
-                                                    $count = 1;
-                                                    @endphp
-                                                    @foreach ($dataTgs as $item)
-                                                    <tr>
-                                                        <td>{{ $count++ }}</td>
-                                                        <td>{{ $item->nama_materi }}</td>
-                                                        <td>{{ $item->nama_tugas }}</td>
-                                                        <td>{{ $item->tanggal }}</td>
-                                                        <td>
-                                                            <a href="{{ route('dataTugasEdit', ['nav_dmid' => $nav_dmid, 'idTgs' => $item->tid])}}"  
-                                                                class="btn btn-warning">
-                                                                <i class="fas fa-edit"></i></a>
-                                                            <button name="delete" id="delete" class="btn btn-danger"
-                                                                wire:click="loadByID({{ $item->tid }})"
-                                                                data-toggle="modal" data-target="#mdlDelTugas">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            </button>
-                                                        </td>
-
-                                                    </tr>
-                                                    @endforeach
-                                                    {{-- @endif --}}
-                                                </tbody>
-                                            </table>
+                                        @if ($dataTgs != null)
+                                        @foreach ($dataTgs as $item)
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                      <h4 class="card-title">{{ $item->nama_tugas }}</h4>
+                                                      <p>Materi: {{ $item->nama_materi }}</p>
+                                                      @php
+                                                          $tgl = date('j F Y', strtotime($item->updated_at));
+                                                      @endphp
+                                                      <p class="card-text"><small class="text-muted">Diperbarui pada {{ $tgl }}</small></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 p-3" style="background-color: rgb(206, 206, 206);">
+                                                    {{-- {{ route('detailMateri', ['nav_dmid' => $nav_dmid, 'id_mat' => $item->id]) }} --}}
+                                                    <a href="{{ route('detailTugas', ['nav_dmid' => $nav_dmid, 'id_tgs' => $item->id])}}">
+                                                        <button type="button" class="btn btn-primary btn-sm">
+                                                            Detail Tugas
+                                                        </button>
+                                                    </a>
+                                                    <a href="{{ route('dataTugasEdit', ['nav_dmid' => $nav_dmid, 'idTgs' => $item->id])}}">
+                                                        <button type="button" class="btn btn-warning btn-sm">
+                                                            Edit
+                                                        </button>
+                                                    </a>
+                                                    <hr>
+                                                    <button name="delete" id="delete" class="btn btn-danger btn-sm" 
+                                                    wire:click="loadTgs({{ $item->id }})"
+                                                    data-toggle="modal" data-target="#mdlDelTgs">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
+                                        @endforeach
+                                        @else
+                                        <h4 class="text-center">Tugas Untuk {{ $nama_mapel }} - {{ $nama_kelas }} Belum Ada</h4>
+                                        @endif
 
                                     </div>
                                 </div>
@@ -104,63 +105,28 @@
         </div>
         {{-- @include('layouts.modals') --}}
         <!-- Modal delete kelas -->
-        <div wire:ignore.self class="modal fade" id="mdlDelTugas" tabindex="-1" aria-labelledby="mdlDelTugasLabel"
+        <div wire:ignore.self class="modal fade" id="mdlDelTgs" tabindex="-1" aria-labelledby="mdlDelTgsLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="mdlDelTugasLabel">Delete Confirmation</h5>
+                        <h5 class="modal-title" id="mdlDelTgsLabel">Delete Confirmation</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     {{-- @foreach ($jurusanByID as $item) --}}
                     <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus tugas <strong>{{ $nama_tugas }}</strong> ?
-                        SEMUA YANG TERDAFTAR DI TUGAS <strong>{{ $nama_tugas }}</strong> AKAN TERHAPUS!
+                        Apakah Anda yakin ingin <strong>MENGHAPUS</strong> materi <strong>{{ $nama_tugas }}</strong>?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger mr-auto"
-                            wire:click="deleteTugas({{ $idTgas }})">Yakin!</button>
+                        <button type="button" class="btn btn-danger mr-auto" wire:click="delTgs">Yakin!</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                     </div>
                     {{-- @endforeach --}}
                 </div>
             </div>
         </div>
-        <!-- Modal add kelas -->
-        <div wire:ignore.self class="modal fade" id="mdlMateri" data-backdrop="static" data-keyboard="false"
-            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        {{-- @if ($add)
-                        <h5 class="modal-title" id="staticBackdropLabel">Tambah Materi {{ $idMat }}</h5>
-                        @elseif ($edit)
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit materi {{ $idMat }}</h5>
-                        @endif --}}
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            wire:click="reload()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    {{-- sak form digantti laravel biasa bikin rour baru yang mengarh ke controller biasa --}}
-                    {{--  --}}
-                    <form wire:submit.prevent>
-                        <div class="modal-body">
-                            {{-- @if ($add) --}}
-                            
-                        
-                        <div class="modal-footer">
-                            {{-- <button type="submit" class="btn btn-primary" data-dismiss="modal"
-                            wire:click="reload()">Submit</button> --}}
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
-                                wire:click="reload()">Close</button>
-                            
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
     </div>
 </main>

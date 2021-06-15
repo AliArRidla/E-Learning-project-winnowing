@@ -43,85 +43,44 @@
                                         <br>
                                         <label>Silahkan unduh file dibawah ini!</label>
                                         <br>
-                                        <a href="{{ route('downloadOldTugas', ['oldtugas' => $dt->file_tugas]) }}">{{ $dt->file_tugas }}</a>
-                                        {{-- @if ($old_tugas == null)
-                                            <label>File Tugas belum ada</label>
+                                        @php
+                                            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
+
+                                            $explodeImage = explode('.', $dt->file_tugas);
+                                            $extension = end($explodeImage);
+                                        @endphp
+                                        @if (in_array($extension, $imageExtensions))
+                                        <a href= "" wire:click="download({{ $dt->tid}})" target="_blank"> {{ $dt->file_tugas }} </a>
+                                            {{-- <p><a href="{{route('materiSiswa', ['nav_dmid' => $nav_dmid, 'id_mats' => $dm->matid])}}" target="_blank">Lihat Gambar<img src="{{ asset('storage/content/'. $dm->file_materi) }}" height="50%" width="100%"></a></p> --}}
                                         @else
-                                        <label>Silahkan unduh file dibawah ini!</label>
-                                        <br>
-                                        <a href="{{ route('downloadOldTugas', ['oldtugas' => $old_tugas]) }}">{{ $old_tugas }}</a>
-                                        @endif --}}
-                                        
+                                        <p>
+                                            <a href= "" wire:click="download({{ $dt->tid}})" target="_blank"> {{ $dt->file_tugas }} </a>
+                                        </p>
+                                        @endif
                                         <form wire:submit.prevent>
                                         <hr>
-                                        <h4>Pengumpulan Tugas</h4>
-                                            @if ($old_tugas == null)
-                                            
+                                        @if ($old_file_tugas == null)
+                                            <br>
                                             <div class="form-group">
-                                                <label>Jenis file apa yang ingin Anda unggah?</label>
-                                                <small>Sisipkan File Materi (opsional).</small>
-                                                <div class="form-check">
-                                                    <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="dok">
-                                                    <label class="form-check-label" for="exampleRadios1">
-                                                    Dokumen (PDF, Ms. Word, PPT, EXCEL)
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="gbr">
-                                                    <label class="form-check-label" for="exampleRadios2">
-                                                    Gambar (JPG, JPEG, PNG)
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="extensi" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="zr">
-                                                    <label class="form-check-label" for="exampleRadios3">
-                                                    ZIP
-                                                    </label>
-                                                </div>
-                                                @if ($extensi != null)
-                                                <div
-                                                    x-data="{ isUploading: false, progress: 0 }"
-                                                    x-on:livewire-upload-start="isUploading = true"
-                                                    x-on:livewire-upload-finish="isUploading = false"
-                                                    x-on:livewire-upload-error="isUploading = false"
-                                                    x-on:livewire-upload-progress="progress = $event.detail.progress"
-                                                >
-                                                    @if ($extensi == "dok")
-                                                    <input id="fileTgs_siswa" name="fileTgs_siswa" type="file" class="form-control" @error('fileTgs_siswa') is-invalid @enderror wire:model="fileTgs_siswa"
-                                                    accept=".pptx,.ppt,.xls,.xlsx,.pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                                                    <small>Hanya menerima: pdf, word, ppt, excel</small>
-                                                    @elseif ($extensi == "gbr")
-                                                    <input id="fileTgs_siswa" name="fileTgs_siswa" type="file" class="form-control" @error('fileTgs_siswa') is-invalid @enderror wire:model="fileTgs_siswa"
-                                                    accept="image/png,image/jpeg,image/jpg">
-                                                    <small>Hanya menerima: png, jpg, jpeg</small>
-                                                    @elseif ($extensi == "zr")
-                                                    <input id="fileTgs_siswa" name="fileTgs_siswa" type="file" class="form-control" @error('fileTgs_siswa') is-invalid @enderror wire:model="fileTgs_siswa"
-                                                    accept=".zip">
-                                                    <small>Hanya menerima: zip</small>
-                                                    @endif
-                                                    <div x-show="isUploading">
-                                                        <progress max="100" x-bind:value="progress"></progress>
-                                                        <div wire:loading wire:target="fileTgs_siswa">Uploading...</div>
-                                                    </div>
+                                                <label for ="fileTgs_siswa">Tugas : </label>
+                                                <br>
+                                                <input type="file" wire:model = "fileTgs_siswa" name="fileTgs_siswa" class="form-control"
+                                                id="fileTgs_siswa">
+                                
+                                                @if($errors->has('fileTgs_siswa'))
+                                                <div class="text-danger">
+                                                    {{ $errors->first('fileTgs_siswa')}}
                                                 </div>
                                                 @endif
-                                                @if ($eror)
-                                                <p style="color:red;">{{ $psn }}</p>
-                                                @endif
-                                                @error('fileTgs_siswa')
-                                                    <span id="error-msg">{{ $message }}</span>
-                                                @enderror
                                             </div>
-                                            @else
-                                            
-                                            
-                                            <span>Berikut adalah file yang sebelumnya: 
-                                                <br><a href="{{ route('downloadOldTugas', ['oldtugas' => $old_tugas]) }}">{{ $old_tugas }}</a></span><br> 
-                                                <button name="delete" id="delete" class="btn btn-danger btn-sm" 
-                                            data-toggle="modal" data-target="#mdlDelTgs">
-                                                Hapus File Sebelumnya
-                                            </button>
-                                            @endif
+                                        @endif
+                                        @if ($old_file_tugas != null && $del_psn == false)
+                                        <button name="delete" id="delete" class="btn btn-danger btn-sm" 
+                                        data-toggle="modal" data-target="#mdlDelTgs">
+                                            Hapus File Sebelumnya
+                                        </button>
+                                        <span>Berikut adalah file yang sebelumnya: <a href="{{ route('downloadOldTugas', ['oldtugas' => $old_file_tugas]) }}">{{ $old_file_tugas }}</a></span>
+                                        @endif
                                         
                                         <hr>
                                         <div class="form-group">
@@ -162,32 +121,21 @@
                                                   }
                                             }, 1000);
                                             </script>
-                                        {{-- @foreach($dTgs as $dg) --}}
-                                        {{-- @php
-                                            $tg = DB::select('select id, created_at from nilai_tugas where id_tugas = ? ', [$this->id_tgs])
-                                        @endphp --}}
-                                        @if ($dt->tanggal)
-                                        <strong>Anda Telat Mengumpulkan TUGAS</strong>
                                         <br>
-                                            @if ($this->cek_nilai!= null)
-                                                <button type="button" class="btn btn-primary" wire:click="updateKumpulTugas()">Edit Tugas</button>
-                                                <button name="delete" id="delete" class="btn btn-danger"
-                                                    wire:click="loadTgs({{ $id_nt }})" data-toggle="modal" data-target="#mdlDelTugas">
-                                                    Hapus Tugas
-                                                </button>
-                                            @else
-                                                <button type="button" class="btn btn-primary" wire:click="addKumpulTugas()">Kerjakan</button>
-                                            @endif
+                                        {{-- @foreach($dataTgs as $dg) --}}
+                                        @if ($cek_nilai != null)
+                                        <a href="{{ route('dataMateriEdit', ['nav_dmid' => $nav_dmid, 'id_mat' => $item->id]) }}">
+                                            <button type="button" class="btn btn-warning btn-sm">
+                                                Edit
+                                            </button>
+                                        </a>
+                                            <button name="delete" id="delete" class="btn btn-danger"
+                                                wire:click="loadByID({{ $id_nt }})" data-toggle="modal" data-target="#mdlDelTugas">
+                                                Hapus Tugas
+                                                {{-- <i class="fa fa-trash" aria-hidden="true"></i> --}}
+                                            </button>
                                         @else
-                                            @if ($this->cek_nilai!= null)
-                                                <button type="button" class="btn btn-primary" wire:click="updateKumpulTugas()">Edit Tugas</button>
-                                                <button name="delete" id="delete" class="btn btn-danger"
-                                                    wire:click="loadTgs({{ $id_nt }})" data-toggle="modal" data-target="#mdlDelTugas">
-                                                    Hapus Tugas
-                                                </button>
-                                            @else
-                                                <button type="button" class="btn btn-primary" wire:click="addKumpulTugas()">Kerjakan</button>
-                                            @endif
+                                            <button type="button" class="btn btn-primary" wire:click="addKumpulTugas()">Kerjakan</button>
                                         @endif
                                         
                                         {{-- @endforeach --}}
@@ -195,21 +143,8 @@
                                     </div>
                                     @endforeach
                                 </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
-                                            href="https://colorlib.com">Colorlib</a>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- END MAIN CONTENT-->
-            <div wire:ignore.self class="modal fade" id="mdlDelTugas" tabindex="-1" aria-labelledby="mdlDelTugasLabel"
+                                
+                                <div wire:ignore.self class="modal fade" id="mdlDelTugas" tabindex="-1" aria-labelledby="mdlDelTugasLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -233,7 +168,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Modal -->
                                 <div wire:ignore.self class="modal fade" id="mdlDelTgs" tabindex="-1" role="dialog" aria-labelledby="mdlDelTgsLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -248,7 +182,7 @@
                                                 @if ($del_psn)
                                                 <span style="color:red;">File lama berhasil dihapus!</span>
                                                 @else
-                                                Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file materi <strong>{{ $old_tugas }}</strong>?
+                                                Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file tugas <strong>{{ $old_file_tugas }}</strong>?
                                                 @endif
                                             </div>
                                             <div class="modal-footer">
@@ -262,6 +196,20 @@
                                         </div>
                                     </div>
                                 </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
+                                            href="https://colorlib.com">Colorlib</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT-->
         </div>
     </div>
 </main>

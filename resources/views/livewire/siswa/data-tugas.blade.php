@@ -61,7 +61,7 @@
                                                             {{-- @for ($i=0; $i < $countdt; $i++)  --}}
                                                                 <li class="list-group-item">
                                                                     {{-- {{ route('tugasSiswa', ['nav_dmid' => $nav_dmid, 'id_tgs' => $dtg[$dm]->id]) }} --}}
-                                                                    <a href="{{ route('tugasSiswa', ['nav_dmid' => $nav_dmid, 'id_tgs' => $dtg[$dt]->id]) }}">
+                                                                    <a href="{{ route('tugasSiswa', ['nav_dmid' => $nav_dmid, 'id_tgs' => $dt->id]) }}">
                                                                         Tugas
                                                                     </a>
                                                                 </li>

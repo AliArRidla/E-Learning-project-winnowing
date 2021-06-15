@@ -1,10 +1,7 @@
-<div>
-    {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
-</div>
 @section('title', 'Detail Materi')
 <main id="main">
     <div>
-        {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
+        {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
         <div class="page-container">
             <!-- HEADER DESKTOP-->
             @foreach ($dataAcc as $i)
@@ -40,7 +37,7 @@
                                             $fn = $detMat[0]->file_materi;
                                         @endphp
                                         @if ($detMat[0]->file_materi != null)
-                                        Berikut adalah file materi ini:
+                                        Berikut adalah file untuk materi ini:
                                         <a href="{{ route('downloadFileMatLama', ['foldname' => $fn]) }}">{{ $fn }}</a>
                                         @endif
                                         <hr>

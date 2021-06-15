@@ -11,13 +11,56 @@ use Livewire\WithFileUploads;
 class DataTugas extends Component
 {
     use WithFileUploads;
-    public $tujuan, $idTgs, $id_materi, $nama_tugas, $file_tugas, $content, $nav_dmid, $idTgas;
-    public $togglePage = false;
+    public $tujuan, $idTgs, $id_materi, $nama_tugas, $file_tugas, $content, $nav_dmid, $idTgas, $id_mat;
+    public $nama_materi, $nama_mapel, $nama_kelas;
     public $countDM = 0;
-    
+
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
+
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas, mat.nama_materi
+        from detail_mapels as dm 
+        join mapels as m on dm.id_mapel = m.id
+        join kelas as k on dm.id_kelas = k.id
+        join materis as mat on mat.id_detMapel = dm.id
+        where dm.id = ?', [$nav_dmid]);
+
+        foreach ($dm as $d) {
+            $this->nama_mapel = $d->nama_mapel;
+            $this->nama_kelas = $d->nama_kelas;
+            $this->nama_materi = $d->nama_materi;
+        }
+    }
+
+    public function loadTgs($id)
+    {
+        $tgs = Tugas::find($id)->get();
+        foreach ($tgs as $key) {
+            $this->nama_tugas = $key->nama_tugas;
+            $this->id_tgs = $key->id;
+        }
+    }
+
+    public function delTgs()
+    {
+        // $file_mat = null;
+        $tgs = Tugas::find($this->id_tgs);
+        // $file_mat = $dMap->file_materi;
+        // dd();
+        unlink('storage/file_tugas/' . $tgs['file_tugas']);
+        $dMap->delete();
+        session()->flash('pesan', 'Data berhasil dihapus');
+        return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
+    }
+
+    public function getTugas()
+    {
+        return DB::select('select t.id, t.nama_tugas, t.updated_at, mat.nama_materi
+            from tugas as t
+            join materis as mat on mat.id = t.id_materi
+            join detail_mapels as dm on dm.id = mat.id_detMapel
+            where id_detMapel = ? order by t.created_at ASC', [$this->nav_dmid]);
     }
 
     public function getAll($id)
@@ -33,45 +76,11 @@ class DataTugas extends Component
         }
     }
 
-    public function getTugas($id)
-    {
-        if (Auth::user()->hasRole('guru')) {
-            $tgs = DB::select('select dm.id as dmid, t.nama_tugas, t.tanggal, t.id as tid, mat.id as mid,
-            mat.nama_materi
-            from detail_mapels as dm
-            join gurus as g on g.id = dm.id_guru
-            join users as u on u.id = g.user_id
-            join materis as mat on mat.id_detMapel = dm.id
-            JOIN tugas as t on t.id_materi = mat.id 
-            where g.user_id = ?', [$id]);
-            return $tgs;
-        } else {
-            return redirect(route('login'));
-        }
-    }
-
-    //buat edit
-    public function loadByID($idTgas)
-    {
-        $this->idTgas = $idTgas;
-        $data = Tugas::find($this->idTgas);
-        // 'id_detMapel', 'nama_materi', 'desc_materi','content',
-        $this->id_materi = $data['id_materi'];
-        $this->nama_tugas = $data['nama_tugas'];
-        $this->file_tugas = $data['file_tugas'];
-        $this->content = $data['content'];
-        $this->tanggal = $data['tanggal'];
-    }
-
     public function reload()
     {
         return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
     }
 
-    public function getMateri()
-    {
-        return DB::select('select * from materis');
-    }
 
     public function getAcc($id)
     {
@@ -108,14 +117,6 @@ class DataTugas extends Component
         return $dMap;
     }
 
-    public function deleteTugas($idTgas)
-    {
-        $tugas = Tugas::find($idTgas);
-        unlink('storage/file_tugas/' . $tugas->file_tugas);
-        $tugas->delete();
-        return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
-        session()->flash('pesan', 'Data berhasil dihapus');
-    }
 
     public function render()
     {
@@ -123,9 +124,8 @@ class DataTugas extends Component
             'dataTugas' => $this->getAll($this->nav_dmid),
             'dataTgs' => $this->getTugas(Auth::user()->id),
             'dataAcc' => $this->getAcc(Auth::user()->id),
-            'dataMtr' => $this->getMateri(Auth::user()->id),
             'getDMapGuru' => $this->getDMap(),
-        ])->layout('layouts.layapp', [
+        ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);
     }

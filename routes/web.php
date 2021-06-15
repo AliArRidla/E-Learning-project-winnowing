@@ -21,6 +21,7 @@ use App\Http\Livewire\Guru\DataTugas;
 use App\Http\Livewire\Guru\DataTugasTambah;
 use App\Http\Livewire\Guru\DataTugasEdit;
 use App\Http\Livewire\Guru\DetailMateri;
+use App\Http\Livewire\Guru\DetailTugas;
 use App\Http\Livewire\Guru\EditSoal;
 use App\Http\Livewire\Guru\EditUlangan;
 use App\Http\Livewire\Guru\HasilUjian;
@@ -143,6 +144,16 @@ Route::middleware(['auth'])->group(function () {
         // dd($file_name);
         return response()->download(public_path('storage/file-materi/' . $foldname));
     })->name('downloadFileMatLama');
+
+    // TUGAS
+    Route::get('/guru/data-tugas/{nav_dmid}', DataTugas::class)->name('dataTugas');
+    Route::get('/guru/detail-tugas/{nav_dmid}/{id_tgs}', DetailTugas::class)->name('detailTugas');
+    Route::get('/guru/data-tugas-tambah/{nav_dmid}', DataTugasTambah::class)->name('dataTugasTambah');
+    Route::get('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', DataTugasEdit::class)->name('dataTugasEdit');
+    Route::get('/download-file-tugas/{oldtugas}', function ($oldtugas) {
+        // dd($file_name);
+        return response()->download(public_path('storage/file_tugas/' . $oldtugas));
+    })->name('downloadOldTugas');
     // ----------- GURU END --------------------------------
 
     // ----------- SISWA START --------------------------------
@@ -158,37 +169,25 @@ Route::middleware(['auth'])->group(function () {
     Route::post('crop', [ProfilAcc::class, 'crop'])->name('pcrop');
     // ----------- PROFIL END --------------------------------
 
-    // ----------- MATERI GURU START NO LIVEWIRE--------------------------------
-
-    Route::get('/download/{id}', [MateriController::class, 'download'])->name('download');
-    // ----------- MATERI GURU END --------------------------------
-
-    // ----------- MATERI GURU LIVEWIRE START --------------------------------
-    // Route::get('/guru/{nav_dmid}/data-materi', DataMateri::class)->name('dataMateri');
-    // Route::get('/guru/{nav_dmid}/data-materi-tambah', DataMateriTambah::class)->name('dataMateriTambah');
-    // Route::post('/store/{nav_dmid}', [MateriController::class, 'store'])->name('materiTambah');
-    // Route::get('/guru/data-materi-edit/{nav_dmid}/{idMat}', DataMateriEdit::class)->name('dataMateriEdit');
-    // Route::patch('/guru/data-materi-edit/{nav_dmid}/{idMat}', [MateriController::class, 'update'])->name('materiUpdate');
-    // ----------- MATERI GURU END --------------------------------
 
     // ----------- MATERI SISWA LIVEWIRE START --------------------------------
     Route::get('/siswa/data-materi/{nav_dmid}', SiswaDataMateri::class)->name('dataMateriSiswa');
     Route::get('/siswa/det-data-materi/{nav_dmid}/{id_mats}', DetDataMateri::class)->name('materiSiswa');
-    // Route::get('/siswa/det-data-materi/{nav_dmid}/{id_tgs}', DetDataMateri::class)->name('tugasSiswa');
-    // Route::get('download{id}', DetDataMateri::class, 'download')->name('download');
+    Route::get('/download-file-matGuru/{filemat}', function ($filemat) {
+        // dd($file_name);
+        return response()->download(public_path('storage/file-materi/' . $filemat));
+    })->name('downloadMatGuru');
     // ----------- MATERI SISWA END --------------------------------
 
     // ----------- TUGAS GURU LIVEWIRE START --------------------------------
-    Route::get('/guru/data-tugas/{nav_dmid}', DataTugas::class)->name('dataTugas');
-    Route::get('/guru/data-tugas-tambah/{nav_dmid}', DataTugasTambah::class)->name('dataTugasTambah');
     Route::post('/store/{nav_dmid}', [TugasController::class, 'store'])->name('tugasTambah');
-    Route::get('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', DataTugasEdit::class)->name('dataTugasEdit');
     Route::patch('/guru/data-tugas-edit/{nav_dmid}/{idTgs}', [TugasController::class, 'update'])->name('tugasUpdate');
     // ----------- TUGAS GURU END --------------------------------
 
     // ----------- TUGAS SISWA LIVEWIRE START --------------------------------
     Route::get('/siswa/data-tugas/{nav_dmid}', SiswaDataTugas::class)->name('dataTugasSiswa');
     Route::get('/siswa/pengumpulan-tugas/{nav_dmid}/{id_tgs}', PengumpulanTugas::class)->name('tugasSiswa');
+
     // ----------- TUGAS SISWA END --------------------------------
 
 });
