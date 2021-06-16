@@ -17,7 +17,7 @@
                                 <div class="overview-wrap">
                                     <h2 class="title-1">@yield('title') - {{ $dataUl['judul_ulangan'] }}</h2>
                                     @if ($no_soal > 1)
-                                    <a href="{{ route('listSoalGuru', ['id_ul' => $id_ul]) }}">
+                                    <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
                                         <button type="button" class="au-btn au-btn-icon au-btn--blue">
                                             <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
                                         </button>
@@ -89,22 +89,23 @@
                                                         <label for="no_soal" class="form-control-label">Soal {{ $no_soal }}</label>
                                                     </div>
                                                     <div wire:ignore class="form-group">
-                                                        <textarea type="text" id="ed_soal" wire:model="ed_soal" name="ed_soal"
+                                                        <textarea type="text" id="ed_soal" wire:model.defer="ed_soal" name="ed_soal"
                                                         class="form-control @error('ed_soal') is-invalid @enderror">
+                                                        
                                                         </textarea>
                                                     </div>
                                                     @error('ed_soal')
                                                         <span id="error-msg">{{ $message }}</span>
-                                                        @enderror
+                                                    @enderror
 
-                                                    <div class="form-group" wire:ignore>
+                                                    <div class="form-group">
                                                         <div class="row">
                                                             <div class="col-md-1">
                                                                 <label for="pilA" class="form-control-label">A.</label>
                                                             </div>
-                                                            <div class="col-md-10">
-                                                                <textarea type="text" id="pilA"  wire:model="pilA"
-                                                                class="form-control @error('pilA') is-invalid @enderror" name="pilA"> 
+                                                            <div class="col-md-10" wire:ignore>
+                                                                <textarea type="text" id="pilA"  wire:model.defer="pilA" name="pilA"
+                                                                class="form-control @error('pilA') is-invalid @enderror"> 
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -119,7 +120,7 @@
                                                                 <label for="pilB" class="form-control-label">B.</label>
                                                             </div>
                                                             <div class="col-md-10">
-                                                                <textarea type="text" id="pilB"  wire:model="pilB"
+                                                                <textarea type="text" id="pilB" wire:model.defer="pilB"
                                                                 class="form-control @error('pilB') is-invalid @enderror" name="pilB">
                                                                 </textarea>
                                                             </div>
@@ -135,7 +136,7 @@
                                                                 <label for="pilC" class="form-control-label">C.</label>
                                                             </div>
                                                             <div class="col-md-10">
-                                                                <textarea type="text" id="pilC"  wire:model="pilC"
+                                                                <textarea type="text" id="pilC"  wire:model.defer="pilC"
                                                                 class="form-control @error('pilC') is-invalid @enderror" name="pilC"> 
                                                                 </textarea>
                                                             </div>
@@ -152,8 +153,8 @@
                                                                 <label for="pilD" class="form-control-label">D.</label>
                                                             </div>
                                                             <div class="col-md-10">
-                                                                <textarea type="text" id="pilD"  wire:model="pilD"
-                                                                class="form-control @error('pilD') is-invalid @enderror" name="pilD" > 
+                                                                <textarea type="text" id="pilD"  wire:model.defer="pilD"
+                                                                class="form-control @error('pilD') is-invalid @enderror" name="pilD"> 
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -169,8 +170,8 @@
                                                                 <label for="pilE" class="form-control-label">E.</label>
                                                             </div>
                                                             <div class="col-md-10">
-                                                                <textarea type="text" id="pilE"  wire:model="pilE"
-                                                                class="form-control @error('pilE') is-invalid @enderror" name="pilE" > 
+                                                                <textarea type="text" id="pilE"  wire:model.defer="pilE"
+                                                                class="form-control @error('pilE') is-invalid @enderror" name="pilE"> 
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -201,141 +202,146 @@
                     </div>
                 </div>
             </div>
-            @push('scripts')
+            {{-- @push('scripts') --}}
             <script type="text/javascript">
-                $('#ed_soal').summernote({
-                    toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['link', 'picture', 'video']],
-                    ],
-                    height: 100,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('ed_soal', e);
-                        }
-                    }
-                });
+            document.addEventListener('livewire:load', function () {
+                $(document).ready(function() {
+                        $('#ed_soal').summernote({
+                            toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['link', 'picture', 'video']],
+                            ],
+                            height: 100,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('ed_soal', e);
+                                }
+                            }
+                        });
 
-                $('#pilA').summernote({
-                        toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['picture']],
-                    ],
-                    height: 50,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('pilA', e);
-                        }
-                    }
-                });
+                        $('#pilA').summernote({
+                                toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['picture']],
+                            ],
+                            height: 50,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('pilA', e);
+                                }
+                            }
+                        });
 
-                $('#pilB').summernote({
-                        toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['picture']],
-                    ],
-                    height: 50,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('pilB', e);
-                        }
-                    }
-                });
+                        $('#pilB').summernote({
+                                toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['picture']],
+                            ],
+                            height: 50,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('pilB', e);
+                                }
+                            }
+                        });
 
-                $('#pilC').summernote({
-                        toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['picture']],
-                    ],
-                    height: 50,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('pilC', e);
-                        }
-                    }
-                });
+                        $('#pilC').summernote({
+                                toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['picture']],
+                            ],
+                            height: 50,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('pilC', e);
+                                }
+                            }
+                        });
 
-                $('#pilD').summernote({
-                        toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['picture']],
-                    ],
-                    height: 50,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('pilD', e);
-                        }
-                    }
-                });
+                        $('#pilD').summernote({
+                                toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['picture']],
+                            ],
+                            height: 50,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('pilD', e);
+                                }
+                            }
+                        });
 
-                $('#pilE').summernote({
-                        toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['insert', ['picture']],
-                    ],
-                    height: 50,                 // set editor height
-                    width: "100%",                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    dialogsInBody: true,
-                    popatmouse:true,
-                    callbacks: {
-                        onChange: function(e) {
-                            @this.set('pilE', e);
-                        }
-                    }
+                        $('#pilE').summernote({
+                                toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['picture']],
+                            ],
+                            height: 50,                 // set editor height
+                            width: "100%",                 // set editor height
+                            minHeight: null,             // set minimum height of editor
+                            maxHeight: null,             // set maximum height of editor
+                            dialogsInBody: true,
+                            popatmouse:true,
+                            callbacks: {
+                                onChange: function(e) {
+                                    @this.set('pilE', e);
+                                }
+                            }
+                        });
+                    });
+
                 });
             </script>
-            @endpush
+            
             <!-- END MAIN CONTENT-->
         </div>
     </div>

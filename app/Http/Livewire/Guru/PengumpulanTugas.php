@@ -13,6 +13,10 @@ class PengumpulanTugas extends Component
     public $name, $contentSiswa, $fileTgs_siswa, $detNT, $nilai, $old_nilai;
     public $nama_tugas, $tanggal, $nama_materi, $file_tugas, $id_nt;
 
+    protected $messages = [
+        'nilai.required' => 'Mohon isi kolom nilai',
+    ];
+
     public function mount($nav_dmid, $id_tgs)
     {
         $this->nav_dmid = $nav_dmid;
@@ -43,6 +47,7 @@ class PengumpulanTugas extends Component
 
     public function beriNilai()
     {
+        $this->validate(['nilai' => 'required']);
         $n = NilaiTugas::find($this->id_nt)->update(['nilai' => $this->nilai]);
         if ($n) {
             session()->flash('pesan', 'Nilai untuk siswa ' . $this->name . ' berhasil ditambah');

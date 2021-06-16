@@ -8,11 +8,12 @@ use Livewire\Component;
 
 class ListSoal extends Component
 {
-    public $id_ul;
+    public $id_ul, $nav_dmid;
 
-    public function mount($id_ul)
+    public function mount($nav_dmid, $id_ul)
     {
         $this->id_ul = $id_ul;
+        $this->nav_dmid = $nav_dmid;
     }
 
     public function getSoal()

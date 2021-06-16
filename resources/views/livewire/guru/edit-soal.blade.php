@@ -17,7 +17,7 @@
                                 <div class="overview-wrap">
                                     <h2 class="title-1">@yield('title') - {{ $dataUl['judul_ulangan'] }}</h2>
                                     {{-- @if ($noc > 1) --}}
-                                    <a href="{{ route('listSoalGuru', ['id_ul' => $id_ul]) }}">
+                                    <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
                                         <button type="button" class="au-btn au-btn-icon au-btn--blue">
                                             <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
                                         </button>

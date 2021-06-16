@@ -22,7 +22,7 @@
                                         @endforeach
                                     </div>
                                     <div>
-                                        <a href="{{ route('soalGuru', ['id_ul' => $item->ulid]) }}">
+                                        <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                             <button type="button" class="au-btn au-btn-icon au-btn--green">
                                                 <i class="zmdi zmdi-plus"></i> Tambah Soal 
                                             </button>
@@ -33,6 +33,9 @@
                         </div>
 
                         <hr>
+                            <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                            </a>
                         {{-- <a href="{{ route('soalGuru', ['id_ul' => $item->ulid]) }}">
                             <button type="button" class="btn btn-primary btn-sm">
                                 Buat Soal
@@ -117,7 +120,7 @@
                                                         @endphp
                                                         <td>{{ $ipn }}</td>
                                                         <td>
-                                                            <a href="{{ route('editSoalGuru', ['id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
+                                                            <a href="{{ route('editSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
                                                                 <button name="edit" id="edit" class="btn btn-warning">
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>

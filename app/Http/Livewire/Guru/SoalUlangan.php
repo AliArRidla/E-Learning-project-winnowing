@@ -14,13 +14,34 @@ class SoalUlangan extends Component
     use WithFileUploads;
 
     // public $id_ul, $pilgan, $intPoin;
-    public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $kunci_jawaban;
-    // public $nav_dmid;
+    public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $kunci_jawaban, $no_soal, $simpan;
+    public $nav_dmid;
 
-    public function mount($id_ul)
+    public function mount($nav_dmid, $id_ul)
     {
+        // $this->rload = true;
         $this->id_ul = $id_ul;
-        // $this->nav_dmid = $nav_dmid;
+        $this->nav_dmid = $nav_dmid;
+
+        $this->ed_soal = null;
+        $this->pilA = null;
+        $this->pilB = null;
+        $this->pilB = null;
+
+        $jmlSoal = DB::select(
+            'select COUNT(*) AS jml FROM (
+                SELECT soals.id FROM soals
+                JOIN ulangans ON soals.id_ulangan = ulangans.id
+                WHERE soals.id_ulangan = ?
+            ) jml',
+            [$this->id_ul]
+        );
+
+        $this->no_soal = 1;
+
+        if (intval($jmlSoal[0]->jml) > 0) {
+            $this->no_soal = intval($jmlSoal[0]->jml) + 1;
+        }
     }
 
     public function saveSoal()
@@ -81,35 +102,39 @@ class SoalUlangan extends Component
         }
 
         if ($cSoal) {
+            // $this->simpan = true;
+            // $this->emit('sumDestroy');
+            // if ($this->simpan == false) {
             session()->flash('pesan', 'Data Soal berhasil ditambah');
-            return redirect(route('soalGuru', ['id_ul' => $this->id_ul]));
+            return redirect()->to(route('listSoalGuru', ['id_ul' => $this->id_ul]));
+            // }
         } else {
             session()->flash('pesan', 'Data GAGAL ditambah');
-            return redirect(route('soalGuru', ['id_ul' => $this->id_ul]));
+            return redirect()->to(route('listSoalGuru', ['id_ul' => $this->id_ul]));
         }
     }
 
-    public function soalKe()
-    {
-        $jmlSoal = DB::select(
-            'select COUNT(*) AS jml FROM (
-                SELECT soals.id FROM soals
-                JOIN ulangans ON soals.id_ulangan = ulangans.id
-                WHERE soals.id_ulangan = ?
-            ) jml',
-            [$this->id_ul]
-        );
+    // public function soalKe()
+    // {
+    //     $jmlSoal = DB::select(
+    //         'select COUNT(*) AS jml FROM (
+    //             SELECT soals.id FROM soals
+    //             JOIN ulangans ON soals.id_ulangan = ulangans.id
+    //             WHERE soals.id_ulangan = ?
+    //         ) jml',
+    //         [$this->id_ul]
+    //     );
 
-        $no_soal = 1;
+    //     $no_soal = 1;
 
-        if (intval($jmlSoal[0]->jml) > 0) {
-            $no_soal = intval($jmlSoal[0]->jml) + 1;
-        }
+    //     if (intval($jmlSoal[0]->jml) > 0) {
+    //         $no_soal = intval($jmlSoal[0]->jml) + 1;
+    //     }
 
-        return $no_soal;
+    //     return $no_soal;
 
-        // return $jmlSoal;
-    }
+    //     // return $jmlSoal;
+    // }
 
     // public function loadUl()
     // {
@@ -168,7 +193,7 @@ class SoalUlangan extends Component
         return view('livewire.guru.soal-ulangan', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataUl' => $this->getUlangan($this->id_ul),
-            'no_soal' => $this->soalKe(),
+            // 'no_soal' => $this->soalKe(),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);

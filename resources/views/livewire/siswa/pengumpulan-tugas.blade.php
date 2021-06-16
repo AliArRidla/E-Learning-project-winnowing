@@ -13,13 +13,27 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+
                         
                         {{-- @foreach ($dataAcc as $acc) --}}
                         <div>
+                            <a href="{{ route('dataMateriSiswa', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                                <i class="zmdi zmdi-arrow-left"></i> kembali
+                            </a>
+                            <hr>
                             {{-- @foreach ($dataTugas as $dt) --}}
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title pl-2 pt-2">Deskripsi Tugas</h4>
+                                    {{-- <div> --}}
+                                        <h4 class="card-title pl-2 pt-2">
+                                            
+                                            Deskripsi Tugas
+                                            
+                                        </h4>
+                                        {{-- <span class="float-right"> --}}
+                                            
+                                        {{-- </span> --}}
+                                    {{-- </div> --}}
                                 </div>
                                 <div class="card-body">
                                     <div class="mx-auto d-block">

@@ -40,6 +40,22 @@
                                                     @enderror
                                                 </div>
 
+                                                <div wire:ignore class="form-group">
+                                                    <label for ="content" wire:ignore.self>Deskripsi Materi</label>
+                                                    {{-- <br><small>Deskripsikan Materi</small> --}}
+                                                    <textarea id="content" class="form-control" name="content" wire:model="content" wire:ignore.self>
+                                                    </textarea>
+                                                </div>
+
+                                                @if ($eror)
+                                                    <div class="alert alert-danger" role="alert">
+                                                        Mohon isi <strong>Deskripsi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
+                                                        {{-- {{ $psn }} --}}
+                                                    </div>
+                                                    {{-- <p style="color:red;">{{ $psn }}</p> --}}
+                                                @endif
+
+                                                @if ($file_materi == null)
                                                 <div class="form-group">
                                                     <label>Jenis file apa yang ingin Anda unggah?</label>
                                                     <small>Sisipkan File Materi (opsional).</small>
@@ -96,19 +112,13 @@
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror
                                                 </div>
-                        
-                                                <div class="form-group" wire:ignore>
-                                                    <label for ="content">Deskripsi Materi</label>
-                                                    {{-- <br><small>Deskripsikan Materi</small> --}}
-                                                    <textarea id="content" class="form-control" name="content" wire:model="content">
-                                                    </textarea>
-                                                </div>
-                                                @if ($eror)
-                                                    <p style="color:red;">{{ $psn }}</p>
+                                                @else
+                                                <label for="">Dokumen Tugas</label> <br>
+                                                <button name="delete" id="delete" class="btn btn-danger btn-sm"
+                                                wire:click="file_null">
+                                                    Hapus Dokumen Sebelumnya
+                                                </button><span>&emsp;{{ $file_materi->getClientOriginalName() }}</span>
                                                 @endif
-                                                @error('content')
-                                                    <span id="error-msg">{{ $message }}</span>
-                                                @enderror
                                                 
                                                 <div class="row">
                                                     <div class="col-md-12">

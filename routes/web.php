@@ -31,6 +31,7 @@ use App\Http\Livewire\Guru\ListSoal;
 use App\Http\Livewire\Guru\PengumpulanTugas as GuruPengumpulanTugas;
 use App\Http\Livewire\Guru\PresensiGuru;
 use App\Http\Livewire\Guru\SoalUlangan;
+use App\Http\Livewire\Guru\SoalUlangan2;
 use App\Http\Livewire\Guru\TambahUlangan;
 use App\Http\Livewire\ProfilUser;
 use App\Http\Livewire\ShowPosts;
@@ -126,12 +127,12 @@ Route::middleware(['auth'])->group(function () {
     // ----------- GURU START --------------------------------
     // PRESENSI
     Route::get('/guru/presensi/{nav_dmid}', PresensiGuru::class)->name('presensiGuru');
-    Route::get('/guru/detail-presensi/{id_pres}', ListPresensi::class)->name('listPresensiGuru');
+    Route::get('/guru/detail-presensi/{nav_dmid}/{id_pres}', ListPresensi::class)->name('listPresensiGuru');
     // ULANGAN
     Route::get('/guru/ulangan/{nav_dmid}', TambahUlangan::class)->name('ulanganGuru');
-    Route::get('/guru/soal-ulangan/{id_ul}', SoalUlangan::class)->name('soalGuru');
-    Route::get('/guru/list-soal-ulangan/{id_ul}', ListSoal::class)->name('listSoalGuru');
-    Route::get('/guru/edit-soal-ulangan/{id_ul}/{noc}/{ids}', EditSoal::class)->name('editSoalGuru');
+    Route::get('/guru/soal-ulangan/{nav_dmid}/{id_ul}', SoalUlangan::class)->name('soalGuru');
+    Route::get('/guru/list-soal-ulangan/{nav_dmid}/{id_ul}', ListSoal::class)->name('listSoalGuru');
+    Route::get('/guru/edit-soal-ulangan/{nav_dmid}/{id_ul}/{noc}/{ids}', EditSoal::class)->name('editSoalGuru');
     Route::get('/guru/list-hasil-ulangan/{nav_dmid}/{id_ul}', HasilUjian::class)->name('listHasilGuru');
     // MATERI
     Route::get('/guru/list-materi/{nav_dmid}', DataMateri::class)->name('dataMateri');
@@ -151,7 +152,7 @@ Route::middleware(['auth'])->group(function () {
         return response()->download(public_path('storage/file_tugas/' . $oldtugas));
     })->name('downloadOldTugas');
     // DAFTAR NILAI
-    Route::get('/guru/data-tugas/{nav_dmid}', DaftarNilai::class)->name('daftarNilaiGuru');
+    Route::get('/guru/daftar-nilai-guru/{nav_dmid}', DaftarNilai::class)->name('daftarNilaiGuru');
     // ----------- GURU END --------------------------------
 
     // ----------- SISWA START --------------------------------

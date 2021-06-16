@@ -106,20 +106,20 @@
                                                         <td>
                                                             {{-- {{ $listOrCreate }} --}}
                                                             @if ($listOrCreate[0]->jml == 0)
-                                                            <a href="{{ route('soalGuru', ['id_ul' => $item->ulid]) }}">
+                                                            <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                                                 <button type="button" class="btn btn-success btn-sm">
                                                                     Buat Soal
                                                                 </button>
                                                             </a>
                                                             @else
-                                                            <a href="{{ route('listSoalGuru', ['id_ul' => $item->ulid]) }}">
+                                                            <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                                                 <button type="button" class="btn btn-primary btn-sm">
                                                                     List Soal
                                                                 </button>
                                                             </a>
                                                             @endif
                                                             {{-- <hr> --}}
-                                                            <button type="button" class="btn btn-warning btn-sm"
+                                                            <button type="button" class="btn btn-warning btn-sm mt-1"
                                                             data-toggle="modal" data-target="#mdlEdit"
                                                             wire:click="saveID({{ $item->ulid }})">
                                                                 Edit

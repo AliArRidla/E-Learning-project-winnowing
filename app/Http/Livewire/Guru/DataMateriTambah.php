@@ -15,6 +15,10 @@ class DataMateriTambah extends Component
     public $nav_dmid, $nama_materi, $content, $file_materi;
     public $nama_mapel, $nama_kelas, $eror, $psn, $extensi, $fname;
 
+    protected $messages = [
+        'nama_materi.required' => 'Mohon isi Nama Materi.',
+    ];
+
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
@@ -29,6 +33,11 @@ class DataMateriTambah extends Component
             $this->nama_mapel = $d->nama_mapel;
             $this->nama_kelas = $d->nama_kelas;
         }
+    }
+
+    public function file_null()
+    {
+        $this->file_materi = null;
     }
 
     public function saveMateri()

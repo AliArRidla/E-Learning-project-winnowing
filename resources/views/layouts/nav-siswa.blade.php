@@ -1,10 +1,12 @@
 <!-- HEADER MOBILE-->
+{{-- @if (request()->is('siswa/kerjakan-ulangan/*'))
+@else --}}
 <header class="header-mobile d-block d-lg-none">
     <div class="header-mobile__bar">
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 @auth
-                    <a class="logo" href="{{ route('dashboardSiswa') }}">
+                    <a class="logo" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}">
                         <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
                     </a>
                 @endauth
@@ -21,24 +23,28 @@
             <ul class="navbar-mobile__list list-unstyled">
                 @auth
                     <li class="{{ (request()->is('siswa/dashboard')) ? 'active' : '' }}">
-                        <a href="{{ route('dashboardSiswa') }}" id="dash">
+                        <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
-                    <li>
-                        <a href="{{ route('listPresensiSiswa') }}" id="pres">
+
+                    <li class="{{ (request()->is('siswa/list-presensi') || request()->is('siswa/presensi/*')) ? 'active' : '' }}">
+                        <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('listPresensiSiswa') }}" id="pres">
                             <i class="fas fa-chart-bar"></i>Presensi</a>
                     </li>
                     @foreach ($getNavMapSiswa as $item)
-                    <li class="has-sub">
+                    <li class="has-sub {{ (request()->is('siswa/*/'.$item->dmid) || request()->is('siswa/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
                         <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li class="has-sub">
-                                <a class="js-arrow" href="{{ route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
+
+                            <li class="has-sub {{ (request()->is('siswa/data-materi/'.$item->dmid) 
+                                || request()->is('siswa/det-data-materi/'.$item->dmid.'/*') ||
+                                request()->is('siswa/pengumpulan-tugas/'.$item->dmid.'/*')) ? 'active' : '' }}">
+                                <a class="js-arrow" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Materi dan Tugas</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('siswa/ulangan/'.$item->dmid)) ? 'active' : '' }}">
-                                <a class="js-arrow" href="{{ route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
+                            <li class="has-sub {{ (request()->is('siswa/ulangan/'.$item->dmid) || request()->is('siswa/kerjakan-ulangan/*')) ? 'active' : '' }}">
+                                <a class="js-arrow" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
                         </ul>
@@ -62,24 +68,30 @@
             <ul class="list-unstyled navbar__list" id="nalist">
                 @auth
                     <li class="{{ (request()->is('siswa/dashboard')) ? 'active' : '' }}">
-                        <a href="{{ route('dashboardSiswa') }}" id="dash">
+                        <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}" id="dash">
                             <i class="fas fa-chart-bar"></i>Dashboard</a>
                     </li>
-                    <li>
-                        <a href="{{ route('listPresensiSiswa') }}" id="pres">
+
+                    <li class="{{ (request()->is('siswa/list-presensi') || request()->is('siswa/presensi/*')) ? 'active' : '' }}">
+                        <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('listPresensiSiswa') }}" id="pres">
                             <i class="fas fa-chart-bar"></i>Presensi</a>
                     </li>
+
                     @foreach ($getNavMapSiswa as $item)
-                    <li class="has-sub  {{ (request()->is('siswa/*/'.$item->dmid)) ? 'active' : '' }}">
+                    <li class="has-sub {{ (request()->is('siswa/*/'.$item->dmid) || request()->is('siswa/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
-                            <li class="has-sub">
-                                <a class="js-arrow" href="{{ route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
+
+                            <li class="has-sub {{ (request()->is('siswa/data-materi/'.$item->dmid) 
+                            || request()->is('siswa/det-data-materi/'.$item->dmid.'/*') ||
+                            request()->is('siswa/pengumpulan-tugas/'.$item->dmid.'/*')) ? 'active' : '' }}">
+                                <a class="js-arrow" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dataMateriSiswa', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Materi dan Tugas</a>
                             </li>
+
                             <li class="has-sub {{ (request()->is('siswa/ulangan/'.$item->dmid)) ? 'active' : '' }}">
-                                <a class="js-arrow" href="{{ route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
+                                <a class="js-arrow" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('ulanganSiswa', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
                         </ul>
@@ -90,3 +102,4 @@
         </nav>
     </div>
 </aside>
+{{-- @endif --}}

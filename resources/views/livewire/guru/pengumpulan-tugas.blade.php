@@ -14,6 +14,11 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
 
+                            <a href="{{ route('dataTugas', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                            </a>
+                            <hr>
+
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title pl-2 pt-2">Informasi Tugas</h4>
@@ -246,6 +251,9 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Berikan nilai untuk siswa {{ $name }}</label>
                             <input type="number" class="form-control" id="nilai" name="nilai" wire:model="nilai">
+                            @error('nilai')
+                                <span id="error-msg">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">

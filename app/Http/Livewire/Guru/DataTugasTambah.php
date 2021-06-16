@@ -52,6 +52,11 @@ class DataTugasTambah extends Component
         }
     }
 
+    public function file_null()
+    {
+        $this->file_tugas = null;
+    }
+
     public function saveTugas()
     {
         $this->validate([

@@ -16,7 +16,7 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <div>
-                                        <h2 class="title-1">@yield('title'): {{ $detMat[0]->nama_materi }}</h2>
+                                        <h2 class="title-1">@yield('title'): {{ $nama_materi }}</h2>
                                             <h4>{{ $nama_mapel }} / {{ $nama_kelas }}</h4>
                                     </div>
                                     <div>
@@ -29,20 +29,26 @@
                             </div>
                         </div>
 
+                        <hr>
+                            <a href="{{ route('dataMateri', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                            </a>
+
                         <div class="py-6">
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
                                         @php
-                                            $fn = $detMat[0]->file_materi;
+                                            $fn = $file_materi;
                                         @endphp
-                                        @if ($detMat[0]->file_materi != null)
+                                        @if ($file_materi != null)
                                         Berikut adalah file untuk materi ini:
                                         <a href="{{ route('downloadFileMatLama', ['foldname' => $fn]) }}">{{ $fn }}</a>
-                                        @endif
                                         <hr>
+                                        @endif
+                                        
                                         {{-- Isi Materi: --}}
-                                        {!! $detMat[0]->content !!}
+                                        {!! $content !!}
                                         
                                     </div>
                                 </div>

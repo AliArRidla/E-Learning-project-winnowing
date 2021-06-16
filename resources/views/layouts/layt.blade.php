@@ -52,7 +52,7 @@
     <link href="{{ asset('lms/timepicker/jquery.timepicker.css') }}" rel="stylesheet">
 
     {{-- SUMMERNOTE --}}
-    <link href="{{ asset('lms/vendor/summernote/summernote.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('lms/vendor/summernote/summernote-bs4.css') }}" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
     <link href="{{ asset('lms/css/theme.css') }}" rel="stylesheet" media="all">
@@ -167,7 +167,7 @@
     <script src="{{ asset('lms/timepicker/jquery.timepicker.js') }}"></script>
 
     {{-- summernote --}}
-    <script src="{{ asset('lms/vendor/summernote/summernote.min.js') }}"></script>
+    <script src="{{ asset('lms/vendor/summernote/summernote-bs4.js') }}"></script>
 
     <!-- Main JS-->
     <script src="{{ asset('lms/js/main.js') }}"></script>

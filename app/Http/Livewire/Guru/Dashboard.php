@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    public $countDM = 0;
+    // public $countDM = 0;
 
     public function getAcc($id)
     {
@@ -27,7 +27,7 @@ class Dashboard extends Component
 
     public function countMapel()
     {
-        $dataGuru = DB::select('select * from gurus where user_id = ?', [Auth::user()->id]);
+        $dataGuru = DB::select('select id from gurus where user_id = ?', [Auth::user()->id]);
         foreach ($dataGuru as $key) {
             $idg = $key->id;
         }
@@ -53,12 +53,51 @@ class Dashboard extends Component
 
     public function countKelas()
     {
-        $dataGuru = DB::select('select * from gurus where user_id = ?', [Auth::user()->id]);
+        $dataGuru = DB::select('select id from gurus where user_id = ?', [Auth::user()->id]);
         foreach ($dataGuru as $key) {
             $idg = $key->id;
         }
-        $jmlMapel = DB::table('detail_mapels')->where('id_guru', '=', $idg)->count();
-        return $jmlMapel;
+
+        $jml = DB::select(
+            'select COUNT(*) AS jml FROM (
+            SELECT kelas.nama_kelas FROM detail_mapels 
+            JOIN kelas ON detail_mapels.id_kelas = kelas.id 
+            WHERE detail_mapels.id_guru = ? 
+            GROUP BY kelas.nama_kelas
+        ) jml',
+            [$idg]
+        );
+        return $jml[0]->jml;
+    }
+
+    public function countSiswa()
+    {
+        $dataGuru = DB::select('select id from gurus where user_id = ?', [Auth::user()->id]);
+        foreach ($dataGuru as $key) {
+            $idg = $key->id;
+        }
+
+        $jml = DB::select(
+            'select kelas.id FROM detail_mapels 
+            JOIN kelas ON detail_mapels.id_kelas = kelas.id 
+            WHERE detail_mapels.id_guru = ?',
+            [$idg]
+        );
+
+        $sw = 0;
+        for ($i = 0; $i < count($jml); $i++) {
+            $jmls = DB::select(
+                'select COUNT(*) AS jmls FROM (
+                SELECT siswas.id FROM siswas
+                JOIN kelas ON kelas.id = siswas.id_kelas
+                WHERE kelas.id = ?
+            ) jmls',
+                [$i]
+            );
+            $sw = $sw + intval($jmls[0]->jmls);
+        }
+
+        return $sw;
     }
 
     public function getDMap()
@@ -75,10 +114,6 @@ class Dashboard extends Component
             [Auth::user()->id]
         );
 
-        foreach ($dMap as $k) {
-            $this->countDM++;
-        }
-
         return $dMap;
     }
 
@@ -86,6 +121,8 @@ class Dashboard extends Component
     {
         return view('livewire.guru.dashboard', [
             'jmlMapel' => $this->countMapel(),
+            'jmlKelas' => $this->countKelas(),
+            'jmlSiswa' => $this->countSiswa(),
             'dataAcc' => $this->getAcc(Auth::user()->id),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),

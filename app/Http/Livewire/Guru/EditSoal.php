@@ -10,11 +10,12 @@ use Livewire\Component;
 
 class EditSoal extends Component
 {
-    public $ids, $noc, $soals, $id_ul;
+    public $ids, $noc, $soals, $id_ul, $nav_dmid;
     public $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $kunci_jawaban;
 
-    public function mount($id_ul, $noc, $ids)
+    public function mount($nav_dmid, $id_ul, $noc, $ids)
     {
+        $this->nav_dmid = $nav_dmid;
         $this->id_ul = $id_ul;
         $this->ids = $ids;
         $this->noc = $noc;
@@ -94,7 +95,7 @@ class EditSoal extends Component
             }
         } else {
             $valid = $this->validate([
-                'soal' => 'required',
+                'ed_soal' => 'required',
                 // 'pilA' => 'required',
                 // 'pilB' => 'required',
                 // 'pilC' => 'required',

@@ -9,11 +9,12 @@ use Livewire\Component;
 
 class ListPresensi extends Component
 {
-    public $id_pres, $sid, $dpid, $keterangan;
+    public $id_pres, $sid, $dpid, $keterangan, $nav_dmid;
 
-    public function mount($id_pres)
+    public function mount($nav_dmid, $id_pres)
     {
         $this->id_pres = $id_pres;
+        $this->nav_dmid = $nav_dmid;
     }
 
     public function loadData($sid, $dpid)

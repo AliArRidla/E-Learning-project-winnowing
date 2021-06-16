@@ -98,6 +98,7 @@
                                                     {{-- <p style="color:red;">{{ $psn }}</p> --}}
                                                 @endif
 
+                                                @if ($file_tugas == null)
                                                 <div class="form-group">
                                                     <label>Jenis file apa yang ingin Anda unggah?</label>
                                                     <small>Sisipkan File Tugas (opsional).</small>
@@ -151,6 +152,13 @@
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror
                                                 </div>
+                                                @else
+                                                <label for="">Dokumen Tugas</label> <br>
+                                                <button name="delete" id="delete" class="btn btn-danger btn-sm"
+                                                wire:click="file_null">
+                                                    Hapus Dokumen Sebelumnya
+                                                </button><span>&emsp;{{ $file_tugas->getClientOriginalName() }}</span>
+                                                @endif
                                                 
                                                 <div class="row">
                                                     <div class="col-md-12">

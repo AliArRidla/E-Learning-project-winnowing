@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="{{ route('profilAcc', ['id' => Auth::user()->id]) }}">
+                                        <a href="{{ request()->is('siswa/kerjakan-ulangan/*') ? '#' : route('profilAcc', ['id' => Auth::user()->id]) }}">
                                             <i class="zmdi zmdi-account"></i>Account</a>
                                     </div>
                                 </div>

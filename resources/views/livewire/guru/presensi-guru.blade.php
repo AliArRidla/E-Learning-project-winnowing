@@ -105,7 +105,7 @@
                                                         </td>
                                                         <td>
                                                             <a name="detail" id="detail" class="btn btn-primary"
-                                                                href="{{ route('listPresensiGuru', ['id_pres' => $item->pid]) }}"
+                                                                href="{{ route('listPresensiGuru', ['nav_dmid' => $nav_dmid,'id_pres' => $item->pid]) }}"
                                                                 role="button">
                                                                 <i class="fa fa-search" aria-hidden="true"></i>
                                                             </a>

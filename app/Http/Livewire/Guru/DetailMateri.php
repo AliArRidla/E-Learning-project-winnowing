@@ -9,14 +9,19 @@ use Livewire\Component;
 
 class DetailMateri extends Component
 {
-    public $nav_dmid, $id_mat, $detMat, $dMap, $nama_mapel, $nama_kelas;
+    public $nav_dmid, $id_mat, $nama_mapel, $nama_kelas, $nama_materi, $file_materi, $content;
 
     public function mount($nav_dmid, $id_mat)
     {
         $this->nav_dmid = $nav_dmid;
         $this->id_mat = $id_mat;
 
-        $this->detMat = Materi::find($this->id_mat)->get();
+        $detMat = DB::select('select * from materis where id = ?', [$id_mat]);
+        foreach ($detMat as $dd) {
+            $this->nama_materi = $dd->nama_materi;
+            $this->file_materi = $dd->file_materi;
+            $this->content = $dd->content;
+        }
 
         $dm = DB::select('select m.nama_mapel, k.nama_kelas 
         from detail_mapels as dm 
@@ -70,7 +75,7 @@ class DetailMateri extends Component
         return view('livewire.guru.detail-materi', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             // 'dataMateri' => $this->getMatByID(),
-        ])->layout('layouts.layapp', [
+        ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);
     }

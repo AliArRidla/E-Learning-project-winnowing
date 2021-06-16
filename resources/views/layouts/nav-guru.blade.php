@@ -26,29 +26,37 @@
                     </li>
                     
                     @foreach ($getDMapGuru as $item)
-                    <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/*')) ? 'active' : '' }}">
+                    <li class="has-sub {{ (request()->is('guru/*/'.$item->dmid) || request()->is('guru/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-table"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
                         <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/presensi')) ? 'active' : '' }}">
+
+                            <li class="has-sub {{ (request()->is('guru/presensi/'.$item->dmid) || request()->is('guru/detail-presensi/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
                             </li>
-                            <li class="has-sub">
+
+                            <li class="has-sub {{ (request()->is('guru/list-materi/'.$item->dmid) || request()->is('guru/detail-materi/'.$item->dmid.'/*')
+                            || request()->is('guru/data-materi-tambah/'.$item->dmid) || request()->is('guru/data-materi-edit/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('dataMateri', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Materi</a>
                             </li>
-                            <li class="has-sub">
+
+                            <li class="has-sub {{ (request()->is('guru/data-tugas/'.$item->dmid) || request()->is('guru/detail-tugas/'.$item->dmid.'/*')
+                                || request()->is('guru/data-tugas-tambah/'.$item->dmid) || request()->is('guru/data-tugas-edit/'.$item->dmid.'/*') 
+                                || request()->is('guru/data-pengumpulan-tugas/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('dataTugas', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/ulangan')) ? 'active' : '' }}">
+                            <li class="has-sub {{ (request()->is('guru/ulangan/'.$item->dmid) || request()->is('guru/soal-ulangan/'.$item->dmid.'/*') 
+                                || request()->is('guru/list-soal-ulangan/'.$item->dmid.'/*') || request()->is('guru/edit-soal-ulangan/'.$item->dmid.'/*/*/*')
+                                || request()->is('guru/list-hasil-ulangan/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/daftar-nilai')) ? 'active' : '' }}">
+                            <li class="has-sub {{ (request()->is('guru/daftar-nilai-guru/'.$item->dmid)) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('daftarNilaiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Daftar Nilai</a>
                             </li>
@@ -80,29 +88,38 @@
                     {{-- @php
                         $uriNow = 'guru/'.$item->dmid
                     @endphp --}}
-                    <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/*')) ? 'active' : '' }}">
+                    <li class="has-sub {{ (request()->is('guru/*/'.$item->dmid) || request()->is('guru/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }} -<br>&emsp;&emsp; {{ $item->nama_kelas }}</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/presensi')) ? 'active' : '' }}">
+
+                            <li class="has-sub {{ (request()->is('guru/presensi/'.$item->dmid) || request()->is('guru/detail-presensi/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('presensiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Presensi</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/data-materi') || request()->is('guru/'.$item->dmid.'/data-materi-tambah')) ? 'active' : '' }}">
+
+                            <li class="has-sub {{ (request()->is('guru/list-materi/'.$item->dmid) || request()->is('guru/detail-materi/'.$item->dmid.'/*')
+                            || request()->is('guru/data-materi-tambah/'.$item->dmid) || request()->is('guru/data-materi-edit/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('dataMateri', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Materi</a>
                             </li>
-                            <li class="has-sub">
+
+                            <li class="has-sub {{ (request()->is('guru/data-tugas/'.$item->dmid) || request()->is('guru/detail-tugas/'.$item->dmid.'/*')
+                                || request()->is('guru/data-tugas-tambah/'.$item->dmid) || request()->is('guru/data-tugas-edit/'.$item->dmid.'/*') 
+                                || request()->is('guru/data-pengumpulan-tugas/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('dataTugas', ['nav_dmid' => $item->dmid]) }}">
                                 {{-- <a href="{{ route('dataMateri') }}"> --}}
                                     <i class="fas fa-chart-bar"></i>Tugas</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/ulangan')) ? 'active' : '' }}">
+
+                            <li class="has-sub {{ (request()->is('guru/ulangan/'.$item->dmid) || request()->is('guru/soal-ulangan/'.$item->dmid.'/*') 
+                            || request()->is('guru/list-soal-ulangan/'.$item->dmid.'/*') || request()->is('guru/edit-soal-ulangan/'.$item->dmid.'/*/*/*')
+                            || request()->is('guru/list-hasil-ulangan/'.$item->dmid.'/*')) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('ulanganGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Ulangan</a>
                             </li>
-                            <li class="has-sub {{ (request()->is('guru/'.$item->dmid.'/daftar-nilai')) ? 'active' : '' }}">
+                            <li class="has-sub {{ (request()->is('guru/daftar-nilai-guru/'.$item->dmid)) ? 'active' : '' }}">
                                 <a class="js-arrow" href="{{ route('daftarNilaiGuru', ['nav_dmid' => $item->dmid]) }}">
                                     <i class="fas fa-table"></i>Daftar Nilai</a>
                             </li>
