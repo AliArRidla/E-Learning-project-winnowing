@@ -1,6 +1,6 @@
 @extends('layouts.layauth')
 
-@section('title', 'Register')
+@section('title', 'Daftar')
 
 @section('content')
 {{-- <x-guest-layout> --}}
@@ -19,26 +19,26 @@
 
             <!-- Name -->
             <div class="form-group">
-                <label>Username</label>
-                <input class="au-input au-input--full" type="text" name="name" placeholder="Username">
+                <label>Nama Pengguna</label>
+                <input class="au-input au-input--full" type="text" name="name" placeholder="Nama Pengguna">
             </div>
 
             <!-- Email Address -->
             <div class="form-group">
-                <label>Email Address</label>
-                <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                <label>Alamat E-mail</label>
+                <input class="au-input au-input--full" type="email" name="email" placeholder="Masukkan E-mail Anda">
             </div>
 
             <!-- Password -->
             <div class="form-group">
-                <label>Password</label>
-                <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                <label>Kata Sandi</label>
+                <input class="au-input au-input--full" type="password" name="password" placeholder="Masukkan Kata Sandi Anda">
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
+                <label for="password_confirmation">Konfirmasi Kata Sandi</label>
                 <input id="password_confirmation" class="au-input au-input--full" type="password" name="password_confirmation"
-                placeholder="Password Confirmation">
+                placeholder="Konfirmasi Kata Sandi">
             </div>
 
             <!-- Confirm Password -->
@@ -50,22 +50,22 @@
                                 name="password_confirmation" required />
             </div> --}}
 
-            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">register</button>
+            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Daftar</button>
 
             {{-- <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+                    {{ __('Sudah Daftar?') }}
                 </a>
 
                 <x-button class="ml-4">
-                    {{ __('Register') }}
+                    {{ __('Daftar') }}
                 </x-button>
             </div> --}}
         </form>
         <div class="register-link">
             <p>
-                Already have account?
-                <a href="{{ route('login') }}">Sign In</a>
+                Sudah Punya Akun?
+                <a href="{{ route('login') }}">Daftar</a>
             </p>
         </div>
     {{-- </x-auth-card> --}}

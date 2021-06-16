@@ -1,6 +1,6 @@
 @extends('layouts.layauth')
 
-@section('title', 'Forgot Password')
+@section('title', 'Lupa Kata Sandi')
 
 @section('content')
 
@@ -27,14 +27,14 @@
 
             <!-- Email Address -->
             <div class="form-group">
-                <label>Email Address</label>
-                <input class="au-input au-input--full" type="email" name="email" placeholder="Email" id="email" required autofocus>
+                <label>Alamat E-mail</label>
+                <input class="au-input au-input--full" type="email" name="email" placeholder="Masukkan Alamat E-mail Anda" id="email" required autofocus>
             </div>
 
             <div class="flex items-center justify-end mt-4">
                 {{-- <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Email Password Reset Link</button> --}}
                 <x-button>
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('Pengaturan Ulang Email dan Kata Sandi') }}
                 </x-button>
             </div>
         </form>
