@@ -7,7 +7,7 @@
             <div class="header-mobile-inner">
                 @auth
                     <a class="logo" href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}">
-                        <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin" />
+                        <img src="{{ asset('lms/images/lesgooo.png') }}" alt="SKAGU" />
                     </a>
                 @endauth
                 <button class="hamburger hamburger--slider" type="button">
@@ -60,7 +60,7 @@
 <aside class="menu-sidebar d-none d-lg-block">
     <div class="logo">
         <a href="#">
-            <img src="{{ asset('lms/images/icon/logo.png') }}" alt="Cool Admin" />
+            <img src="{{ asset('lms/images/lesgooo.png') }}" alt="SKAGU" />
         </a>
     </div>
     <div class="menu-sidebar__content js-scrollbar1">

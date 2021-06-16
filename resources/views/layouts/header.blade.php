@@ -85,12 +85,12 @@
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
                                         <a href="{{ request()->is('siswa/kerjakan-ulangan/*') ? '#' : route('profilAcc', ['id' => Auth::user()->id]) }}">
-                                            <i class="zmdi zmdi-account"></i>Account</a>
+                                            <i class="zmdi zmdi-account"></i>Kelola Akun</a>
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
                                     {{-- <a href="#">
-                                        <i class="zmdi zmdi-power"></i>Logout
+                                        <i class="zmdi zmdi-power"></i>Keluar
                                     </a> --}}
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf

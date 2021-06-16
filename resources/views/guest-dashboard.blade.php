@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard Guest - {{ config('app.name') }}</title>
+    <title>Beranda Pengunjung - {{ config('app.name') }}</title>
     <style>
         html,
         body {
@@ -73,7 +73,7 @@
             {{-- <div class="login-wrap"> --}}
             <div class="login-content mt-3">
                 <div>
-                    <a href="{{ route('login') }}" class="btn btn-success float-right"> Login </a>
+                    <a href="{{ route('login') }}" class="btn btn-success float-right"> Masuk </a>
                     <h1>Selamat Datang di LESGO!</h1>
                     <hr>
                 </div>

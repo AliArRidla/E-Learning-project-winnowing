@@ -12,12 +12,12 @@
         </x-slot> --}}
 
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Halo! E-mail verifikasi telah dikirim. Silakan logout terlebih dahulu lalu cek inbox email Anda untuk melakukan konfirmasi!') }}
+            {{ __('Halo! E-mail verifikasi telah dikirim. Silakan logout terlebih dahulu lalu cek kotak masuk email Anda untuk melakukan konfirmasi!') }}
         </div>
 
         @if (session('status') == 'verification-link-sent')
             <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('Link verifikasi baru sudah terkirim ke e-mail yang Anda daftarkan pada halaman registrasi. Silakan cek inbox e-mail Anda!') }}
+                {{ __('Tautan verifikasi baru sudah terkirim ke e-mail yang Anda daftarkan pada halaman registrasi. Silakan cek kotak masuk e-mail Anda!') }}
             </div>
         @endif
 

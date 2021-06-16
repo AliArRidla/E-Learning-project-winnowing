@@ -41,13 +41,13 @@
     </head>
     <body class="animsition">
         <div class="page-wrapper">
-            <div class="page-content--bge5">
+            <!-- <div class="page-content--bge5"> -->
                 <div class="container">
                     <div class="login-wrap">
                         <div class="login-content">
                             <div class="login-logo">
                                 <a href="#">
-                                    <img src="{{ asset('lms/images/icon/logo.png') }}" alt="CoolAdmin">
+                                    <img src="{{ asset('lms/images/lesgooo.png') }}" alt="SKAGU">
                                 </a>
                             </div>
                             <div class="login-form">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            <!-- </div> -->
     
         </div>
     

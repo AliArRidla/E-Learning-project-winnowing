@@ -286,7 +286,7 @@ section {
 /*Page Objects*/
 .page-wrapper {
     overflow: hidden;
-    background: #e5e5e5;
+    background: #ffffff;
     padding-bottom: 8vh;
 }
 
@@ -450,7 +450,7 @@ section {
 }
 
 .login-content {
-    background: #fff;
+    background: #e5e5e5;
     padding: 30px 30px 20px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
