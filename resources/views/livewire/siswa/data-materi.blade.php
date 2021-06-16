@@ -37,10 +37,8 @@
                                         <div class="row">
                                             @if ($dataMateri != null)
                                             @foreach ($dataMateri as $dm)
-                                                {{-- db find bersadarkan materi ini diconteroller--}}
-                                                {{-- foreach buat tugas --}}
                                                 <div class="col-sm-6">
-                                                    <div class="card" style="width: 25rem;">
+                                                    <div class="card" style="width: 25rem; background-color: rgb(245, 245, 245);">
                                                         <div class="card-body">
                                                             <h5 class="card-title">Materi {{ $dm->nama_materi }}</h5>
                                                             <a href="{{ route('materiSiswa', ['nav_dmid' => $nav_dmid, 'id_mats' => $dm->matid]) }}">
