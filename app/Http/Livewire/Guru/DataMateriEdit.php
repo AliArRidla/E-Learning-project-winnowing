@@ -15,6 +15,10 @@ class DataMateriEdit extends Component
     public $nav_dmid, $nama_materi, $content, $file_materi, $old_file_materi;
     public $nama_mapel, $nama_kelas, $eror, $psn, $id_mat, $extensi, $del_psn = false;
 
+    protected $messages = [
+        'nama_materi.required' => 'Mohon isi kolom Judul Materi',
+    ];
+
     public function mount($nav_dmid, $id_mat)
     {
         $this->nav_dmid = $nav_dmid;
@@ -46,7 +50,7 @@ class DataMateriEdit extends Component
 
         if ($this->old_file_materi == null && $this->file_materi == null && $this->content == null) {
             $this->eror = true;
-            $this->psn = "Harus mengisi salah satu!";
+            // $this->psn = "Harus mengisi salah satu!";
         } else {
             if ($this->file_materi == null) {
                 $this->hydrate();
@@ -88,9 +92,14 @@ class DataMateriEdit extends Component
         $this->resetValidation();
     }
 
+    public function file_null()
+    {
+        $this->file_materi = null;
+    }
+
     public function delFileMat()
     {
-        unlink('storage/file-materi/' . $this->old_file_materi);
+        unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/file-materi/' . $this->old_file_materi);
         Materi::find($this->id_mat)->update([
             'file_materi' => null,
         ]);

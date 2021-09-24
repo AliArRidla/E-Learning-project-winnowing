@@ -62,48 +62,48 @@
                                                         $count = 1;
                                                     @endphp
                                                     @foreach ($getSiswa as $item)
-                                                    <tr>
-                                                        <td>{{ $count++ }}</td>
-                                                        <td>{{ $item->name }}</td>
-
-                                                        @foreach ($getTugas as $lt)
-                                                        @php
-                                                            $dTgs = DB::select('select nilai from nilai_tugas
-                                                                where id_tugas = ? and id_siswa = ?', [$lt->id, $item->id]);
-                                                            // $revDTgs = array_reverse($dTgs);
-                                                        @endphp
-                                                        @if ($dTgs != null)
-                                                        @foreach ($dTgs as $lt)
-                                                            @if ($lt->nilai != null)
-                                                            <td>{{ $lt->nilai }}</td>
-                                                            @else
-                                                            <td>-</td>
-                                                            @endif
-                                                        @endforeach
-                                                        @else
-                                                            <td>-</td>
-                                                        @endif
-                                                        @endforeach
-
-                                                        @foreach ($getUlangan as $lu)
-                                                        @php
-                                                            $dUl = DB::select('select nilai from nilai_ulangans
-                                                                where id_ulangan = ? and id_siswa = ?', [$lu->id, $item->id]);
-                                                            // $revDTgs = array_reverse($dTgs);
-                                                        @endphp
-                                                        @if ($dUl != null)
-                                                        @foreach ($dUl as $lt)
-                                                            @if ($lu->nilai != null)
-                                                            <td>{{ $lu->nilai }}</td>
-                                                            @else
-                                                            <td>-</td>
-                                                            @endif
-                                                        @endforeach
-                                                        @else
-                                                            <td>-</td>
-                                                        @endif
-                                                        @endforeach
-                                                    </tr>
+                                                        <tr>
+                                                            <td>{{ $count++ }}</td>
+                                                            <td>{{ $item->name }}</td>
+    
+                                                            @foreach ($getTugas as $lt)
+                                                                @php
+                                                                    $dTgs = DB::select('select nilai from nilai_tugas
+                                                                        where id_tugas = ? and id_siswa = ?', [$lt->id, $item->id]);
+                                                                    // $revDTgs = array_reverse($dTgs);
+                                                                @endphp
+                                                                @if ($dTgs != null)
+                                                                    @foreach ($dTgs as $nlt)
+                                                                        @if ($nlt->nilai != null)
+                                                                            <td>{{ $nlt->nilai }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <td>-</td>
+                                                                @endif
+                                                            @endforeach
+    
+                                                            @foreach ($getUlangan as $lu)
+                                                                @php
+                                                                    $dUl = DB::select('select nilai from nilai_ulangans
+                                                                        where id_ulangan = ? and id_siswa = ?', [$lu->id, $item->id]);
+                                                                    // $revDTgs = array_reverse($dTgs);
+                                                                @endphp
+                                                                @if ($dUl != null)
+                                                                    @foreach ($dUl as $nlu)
+                                                                        @if ($nlu->nilai != null)
+                                                                            <td>{{ $nlu->nilai }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    <td>-</td>
+                                                                @endif
+                                                            @endforeach
+                                                        </tr>
                                                     @endforeach
                                                 </tbody>
                                                 

@@ -122,10 +122,10 @@ class EditSoal extends Component
 
         if ($eSoal) {
             session()->flash('pesan', 'Data Soal berhasil diubah');
-            return redirect(route('listSoalGuru', ['id_ul' => $this->id_ul]));
+            return redirect(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
         } else {
             session()->flash('pesan', 'Data GAGAL diubah');
-            return redirect(route('listSoalGuru', ['id_ul' => $this->id_ul]));
+            return redirect(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
         }
     }
 

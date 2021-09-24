@@ -48,9 +48,9 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="nama_tugas">Nama Tugas</label>
+                                                    <label for="nama_tugas">Judul Tugas</label>
                                                     <input type="text" class="form-control" id="nama_tugas" wire:model="nama_tugas"
-                                                        name="nama_tugas" placeholder="Contoh: Tugas Trigonometri" autofocus>
+                                                        name="nama_tugas" placeholder="Contoh: Tugas Trigonometri">
                                                     @error('nama_tugas')
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror
@@ -85,14 +85,14 @@
                                                 </div>
 
                                                 <div wire:ignore class="form-group">
-                                                    <label for ="deskripsi" wire:ignore.self>Deskripsi Tugas</label>
+                                                    <label for ="deskripsi" wire:ignore.self>Deskripsi / Instruksi Tugas</label>
                                                     <textarea id="deskripsi" class="form-control" name="deskripsi" wire:model="deskripsi" wire:ignore.self>
                                                     </textarea>
                                                 </div>
 
                                                 @if ($eror)
                                                     <div class="alert alert-danger" role="alert">
-                                                        Mohon isi <strong>Deskripsi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
+                                                        Mohon isi <strong>Deskripsi / Instruksi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
                                                         {{-- {{ $psn }} --}}
                                                     </div>
                                                     {{-- <p style="color:red;">{{ $psn }}</p> --}}
@@ -144,7 +144,10 @@
                                                         
                                                         <div x-show="isUploading">
                                                             <progress max="100" x-bind:value="progress"></progress>
-                                                            <div wire:loading wire:target="file_tugas">Mengunggah...</div>
+                                                            <br>
+                                                            <div wire:loading wire:target="file_tugas">
+                                                                <strong><span style="color:red;">Sedang Mengunggah... Mohon Tunggu...</span></strong>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     @endif
@@ -153,10 +156,13 @@
                                                     @enderror
                                                 </div>
                                                 @else
-                                                <label for="">Dokumen Tugas</label> <br>
+                                                <label for="">File Tugas</label> <br>
                                                 <button name="delete" id="delete" class="btn btn-danger btn-sm"
                                                 wire:click="file_null">
-                                                    Hapus Dokumen Sebelumnya
+                                                {{-- @php
+                                                    $ft = substr($file_tugas->getClientOriginalName(), 14);
+                                                @endphp --}}
+                                                    Hapus File Sebelumnya
                                                 </button><span>&emsp;{{ $file_tugas->getClientOriginalName() }}</span>
                                                 @endif
                                                 

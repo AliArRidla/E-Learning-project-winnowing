@@ -9,12 +9,23 @@ use Livewire\Component;
 
 class ListPresensi extends Component
 {
-    public $id_pres, $sid, $dpid, $keterangan, $nav_dmid;
+    public $id_pres, $sid, $dpid, $keterangan, $nav_dmid, $tgl;
 
-    public function mount($nav_dmid, $id_pres)
+    public function mount($nav_dmid, $id_pres, $tgl)
     {
         $this->id_pres = $id_pres;
         $this->nav_dmid = $nav_dmid;
+        $this->tgl = $tgl;
+    }
+
+    public function getSiswa()
+    {
+        $gs = DB::select('select s.id as sid, u.name from siswas as s 
+        join users as u on u.id = s.user_id
+        join kelas as k on k.id = s.id_kelas
+        join detail_mapels as dm on dm.id_kelas = s.id_kelas
+        where dm.id = ? order by u.name asc', [$this->nav_dmid]);
+        return $gs;
     }
 
     public function loadData($sid, $dpid)
@@ -43,16 +54,58 @@ class ListPresensi extends Component
                 'waktu_absen' => $datenow,
             ]);
             if ($cpres) {
-                return redirect(route('listPresensiGuru', ['id_pres' => $this->id_pres]));
+                return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
+                session()->flash('pesan', 'Data berhasil diubah');
+            } else {
+                return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
+                session()->flash('pesan', 'Data GAGAL diubah');
+            }
+        } else {
+            return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
+            session()->flash('pesan', 'Data GAGAL diubah');
+        }
+    }
+
+    public function addDetPres()
+    {
+        $datenow = date('Y-m-d H:i');
+        $val = $this->validate([
+            'keterangan' => 'required',
+        ]);
+
+        if ($val) {
+            // $map = Mapel::find($this->mid)->update(['nama_mapel' => $this->nama_mapel]);
+            // $dp = new DetailPresensi();
+            // $dp->timestamps = false;
+            // $dp->id_presensi
+            $apres = DetailPresensi::create([
+                'id_presensi' => $this->id_pres,
+                'id_siswa' => $this->sid,
+                'keterangan' => $this->keterangan,
+                'waktu_absen' => $datenow,
+                'created_at' => date('Y-m-d H:i:s', $this->tgl),
+            ]);
+            if ($apres) {
+                return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
                 session()->flash('pesan', 'Data berhasil ditambah');
             } else {
-                return redirect(route('listPresensiGuru', ['id_pres' => $this->id_pres]));
+                return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
                 session()->flash('pesan', 'Data GAGAL ditambah');
             }
         } else {
-            return redirect(route('listPresensiGuru', ['id_pres' => $this->id_pres]));
+            return redirect(route('listPresensiGuru', ['nav_dmid' => $this->nav_dmid,'id_pres' => $this->id_pres, 'tgl' => $this->tgl]));
             session()->flash('pesan', 'Data GAGAL ditambah');
         }
+    }
+
+    public function saveIdSiswa($sid)
+    {
+        $this->sid = $sid;
+    }
+
+    public function nullSID()
+    {
+        $this->sid = null;
     }
 
     public function getPres()
@@ -125,6 +178,7 @@ class ListPresensi extends Component
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataDetPres' => $this->getDetPres(),
             'dataPres' => $this->getPres(),
+            'dataSiswa' => $this->getSiswa(),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);

@@ -59,6 +59,12 @@
                             </div>
                         </div>
 
+                        <hr>
+                        <a href="{{ route('listPresensiSiswa') }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                            <i class="zmdi zmdi-arrow-left"></i>Kembali
+                        </a>
+                        {{-- <hr> --}}
+
                     <div class="py-6">
                         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -122,7 +128,7 @@
                                                         $sid = $ids[0]->id;
                                                         $std = date('Y-m-d', $startdate);
                                                         $cekPres = DB::select('select * from detail_presensis where id_siswa = ?
-                                                        AND id_presensi = ? AND date(waktu_absen) = ?', [$sid, $id_pres, $std]);
+                                                        AND id_presensi = ? AND date(created_at) = ?', [$sid, $id_pres, $std]);
                                                         @endphp
                                                             @if ($cekPres == null)
                                                             -
@@ -141,7 +147,7 @@
                                                                     $sid = $ids[0]->id;
                                                                     $std = date('Y-m-d', $startdate);
                                                                     $cekPres = DB::select('select * from detail_presensis where id_siswa = ?
-                                                                    AND id_presensi = ? AND date(waktu_absen) = ?', [$sid, $id_pres, $std]);
+                                                                    AND id_presensi = ? AND date(created_at) = ?', [$sid, $id_pres, $std]);
                                                                 @endphp
                                                                     @if ($cekPres == null)
                                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -150,26 +156,11 @@
                                                                     </button>
                                                                     @else
                                                                     @foreach ($cekPres as $ic)
-                                                                        {{ $ic->keterangan }}
+                                                                        -
                                                                     @endforeach
                                                                     @endif
                                                                 @endif
                                                             @endif
-                                                        {{-- @elseif (date("Y-m-d", $startdate) < date("Y-m-d"))
-                                                        @php
-                                                        $ids = DB::select('select id from siswas where user_id = ?', [Auth::user()->id]);
-                                                        $sid = $ids[0]->id;
-                                                        $std = date('Y-m-d', $startdate);
-                                                        $cekPres = DB::select('select * from detail_presensis where id_siswa = ?
-                                                        AND id_presensi = ? AND date(waktu_absen) = ?', [$sid, $id_pres, $std]);
-                                                        @endphp
-                                                            @if ($cekPres == null)
-                                                            -
-                                                            @else
-                                                            @foreach ($cekPres as $ic)
-                                                            {{ $ic->keterangan }}
-                                                            @endforeach
-                                                            @endif --}}
                                                         @endif
                                                     </td>
                                                     </tr>
@@ -239,7 +230,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Tutup</button>
                         <button type="button" class="btn btn-primary" wire:click="addPresensi()">Catat</button>
                     </div>
                 </form>

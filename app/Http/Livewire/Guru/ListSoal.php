@@ -18,9 +18,26 @@ class ListSoal extends Component
 
     public function getSoal()
     {
+        // join 2 tabel, bisa ngga ? ingin  ya me return soal pilgan dan essays dengan id ulangan yang sama 
         $data = DB::select('select * from soals where id_ulangan = ?', [$this->id_ul]);
+        // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // $data = DB::select('select * from soals 
+        // INNER JOIN ulangans on soals.id_ulangan = ulangans.id
+        // INNER JOIN soal_essays on soal_essays.id_ulangan = ulangans.id 
+        // where soals.id_ulangan = soal_essays.id_ulangan' );
+        // var_dump($this->id_ul);
+
+        // $data = DB::select('select * from ulangan
+        // INNER JOIN soals on soals.id_ulangan = ulangans.id
+        // INNER JOIN soal_essays on os where active = ?', []);
         return $data;
     }
+
+    public function getSoalEssay(){
+        $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        return $dataEssay;
+    }
+
 
     public function getDetUlangan($id_ul)
     {
@@ -106,6 +123,7 @@ class ListSoal extends Component
             // 'dataMapel' => $this->getMapel(),
             'dataDetUl' => $this->getDetUlangan($this->id_ul),
             'dataSoal' => $this->getSoal(),
+            'dataSoalEssay' => $this->getSoalEssay(),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);

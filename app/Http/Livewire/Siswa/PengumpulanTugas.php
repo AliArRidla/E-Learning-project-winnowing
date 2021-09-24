@@ -14,7 +14,7 @@ class PengumpulanTugas extends Component
     public $nav_dmid, $id_tgs, $id_sis;
     public $nama_tugas, $file_tugas, $tanggal, $content_tugas;
     public $file_tgs_siswa, $old_tgs_siswa, $content_siswa, $id_nt, $nilai;
-    public $extensi, $del_psn, $fname;
+    public $extensi, $del_psn, $fname, $eror = false;
 
     public function mount($nav_dmid, $id_tgs)
     {
@@ -44,7 +44,7 @@ class PengumpulanTugas extends Component
             //  $this->cek_nilai[0]->id;
             $nt = NilaiTugas::find($cek_nilai[0]->id);
             $this->nilai = $nt['nilai'];
-            $this->file_tgs_siswa = $nt['fileTgs_siswa'];
+            // $this->file_tgs_siswa = $nt['fileTgs_siswa'];
             $this->old_tgs_siswa = $nt['fileTgs_siswa'];
             $this->content_siswa = $nt['contentSiswa'];
             $this->id_nt = $nt['id'];
@@ -57,38 +57,68 @@ class PengumpulanTugas extends Component
 
     public function saveTugasSiswa()
     {
-        // dd($this->file_tgs_siswa, $this->content_siswa);
-        $this->validate([
-            'file_tgs_siswa' => 'required',
-        ]);
-
-        // if ($this->file_materi != null) {
-        $ori = $this->file_tgs_siswa->getClientOriginalName();
-        $this->fname = uniqid() . '_' . $ori;
-        // }
-
-        $cNT = NilaiTugas::create([
-            'id_tugas' => $this->id_tgs,
-            'id_siswa' => $this->id_sis,
-            'fileTgs_siswa' => $this->fname,
-            'contentSiswa' => $this->content_siswa,
-        ]);
-
-        if ($cNT) {
-            $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
-            session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
-            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
-        } else {
-            session()->flash('pesan', 'Dokumen Tugas GAGAL diunggah');
-            return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+        if ($this->file_tgs_siswa != null){
+            // dd($this->file_tgs_siswa, $this->content_siswa);
+            // $this->validate([
+            //     'file_tgs_siswa' => 'required',
+            // ]);
+    
+            // if ($this->file_materi != null) {
+            $ori = $this->file_tgs_siswa->getClientOriginalName();
+            $this->fname = uniqid() . '_' . $ori;
+            // }
+    
+            $cNT = NilaiTugas::create([
+                'id_tugas' => $this->id_tgs,
+                'id_siswa' => $this->id_sis,
+                'fileTgs_siswa' => $this->fname,
+                'contentSiswa' => $this->content_siswa,
+            ]);
+    
+            if ($cNT) {
+                $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
+                session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
+                return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+            } else {
+                session()->flash('pesan', 'Dokumen Tugas GAGAL diunggah');
+                return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+            }
+        } else if ($this->content_siswa != null && $this->file_tgs_siswa == null){
+            // dd($this->file_tgs_siswa, $this->content_siswa);
+            // $this->validate([
+            //     'file_tgs_siswa' => 'required',
+            // ]);
+    
+            // if ($this->file_materi != null) {
+            // $ori = $this->file_tgs_siswa->getClientOriginalName();
+            // $this->fname = uniqid() . '_' . $ori;
+            // }
+    
+            $cNT = NilaiTugas::create([
+                'id_tugas' => $this->id_tgs,
+                'id_siswa' => $this->id_sis,
+                // 'fileTgs_siswa' => $this->fname,
+                'contentSiswa' => $this->content_siswa,
+            ]);
+    
+            if ($cNT) {
+                // $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
+                session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
+                return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+            } else {
+                session()->flash('pesan', 'Dokumen Tugas GAGAL diunggah');
+                return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
+            }
+        } else if ($this->content_siswa == null && $this->file_tgs_siswa == null){
+            $this->eror = true;
         }
     }
 
     public function updateTugasSiswa()
     {
-        $this->validate([
-            'file_tgs_siswa' => 'required',
-        ]);
+        // $this->validate([
+        //     'file_tgs_siswa' => 'required',
+        // ]);
 
         if ($this->file_tgs_siswa == null) {
             $this->fname = $this->old_tgs_siswa;
@@ -107,6 +137,7 @@ class PengumpulanTugas extends Component
         if ($uNT) {
             if ($this->file_tgs_siswa != null) {
                 $this->file_tgs_siswa->storeAs('tugas_siswa', $this->fname, 'public');
+                // unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/tugas_siswa/' . $this->old_tgs_siswa);
             }
             session()->flash('pesan', 'Dokumen Tugas Anda berhasil diunggah');
             return redirect(route('tugasSiswa', ['nav_dmid' => $this->nav_dmid, 'id_tgs' => $this->id_tgs]));
@@ -127,9 +158,9 @@ class PengumpulanTugas extends Component
         NilaiTugas::find($this->id_nt)->update([
             'fileTgs_siswa' => null,
         ]);
-        unlink('storage/tugas_siswa/' . $this->old_tgs_siswa);
+        unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/tugas_siswa/' . $this->old_tgs_siswa);
         $this->old_tgs_siswa = null;
-        $this->file_tgs_siswa = null;
+        // $this->file_tgs_siswa = null;
         $this->del_psn = true;
     }
 

@@ -18,7 +18,7 @@
                                 <div class="overview-wrap">
                                     @if ($dataMapel != null)
                                     @foreach ($dataMapel as $i)
-                                    <h2 class="title-1">List Ulangan {{ $i->nama_kelas }} - {{ $i->nama_mapel }}</h2>
+                                    <h2 class="title-1">Daftar Ulangan {{ $i->nama_kelas }} - {{ $i->nama_mapel }}</h2>
                                     {{-- <button wire:click="ddMee">DDME</button> --}}
                                         {{-- <option value="{{ $i->dmid }}">{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</option> --}}
                                     @endforeach
@@ -114,7 +114,7 @@
                                                             @else
                                                             <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                                                 <button type="button" class="btn btn-primary btn-sm">
-                                                                    List Soal
+                                                                    Daftar Soal
                                                                 </button>
                                                             </a>
                                                             @endif
@@ -131,7 +131,7 @@
                                                             <button name="delete" id="delete" class="btn btn-danger btn-sm"
                                                                 data-toggle="modal" data-target="#mdlDelUlaGuru"
                                                                 wire:click="saveID({{ $item->ulid }})">
-                                                                Delete
+                                                                Hapus
                                                                 {{-- <i class="fa fa-trash" aria-hidden="true"></i> --}}
                                                             </button>
                                                         </td>
@@ -182,7 +182,12 @@
                                 <div class="card-body card-block">
                                         <div class="form-group">
                                             <label for="tujuan" class="form-control-label">Tujuan</label>
-                                            <select name="tujuan" id="tujuan" class="form-control" wire:model.debounced.800ms="tujuan" disabled>
+                                            @if ($dataMapel != null)
+                                            @foreach ($dataMapel as $i)
+                                            <h3>{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</h3>
+                                            @endforeach
+                                            @endif
+                                            <select name="tujuan" id="tujuan" class="form-control" wire:model.debounced.800ms="tujuan" hidden>
                                                 @if ($dataMapel != null)
                                                 @foreach ($dataMapel as $i)
                                                 <option value="{{ $i->dmid }}">{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</option>
@@ -193,6 +198,7 @@
                                             <span id="error-msg">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <hr>
                                         <div class="form-group">
                                             <label for="judul_ulangan">Judul Ulangan</label>
                                             <input wire:model.defer="judul_ulangan" type="text"  id="judul_ulangan"
@@ -213,7 +219,7 @@
                                                 </label>
                                                 <div>
                                                     <small>Jika diaktifkan maka Anda yang akan menetapkan poin dari setiap soal.</small><br>
-                                                    <small><strong>Jika nonaktif maka akan digunakan rumus default: 100/jumlah soal x jumlah jawaban benar</strong></small>
+                                                    <small><strong>Jika nonaktif maka akan digunakan rumus sistem: 100/jumlah soal x jumlah jawaban benar</strong></small>
                                                 </div>
                                             </div>
                                             @error('is_poin')
@@ -314,7 +320,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-success btn-md float-right" wire:click="createUlangan()">
-                                        <i class="icofont-check"></i> Submit
+                                        <i class="icofont-check"></i> Simpan
                                     </button>
                                 </div>
                             </div>
@@ -326,12 +332,14 @@
         </div>
 
         <!-- Modal delete jurusan -->
-        <div wire:ignore.self class="modal fade" id="mdlDelUlaGuru" tabindex="-1" aria-labelledby="mdlDelUlaGuruLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div wire:ignore.self class="modal fade" id="mdlDelUlaGuru" data-backdrop="static" data-keyboard="false"
+            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
+                @if ($ulid != null)
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mdlDelUlaGuruLabel">Delete Confirmation {{ $ulid }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="mdlDelUlaGuruLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -344,25 +352,31 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger mr-auto" wire:click="delUl({{ $ulid }})">Yakin!</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="allNull">Tidak</button>
                 </div>
+                @else
+                <div class="modal-body">
+                    <p>Mohon Tunggu... Sedang memuat</p>
+                </div>
+                @endif
             </div>
             </div>
         </div>
 
         <!-- Modal edit -->
-        <div wire:ignore.self class="modal fade" id="mdlEdit" tabindex="-1" aria-labelledby="mdlEditLabel" aria-hidden="true">
+        <div wire:ignore.self class="modal fade" id="mdlEdit" data-backdrop="static" data-keyboard="false"
+            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
+                {{-- @if ($ulid != null) --}}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mdlEditLabel">Edit Ulangan {{ $ulid }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="reload()">
+                    <h5 class="modal-title" id="mdlEditLabel">Edit Ulangan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-
+                        @if ($emjudul_ulangan != null)
                         <div class="form-group">
                             <label for="emjudul_ulangan">Judul Ulangan</label>
                             <input wire:model.defer="emjudul_ulangan" type="text"  id="emjudul_ulangan"
@@ -372,6 +386,11 @@
                             <span id="error-msg">{{ $message }}</span>
                             @enderror
                         </div>
+                        @else
+                        <div class="form-group">
+                            <label for="emjudul_ulangan">Sedang Memuat...</label>
+                        </div>
+                        @endif
                         <div class="form-group">
                             <label for="emtwaktu-mulai" class="form-control-label">Waktu Mulai</label>
                             <input wire:ignore type="text" name="emtwaktu_mulai" id="emtwaktu_mulai"
@@ -398,6 +417,7 @@
                                 <span style="color:red">{{ $emmsg }}</span>
                             @endif
                         </div>
+                        @if ($emtgl_ulangan != null)
                         <div class="row form-group">
                             <div class="col-md-9 col-sm-12">
                             <label for="hari-absen" class="form-control-label">Tanggal Ulangan</label>
@@ -413,15 +433,73 @@
                                 @enderror
                             </div>
                         </div>
-                        
-                    </form>
+                        @else
+                        <div class="row form-group">
+                            <div class="col-md-9 col-sm-12">
+                            <label for="hari-absen" class="form-control-label">Sedang Memuat...</label>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                            </div>
+                            <div class="col-md-11 col-sm-12">
+                            </div>
+                        </div>
+                        @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" wire:click="reload()">Tidak</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" wire:click="allNull()">Tidak</button>
                     <button type="button" class="btn btn-warning" wire:click="editUl({{ $ulid }})">Edit</button>
                 </div>
+                <script>
+                    document.addEventListener('livewire:load', function () {
+                        // $(document).ready(function() {
+                        $('#emtwaktu_mulai').timepicker({
+                            timeFormat: 'HH:mm',
+                            interval: 5,
+                            minTime: '00',
+                            maxTime: '11:59pm',
+                            defaultTime: '11',
+                            startTime: '10:00',
+                            dynamic: false,
+                            dropdown: true,
+                            scrollbar: true,
+                            zindex: '9999',
+                            change: function(time) {
+                                var x = $("#emtwaktu_mulai").val();
+                                var el = document.getElementById('mtwaktu');
+                                el.value = x;
+                                el.dispatchEvent(new Event('input'));
+                            }
+                        });
+            
+                        $('#emtwaktu_selesai').timepicker({
+                            timeFormat: 'HH:mm',
+                            interval: 5,
+                            minTime: '00',
+                            maxTime: '11:59pm',
+                            defaultTime: '11',
+                            startTime: '10:00',
+                            dynamic: false,
+                            dropdown: true,
+                            scrollbar: true,
+                            zindex: '9999',
+                            change: function(time) {
+                                var x = $("#emtwaktu_selesai").val();
+                                var el = document.getElementById('mtwaktus');
+                                el.value = x;
+                                el.dispatchEvent(new Event('input'));
+                            }
+                        });
+                    // });
+                    });
+                </script>
+                {{-- @else
+                <div class="modal-body">
+                    <p>Mohon Tunggu... Sedang memuat</p>
+                </div>
+                @endif --}}
             </div>
-            @push('scripts')
+
+            {{-- @push('scripts')
             <script>
                 $(document).ready(function() {
                     $('#emtwaktu_mulai').timepicker({
@@ -466,7 +544,7 @@
                     // elm.dispatchEvent(new Event('change'));
                 });
             </script>
-            @endpush
+            @endpush --}}
             </div>
         </div>
 

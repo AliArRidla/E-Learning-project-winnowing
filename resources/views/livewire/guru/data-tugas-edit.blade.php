@@ -48,7 +48,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="nama_tugas">Nama Tugas</label>
+                                                    <label for="nama_tugas">Judul Tugas</label>
                                                     <input type="text" class="form-control" id="nama_tugas" wire:model="nama_tugas"
                                                         name="nama_tugas" placeholder="Contoh: Tugas Trigonometri" autofocus>
                                                     @error('nama_tugas')
@@ -85,7 +85,7 @@
                                                 </div>
 
                                                 <div wire:ignore class="form-group">
-                                                    <label for ="ed_deskripsi" wire:ignore.self>Deskripsi Tugas</label>
+                                                    <label for ="ed_deskripsi" wire:ignore.self>Deskripsi / Instruksi Tugas</label>
                                                     <textarea id="ed_deskripsi" class="form-control" name="ed_deskripsi" wire:model="ed_deskripsi" wire:ignore.self>
                                                         {!! $ed_deskripsi !!}
                                                     </textarea>
@@ -93,12 +93,13 @@
 
                                                 @if ($eror)
                                                     <div class="alert alert-danger" role="alert">
-                                                        Mohon isi <strong>Deskripsi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
+                                                        Mohon isi <strong>Deskripsi / Instruksi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
                                                         {{-- {{ $psn }} --}}
                                                     </div>
                                                     {{-- <p style="color:red;">{{ $psn }}</p> --}}
                                                 @endif
 
+                                                @if ($file_tugas == null)
                                                 @if ($oldTugas == null)
                                                 <div class="form-group">
                                                     {{-- <label for="file_tugas">File Materi</label> --}}
@@ -145,7 +146,10 @@
                                                         @endif
                                                         <div x-show="isUploading">
                                                             <progress max="100" x-bind:value="progress"></progress>
-                                                            <div wire:loading wire:target="file_tugas">Mengunggah...</div>
+                                                            <br>
+                                                            <div wire:loading wire:target="file_tugas">
+                                                                <strong><span style="color:red;">Sedang Mengunggah... Mohon Tunggu...</span></strong>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     @endif
@@ -156,14 +160,23 @@
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror
                                                 </div>
-                                                @endif
-                                                @if ($oldTugas != null && $del_psn == false)
+                                                @elseif ($oldTugas != null && $del_psn == false)
                                                     <button name="delete" id="delete" class="btn btn-danger btn-sm" 
                                                     data-toggle="modal" data-target="#mdlDelTgs">
                                                         Hapus File Sebelumnya
                                                     </button>
+                                                    @php
+                                                        $oft = substr($oldTugas, 14);
+                                                    @endphp
                                                     <br>
-                                                    <span>Berikut adalah file yang sebelumnya: <br><a href="{{ route('downloadOldTugas', ['oldtugas' => $oldTugas]) }}">{{ $oldTugas }}</a></span>
+                                                    <span>Berikut adalah file yang sebelumnya: <br><a href="{{ route('downloadOldTugas', ['oldtugas' => $oldTugas]) }}">{{ $oft }}</a></span>
+                                                @endif
+                                                @elseif ($file_tugas != null)
+                                                <label for="">File Tugas</label> <br>
+                                                <button name="delete" id="delete" class="btn btn-danger btn-sm"
+                                                wire:click="file_null">
+                                                    Hapus File Sebelumnya
+                                                </button><span>&emsp;{{ $file_tugas->getClientOriginalName() }}</span>
                                                 @endif
                                                 
                                                 <div class="row">
@@ -196,7 +209,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="mdlDelTgsLabel">Delete Confirmation</h5>
+                            <h5 class="modal-title" id="mdlDelTgsLabel">Konfirmasi Hapus</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -205,7 +218,10 @@
                             @if ($del_psn)
                             <span style="color:red;">File lama berhasil dihapus!</span>
                             @else
-                            Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file tugas <strong>{{ $oldTugas }}</strong>?
+                            @php
+                                $oft = substr($oldTugas, 14);
+                            @endphp
+                            Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file tugas <strong>{{ $oft }}</strong>?
                             @endif
                         </div>
                         <div class="modal-footer">

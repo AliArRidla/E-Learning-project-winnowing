@@ -87,9 +87,71 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="py-6">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 bg-white border-b border-gray-200">
+                                        <h3 class="text-center" style="color:#5c5b5b !important;">5 Siswa dengan Nilai Terendah</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach ($dMap as $item)
+                        <div class="py-6">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 bg-white border-b border-gray-200">
+                                        <h4 class="text-center" style="color:#5c5b5b !important;">{{ $item->nama_mapel }} - {{ $item->nama_kelas }}</h4>
+                                        <br>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nama Siswa</th>
+                                                    <th scope="col">Nilai</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @php
+                                                $n_tugas = DB::table('nilai_tugas')
+                                                            ->join('tugas', 'tugas.id', '=', 'nilai_tugas.id_tugas')
+                                                            ->join('materis', 'materis.id', '=', 'tugas.id_materi')
+                                                            ->join('detail_mapels', 'detail_mapels.id', '=', 'materis.id_detMapel')
+                                                            ->join('siswas', 'siswas.id', '=', 'nilai_tugas.id_siswa')
+                                                            ->join('users', 'users.id', '=', 'siswas.user_id')
+                                                            ->where('detail_mapels.id', '=', $item->dmid)
+                                                            ->orderBy('nilai_tugas.nilai', 'asc')
+                                                            ->select('users.name', 'nilai_tugas.nilai')
+                                                            ->limit(5)
+                                                            ->get();
+                                                $count_nt = 1;
+                                            @endphp
+                                            @forelse ($n_tugas as $i)
+                                                <tr>
+                                                    <th scope="row">{{ $count_nt++ }}</th>
+                                                    <td>{{ $i->name }}</td>
+                                                    @if ($i->nilai != null)
+                                                    <td>{{ $i->nilai }}</td>
+                                                    @else
+                                                    <td><span style="color:red;">belum dinilai</span></td>
+                                                    @endif
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3">Data Belum Tersedia</td>
+                                                </tr>
+                                            @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                         
-                        
-                        <footer>
+                        {{-- <footer>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="copyright">
@@ -98,7 +160,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </footer>
+                        </footer> --}}
                     </div>
                 </div>
             </div>

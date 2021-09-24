@@ -15,7 +15,7 @@ class SoalUlangan extends Component
 
     // public $id_ul, $pilgan, $intPoin;
     public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $kunci_jawaban, $no_soal, $simpan;
-    public $nav_dmid;
+    public $nav_dmid, $vld=false;
 
     public function mount($nav_dmid, $id_ul)
     {
@@ -48,18 +48,16 @@ class SoalUlangan extends Component
     {
         $pn = $this->getUlangan($this->id_ul);
         if ($pn['is_poin'] == '1') {
-            $valid = $this->validate([
-                'ed_soal' => 'required',
-                'pilA' => 'required',
-                'pilB' => 'required',
-                'pilC' => 'required',
-                'pilD' => 'required',
-                'pilE' => 'required',
-                'kunci_jawaban' => 'required',
-                'poin' => 'required'
-            ]);
+            
+            if ($this->ed_soal == null || $this->pilA == null || $this->pilB == null 
+            || $this->pilC == null || $this->pilD == null || $this->pilE == null 
+            || $this->kunci_jawaban == null || $this->poin == null) {
+                $this->vld = false;
+            } else {
+                $this->vld = true;
+            }
 
-            if ($valid) {
+            if ($this->vld == true) {
                 $this->hydrate();
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->kunci_jawaban, $this->poin);
                 $cSoal = Soal::create([
@@ -73,19 +71,22 @@ class SoalUlangan extends Component
                     'kunci_jawaban' => $this->kunci_jawaban,
                     'poin' => $this->poin,
                 ]);
+            } else {
+                // return reload
+                session()->flash('errpesan', 'Data Soal nomor '.$this->no_soal.' GAGAL ditambahkan! Mohon isi semua kolom!');
+                return redirect()->to(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
             }
         } else {
-            $valid = $this->validate([
-                'ed_soal' => 'required',
-                'pilA' => 'required',
-                'pilB' => 'required',
-                'pilC' => 'required',
-                'pilD' => 'required',
-                'pilE' => 'required',
-                'kunci_jawaban' => 'required',
-            ]);
-
-            if ($valid) {
+            
+            if ($this->ed_soal == null || $this->pilA == null || $this->pilB == null 
+            || $this->pilC == null || $this->pilD == null || $this->pilE == null 
+            || $this->kunci_jawaban == null) {
+                $this->vld = false;
+            } else {
+                $this->vld = true;
+            }
+            
+            if ($this->vld == true) {
                 $this->hydrate();
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->kunci_jawaban);
                 $cSoal = Soal::create([
@@ -98,6 +99,10 @@ class SoalUlangan extends Component
                     'pilihan_e' => $this->pilE,
                     'kunci_jawaban' => $this->kunci_jawaban,
                 ]);
+            } else {
+                // return reload
+                session()->flash('errpesan', 'Data Soal nomor '.$this->no_soal.' GAGAL ditambahkan! Mohon isi semua kolom!');
+                return redirect()->to(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
             }
         }
 
@@ -106,11 +111,11 @@ class SoalUlangan extends Component
             // $this->emit('sumDestroy');
             // if ($this->simpan == false) {
             session()->flash('pesan', 'Data Soal berhasil ditambah');
-            return redirect()->to(route('listSoalGuru', ['id_ul' => $this->id_ul]));
+            return redirect()->to(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
             // }
         } else {
-            session()->flash('pesan', 'Data GAGAL ditambah');
-            return redirect()->to(route('listSoalGuru', ['id_ul' => $this->id_ul]));
+            session()->flash('errpesan', 'Data GAGAL ditambah');
+            return redirect()->to(route('listSoalGuru', ['nav_dmid' => $this->nav_dmid, 'id_ul' => $this->id_ul]));
         }
     }
 

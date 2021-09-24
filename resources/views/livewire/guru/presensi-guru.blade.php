@@ -1,4 +1,4 @@
-@section('title', 'Tambah Presensi')
+@section('title', 'Presensi')
 <main>
     <div>
         {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">List Presensi - {{ $loadName[0]->nama_mapel }} / {{ $loadName[0]->nama_kelas }}</h2>
+                                    <h2 class="title-1">Daftar Presensi - {{ $loadName[0]->nama_mapel }} / {{ $loadName[0]->nama_kelas }}</h2>
                                     {{-- @foreach ($dataAbsen as $item) --}}
                                     {{-- @if ($dataAbsen != null)
                                     <h2 class="title-1">List Presensi - {{ $dataAbsen[0]->nama_mapel }} / {{ $dataAbsen[0]->nama_kelas }}</h2>
@@ -105,13 +105,14 @@
                                                         </td>
                                                         <td>
                                                             <a name="detail" id="detail" class="btn btn-primary"
-                                                                href="{{ route('listPresensiGuru', ['nav_dmid' => $nav_dmid,'id_pres' => $item->pid]) }}"
+                                                                href="{{ route('daftarPresensiGuru', ['nav_dmid' => $nav_dmid,'id_pres' => $item->pid]) }}"
                                                                 role="button">
-                                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                                                Lihat Presensi
                                                             </a>
+                                                            <hr>
                                                             <button name="delete" id="delete" class="btn btn-danger" wire:click="saveID({{ $item->pid }})"
                                                                 data-toggle="modal" data-target="#mdlDelPresGuru">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                Hapus Presensi
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -153,7 +154,12 @@
                                 <div class="card-body card-block">
                                         <div class="form-group">
                                             <label for="tujuan" class="form-control-label">Tujuan</label>
-                                            <select name="tujuan" id="tujuan" class="form-control" wire:model.debounced.800ms="tujuan" disabled>
+                                            @if ($dataMapel != null)
+                                            @foreach ($dataMapel as $i)
+                                            <h3>{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</h3>
+                                            @endforeach
+                                            @endif
+                                            <select name="tujuan" id="tujuan" class="form-control" wire:model.debounced.800ms="tujuan" hidden>
                                                 @if ($dataMapel != null)
                                                 @foreach ($dataMapel as $i)
                                                 <option value="{{ $i->dmid }}">{{ $i->nama_mapel }} - {{ $i->nama_kelas }}</option>
@@ -164,6 +170,7 @@
                                             <span id="error-msg">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <hr>
                                         <div class="row form-group">
                                             <div class="col-md-9 col-sm-12">
                                             <label for="hari-absen" class="form-control-label">Tanggal Presensi</label>
@@ -224,6 +231,7 @@
                                                 <input wire:ignore type="text" class="waktu form-control" name="waktu" id="waktu" readonly>
                                                 <input type="text" name="twaktu" id="twaktu" wire:model="twaktu_mulai" hidden>
                                                 <small class="form-text text-muted">Jam presensi dibuka</small>
+                                                <br>
                                                 @error('twaktu_mulai')
                                                 <span id="error-msg">{{ $message }}</span>
                                                 @enderror
@@ -236,6 +244,7 @@
                                                 <input wire:ignore type="text" class="waktus form-control" name="waktus" id="waktus" readonly>
                                                 <input type="text" name="twaktus" id="twaktus" wire:model="twaktu_selesai" hidden>
                                                 <small class="form-text text-muted">Jam presensi ditutup</small>
+                                                <br>
                                                 @error('twaktu_selesai')
                                                 <span id="error-msg">{{ $message }}</span>
                                                 @enderror
@@ -250,6 +259,8 @@
                                                     <option value="6">6 Bulan (1 Semester)</option>
                                                     <option value="12">1 Tahun</option>
                                                 </select>
+                                                <small>Jangka waktu presensi akan diulang. Jika memilih 1 tahun, maka presensi akan berlaku selama 1 tahun</small>
+                                                <br>
                                                 @error('jangka_waktu')
                                                 <span id="error-msg">{{ $message }}</span>
                                                 @enderror
@@ -257,7 +268,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary btn-md float-right" wire:click="createPresensi()">
-                                        <i class="icofont-check"></i> Submit
+                                        <i class="icofont-check"></i> Simpan
                                     </button>
                                 </div>
                             </div>
@@ -269,11 +280,13 @@
         </div>
 
         <!-- Modal delete jurusan -->
-        <div wire:ignore.self class="modal fade" id="mdlDelPresGuru" tabindex="-1" aria-labelledby="mdlDelPresGuruLabel" aria-hidden="true">
+        <div wire:ignore.self class="modal fade" id="mdlDelPresGuru" data-backdrop="static" data-keyboard="false"
+            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    @if ($nama_kelas != null)
                     <div class="modal-header">
-                        <h5 class="modal-title" id="mdlDelPresGuruLabel">Delete Confirmation {{ $pid }}</h5>
+                        <h5 class="modal-title" id="mdlDelPresGuruLabel">Konfirmasi Hapus</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -287,7 +300,11 @@
                         <button type="button" class="btn btn-danger mr-auto" wire:click="delPres({{ $pid }})">Yakin!</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                     </div>
-                    {{-- @endforeach --}}
+                    @else
+                        <div class="modal-body">
+                            <p> Mohon tunggu... Sedang memuat...</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

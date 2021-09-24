@@ -14,13 +14,19 @@ use Livewire\Component;
 class DataMapel extends Component
 {
     public $nama_mapel, $mid;
-    public $add = false, $edit = false;
+    public $edt = null, $add = null, $del = null;
+
+    protected $messages = [
+        'nama_mapel.required' => 'Mohon isi kolom Nama Mapel',
+        'nama_mapel.min' => 'Mohon isi kolom Nama Mapel minimal 3 karakter.',
+        'nama_mapel.unique' => 'Nama Mapel sudah ada',
+    ];
 
     public function addMapel()
     {
         if (Auth::user()->hasRole('admin')) {
             $this->validate([
-                'nama_mapel' => 'required|min:3',
+                'nama_mapel' => 'required|min:3|unique:mapels,nama_mapel',
                 // 'id_kelas' => 'required',
                 // 'id_guru' => 'required',
             ]);
@@ -39,11 +45,11 @@ class DataMapel extends Component
 
             if ($map) {
                 // $this->reset();
+                session()->flash('pesan-s', 'Data berhasil ditambah');
                 return redirect(route('dataMapel'));
-                session()->flash('msg', 'Data berhasil diubah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL ditambah');
                 return redirect(route('dataMapel'));
-                session()->flash('msg', 'Data GAGAL diubah');
             }
         } else {
             return redirect(route('login'));
@@ -68,11 +74,11 @@ class DataMapel extends Component
             // ]);
 
             if ($map) {
+                session()->flash('pesan-s', 'Data berhasil diubah');
                 return redirect(route('dataMapel'));
-                session()->flash('msg', 'Data berhasil diubah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL diubah');
                 return redirect(route('dataMapel'));
-                session()->flash('msg', 'Data GAGAL diubah');
             }
         } else {
             return redirect(route('login'));
@@ -85,37 +91,10 @@ class DataMapel extends Component
         $delMapel = Mapel::find($mid);
         // dd($delMapel);
         $delMapel->delete();
+        session()->flash('pesan-s', 'Data berhasil dihapus');
         return redirect(route('dataMapel'));
-        session()->flash('msg', 'Data berhasil dihapus');
     }
 
-    // public function getAllMapel()
-    // {
-    //     // $mapel = DB::select('select *
-    //     // from detail_mapels as dm
-    //     // join mapel as m on m.id = dm.id_mapel
-    //     // join kelas as k on k.id = dm.id_kelas
-    //     // join guru as g on g.id = dm.id_guru
-    //     // join users as u on u.id = g.user_id
-    //     // join role_user as ru on ru.user_id = u.id 
-    //     // join roles AS r on r.id = ru.role_id
-    //     // where r.name = ?', ['guru']);
-    //     $mapel = DB::select('select dm.id, m.nama_mapel, k.nama_kelas, u.name
-    //     from detail_mapels as dm
-    //     join mapels as m on m.id = dm.id_mapel
-    //     join kelas as k on k.id = dm.id_kelas
-    //     join gurus as g on g.id = dm.id_guru
-    //     join users as u on u.id = g.user_id');
-
-    //     // foreach ($mapel as $m) {
-    //     //     $this->dmid = $m->id;
-    //     //     $this->nama_mapel = $m->nama_mapel;
-    //     //     $this->nama_kelas = $m->nama_kelas;
-    //     //     $this->nama_guru = $m->name;
-    //     // }
-
-    //     return $mapel;
-    // }
     public function getAllKelas()
     {
         return DB::table('kelas')->get();
@@ -136,47 +115,43 @@ class DataMapel extends Component
     public function loadByID($mid)
     {
         $this->mid = $mid;
-        // $data = DetailMapel::find($this->mid);
-        // // foreach ($data as $d) {
-        // $this->id_mapel = $data['id_mapel'];
-        // $this->id_kelas = $data['id_kelas'];
-        // $this->id_guru = $data['id_guru'];
 
         $map = Mapel::find($this->mid);
         $this->nama_mapel = $map['nama_mapel'];
-
-        // $dkelas = Kelas::find($this->id_kelas);
-        // $this->nama_kelas = $dkelas['nama_kelas'];
-
-        // $dguru = Guru::find($this->id_guru);
-        // $this->id_guru = $dguru['id'];
-        // $this->id_user = $dguru['user_id'];
-
-        // $duser = User::find($this->id_user);
-        // $this->name = $duser['name'];
-        // }
-        // $jurusan = DB::select('select * from jurusans where id = ?', [$idj]);
-        // foreach ($jurusan as $i) {
-        //     $this->idj = $i->id;
-        //     $this->nama_jurusan = $i->nama_jurusan;
-        // }
-        // return $jurusan;
     }
 
-    public function toogleModalAddEdit($act, $mid)
+    public function toogleModal($act, $mid)
     {
         $this->mid = null;
         if ($act == 'add') {
             $this->add = true;
-            $this->edit = false;
-        } else if ($act == 'edit') {
-            $this->add = false;
-            $this->edit = true;
-            if ($mid > 0) {
+            $this->edt = null;
+            $this->del = null;
+        } else if ($act == 'edt') {
+            $this->add = null;
+            $this->edt = true;
+            $this->del = null;
+            if ($mid != null) {
+                $this->mid = $mid;
+                $this->loadByID($this->mid);
+            }
+        } else if ($act == 'del') {
+            $this->add = null;
+            $this->edt = null;
+            $this->del = true;
+            if ($mid != null) {
                 $this->mid = $mid;
                 $this->loadByID($this->mid);
             }
         }
+    }
+
+    public function allNull()
+    {
+        $this->add = null;
+        $this->edt = null;
+        $this->del = null;
+        $this->mid = null;
     }
 
     public function reload()

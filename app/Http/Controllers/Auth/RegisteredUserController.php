@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisteredUserController extends Controller
 {
+    public function messages()
+    {
+        return [
+            'name.required' => 'Mohon isi kolom Nama',
+            'email.required' => 'Mohon isi kolom Email',
+            'email.email' => 'Format Email Anda salah',
+            'email.unique' => 'Email sudah terpakai. Mohon gunakan Email lain',
+            'password.required' => 'Mohon isi kolom Password',
+            'password.confirmed' => 'Password tidak sama',
+        ];
+    }
+    
     /**
      * Display the registration view.
      *

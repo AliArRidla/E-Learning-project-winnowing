@@ -8,6 +8,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>@yield('title') - {{ config('app.name') }}</title>
+        
+        <!-- Favicons -->
+        <link href="{{ asset('tpl/img/logo-sekolah.png') }}" rel="icon">
 
         <!-- Fonts -->
         {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
@@ -41,9 +44,19 @@
     </head>
     <body class="animsition">
         <div class="page-wrapper">
-            <!-- <div class="page-content--bge5"> -->
+            @if (request()->is('daftar-admin'))
+            <div class="page-content--bge55">
+            @else
+            <div class="page-content--bge5">
+            @endif
+            {{-- <div class="page-content--bge5"> --}}
                 <div class="container">
+                    @if (request()->is('daftar-admin'))
+                    <div class="login-wrapp">
+                    @else
                     <div class="login-wrap">
+                    @endif
+                    {{-- <div class="login-wrap"> --}}
                         <div class="login-content">
                             <div class="login-logo">
                                 <a href="#">
@@ -57,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-            <!-- </div> -->
+            </div>
     
         </div>
     

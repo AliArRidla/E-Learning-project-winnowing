@@ -32,7 +32,7 @@
                                         <div class="p-6 bg-white border-b border-gray-200">
                                             <form wire:submit.prevent>
                                                 <div class="form-group">
-                                                    <label for="nama_materi">Nama Materi</label>
+                                                    <label for="nama_materi">Judul Materi</label>
                                                     <input type="text" class="form-control" id="nama_materi" wire:model="nama_materi"
                                                         name="nama_materi" placeholder="Contoh: Trigonometri" autofocus>
                                                     @error('nama_materi')
@@ -41,7 +41,7 @@
                                                 </div>
 
                                                 <div wire:ignore class="form-group">
-                                                    <label for ="content" wire:ignore.self>Deskripsi Materi</label>
+                                                    <label for ="content" wire:ignore.self>Deskripsi / Isi Materi</label>
                                                     {{-- <br><small>Deskripsikan Materi</small> --}}
                                                     <textarea id="content" class="form-control" name="content" wire:model="content" wire:ignore.self>
                                                     </textarea>
@@ -49,7 +49,7 @@
 
                                                 @if ($eror)
                                                     <div class="alert alert-danger" role="alert">
-                                                        Mohon isi <strong>Deskripsi Tugas</strong> ATAU unggah <strong>File Tugas</strong>.
+                                                        Mohon isi <strong>Deskripsi / Isi Materi</strong> ATAU unggah <strong>File Materi</strong>.
                                                         {{-- {{ $psn }} --}}
                                                     </div>
                                                     {{-- <p style="color:red;">{{ $psn }}</p> --}}
@@ -101,7 +101,10 @@
                                                         
                                                         <div x-show="isUploading">
                                                             <progress max="100" x-bind:value="progress"></progress>
-                                                            <div wire:loading wire:target="file_materi">Uploading...</div>
+                                                            <br>
+                                                            <div wire:loading wire:target="file_materi">
+                                                                <strong><span style="color:red;">Sedang Mengunggah... Mohon Tunggu...</span></strong>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     @endif
@@ -113,10 +116,13 @@
                                                     @enderror
                                                 </div>
                                                 @else
-                                                <label for="">Dokumen Tugas</label> <br>
+                                                <label for="">File Materi</label> <br>
+                                                {{-- @php
+                                                    $fm = substr($file_materi->getClientOriginalName(), 14);
+                                                @endphp --}}
                                                 <button name="delete" id="delete" class="btn btn-danger btn-sm"
                                                 wire:click="file_null">
-                                                    Hapus Dokumen Sebelumnya
+                                                    Hapus File Sebelumnya
                                                 </button><span>&emsp;{{ $file_materi->getClientOriginalName() }}</span>
                                                 @endif
                                                 

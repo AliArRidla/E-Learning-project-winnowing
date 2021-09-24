@@ -14,16 +14,16 @@ class ProfilAcc extends Controller
 {
     public function crop(Request $request)
     {
-        $path = 'storage/profilPic/';
+        $path = '/storage/public/profilPic/';
         $file = $request->file('foto');
         $new_image_name = 'ProfilPic' . date('Ymd') . uniqid() . '.jpg';
         // dd($new_image_name);
         if (Auth::user()->hasRole('admin')) {
-            $data = Admin::where('user_id', Auth::user()->id)->get();
+            $data = Admin::select('select * from admins where user_id = ?', [Auth::user()->id]);
         } else if (Auth::user()->hasRole('guru')) {
-            $data = Guru::where('user_id', Auth::user()->id)->get();
+            $data = Guru::select('select * from gurus where user_id = ?', [Auth::user()->id]);
         } else if (Auth::user()->hasRole('siswa')) {
-            $data = Siswa::where('user_id', Auth::user()->id)->get();
+            $data = Siswa::select('select * from siswas where user_id = ?', [Auth::user()->id]);
         }
 
         foreach ($data as $key) {
@@ -32,7 +32,7 @@ class ProfilAcc extends Controller
             }
         }
 
-        $upload = $file->move(public_path($path), $new_image_name);
+        $upload = $file->move($_SERVER['DOCUMENT_ROOT'] . $path, $new_image_name);
 
         if ($upload) {
             if (Auth::user()->hasRole('admin')) {
@@ -42,9 +42,9 @@ class ProfilAcc extends Controller
             } else if (Auth::user()->hasRole('siswa')) {
                 Siswa::where('user_id', Auth::user()->id)->update(['foto' => $new_image_name]);
             }
-            return response()->json(['status' => 1, 'msg' => 'Image has been cropped successfully.', 'name' => $new_image_name]);
+            return response()->json(['status' => 1, 'msg' => 'Profil Anda telah diperbarui.', 'name' => $new_image_name]);
         } else {
-            return response()->json(['status' => 0, 'msg' => 'Something went wrong, try again later']);
+            return response()->json(['status' => 0, 'msg' => 'Pembaruan gagal, mohon coba beberapa saat lagi']);
         }
     }
     // public function index()

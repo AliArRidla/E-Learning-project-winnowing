@@ -14,8 +14,14 @@ class DetailGuru extends Component
     use WithFileUploads;
 
     public $guru;
-    public $idu, $idg, $nip, $name, $jabatan, $email, $no_hp, $peran, $jenis_kelamin, $alamat;
+    public $idu, $idg, $nip, $name, $jabatan, $email, $no_hp, $peran, $jenis_kelamin, $alamat, $old_email;
     // public $foto, $tfoto;
+    protected $messages = [
+        'name.required' => 'Mohon isi kolom Nama',
+        'email.required' => 'Mohon isi kolom Email',
+        'email.email' => 'Format Email tidak valid.',
+        'email.unique' => 'Email sudah terpakai. Mohon gunakan yang lain.',
+    ];
 
     public function mount($id)
     {
@@ -45,10 +51,6 @@ class DetailGuru extends Component
             join role_user as ru on ru.user_id = u.id 
             join roles AS r on r.id = ru.role_id
             where g.id = ?', [$id]);
-            // $users = DB::select('select * from users');
-            // DB::select('select * from users where active = ?', [1])
-            // return view('admin/detailGuru', ['guru' => $guru]);
-            // $this->loadDetail();
             return $guru;
         } else {
             return redirect(route('login'));
@@ -68,6 +70,7 @@ class DetailGuru extends Component
             foreach ($dg as $g) {
                 $this->idu = $g->uid;
                 $this->email = $g->email;
+                $this->old_email = $g->email;
                 $this->name = $g->name;
             }
         } else {
@@ -96,15 +99,28 @@ class DetailGuru extends Component
             //     'email' => ['required', 'email', 'min:5'],
             // ]);
 
-            $valDataa = $this->validate([
-                // 'tfoto' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
-                'name' => 'required|min:3',
-                'email' => 'required|email',
-                // 'jenis_kelamin' => 'required',
-                // 'no_hp' => 'required|min:5|numeric',
-                // 'alamat' => 'required|min:5',
-                // 'jabatan' => 'required|min:3',
-            ]);
+            if ($this->old_email == $this->email) {
+                $valDataa = $this->validate([
+                    // 'tfoto' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                    'name' => 'required|min:3',
+                    'email' => 'required|email',
+                    // 'jenis_kelamin' => 'required',
+                    // 'no_hp' => 'required|min:5|numeric',
+                    // 'alamat' => 'required|min:5',
+                    // 'jabatan' => 'required|min:3',
+                ]);
+            } else {
+                $valDataa = $this->validate([
+                    // 'tfoto' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                    'name' => 'required|min:3',
+                    'email' => 'required|email|unique:users',
+                    // 'jenis_kelamin' => 'required',
+                    // 'no_hp' => 'required|min:5|numeric',
+                    // 'alamat' => 'required|min:5',
+                    // 'jabatan' => 'required|min:3',
+                ]);
+            }
+
 
             // dd($valDataa);
 
@@ -131,10 +147,11 @@ class DetailGuru extends Component
 
             if ($valDataa) {
                 User::find($this->idu)->update($this->modelData());
-                session()->flash('pesan', 'Data berhasil diubah');
+                session()->flash('pesan-s', 'Data berhasil diubah');
                 return redirect(route('profilGID', ['id' => $this->idg]));
             } else {
-                dd("BELUM");
+                session()->flash('pesan-e', 'Data GAGAL diubah');
+                return redirect(route('profilGID', ['id' => $this->idg]));
             }
 
 

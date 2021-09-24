@@ -13,31 +13,25 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
 
-                        @if (session()->has('pesan'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                <span class="sr-only">Close</span>
-                            </button>
-                            <strong>Berhasil!</strong> {{ session('pesan') }}
-                        </div>
+                        @if (session()->has('pesan-s'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <strong>Berhasil!</strong> {{ session('pesan-s') }}
+                            </div>
+                        @elseif (session()->has('pesan-e'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <strong>GAGAL!</strong> {{ session('pesan-e') }}
+                            </div>
                         @endif
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="overview-wrap">
-                                    {{-- <h2 class="title-1">Data Siswa</h2> --}}
-                                    <a href="{{ route('dataSiswa') }}">
-                                        <button type="button" class="au-btn au-btn-icon au-btn--blue">
-                                            <i class="zmdi zmdi-arrow-left"></i>Kembali
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr>
-
+                        
                         @foreach ($detailSiswa as $s)
                         <div>
                             <div class="alert alert-warning" role="alert">
@@ -48,10 +42,28 @@
                                     Kemudian silahkan membuatnya kembali di peran yang diinginkan.
                                 </p>
                             </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="overview-wrap">
+                                        {{-- <h2 class="title-1">Data Siswa</h2> --}}
+                                        <a href="{{ route('dataSiswa') }}">
+                                            <button type="button" class="au-btn au-btn-icon au-btn--blue">
+                                                <i class="zmdi zmdi-arrow-left"></i>Kembali
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-user"></i>
-                                    <strong class="card-title pl-2">Profile Card</strong>
+                                    <strong class="card-title pl-2">Kartu Profil</strong>
                                     <button class="btn btn-warning float-right" data-toggle="modal"
                                         data-target="#mdlEditSiswa">
                                         <i class="fa fa-pen" aria-hidden="true"></i> Edit
@@ -128,14 +140,14 @@
                             </div>
                         </div>
                         @endforeach
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
                                     <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
                                             href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -147,67 +159,69 @@
             tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
+                    @if ($name != null)
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit Siswa {{ $name }}</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit Siswa</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form wire:submit.prevent="submit">
-                        {{-- @csrf --}}
-                        <div class="modal-body">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="name">Nama Lengkap</label>
-                                    <input type="text" id="name" name="name" wire:model.defer="name"
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Nama Lengkap</label>
+                                <input type="text" id="name" name="name" wire:model.defer="name"
                                     class="form-control @error('name') is-invalid @enderror">
-                                        @error('name')
+                                @error('name')
                                 <span id="error-msg">{{ $message }}</span>
                                 @enderror
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="email">Email</label>
-                                    <input wire:model.defer="email" type="email" id="email" name="email"
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email</label>
+                                <input wire:model.defer="email" type="email" id="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror">
-                                        @error('email')
-                                        <span id="error-msg">{{ $message }}</span>
-                                        @enderror
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="nis">NIS</label>
-                                    <input type="text" class="form-control @error('nis') is-invalid @enderror"
-                                        wire:model.defer="nis" id="nis" name="nis">
-                                    @error('nis')
-                                        <span id="error-msg">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <div>
-                                        <label for="id_kelas" class=" form-control-label">Kelas</label>
-                                    </div>
-                                    <div>
-                                        <select wire:model.defer="id_kelas" name="id_kelas" id="id_kelas" 
-                                        class="form-control-sm form-control @error('id_kelas') is-invalid @enderror">
-                                            <option value="">-- Pilih Kelas --</option>
-                                            @foreach ($dataKelas as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('id_kelas')
+                                @error('email')
                                     <span id="error-msg">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                @enderror
                             </div>
                         </div>
-                        {{-- @endforeach --}}
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-warning" wire:click="updateSiswa()">Edit</button>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="nis">NIS</label>
+                                <input type="text" class="form-control @error('nis') is-invalid @enderror"
+                                    wire:model.defer="nis" id="nis" name="nis">
+                                @error('nis')
+                                    <span id="error-msg">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div>
+                                    <label for="id_kelas" class=" form-control-label">Kelas</label>
+                                </div>
+                                <div>
+                                    <select wire:model.defer="id_kelas" name="id_kelas" id="id_kelas" 
+                                        class="form-control-sm form-control @error('id_kelas') is-invalid @enderror">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        @foreach ($dataKelas as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('id_kelas')
+                                <span id="error-msg">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-warning" wire:click="updateSiswa()">Edit</button>
+                    </div>
+                    @else
+                    <div class="modal-body">
+                        <p>Mohon Tunggu... Sedang memuat...</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

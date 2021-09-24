@@ -1,4 +1,4 @@
-@section('title', 'List Soal')
+@section('title', 'Daftar Soal')
 <main>
     <div>
         {{-- Success is as dangerous as failure. --}}
@@ -17,7 +17,7 @@
                                 <div class="overview-wrap">
                                     <div>
                                         @foreach ($dataDetUl as $item)
-                                        <h2 class="title-1">List Soal - {{ $item->judul_ulangan }}</h2>
+                                        <h2 class="title-1">@yield('title') - {{ $item->judul_ulangan }}</h2>
                                         <h4>{{ $item->nama_mapel }} / {{ $item->nama_kelas }}</h4>
                                         @endforeach
                                     </div>
@@ -25,7 +25,12 @@
                                         <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                             <button type="button" class="au-btn au-btn-icon au-btn--green">
                                                 <i class="zmdi zmdi-plus"></i> Tambah Soal 
-                                            </button>
+                                            </button>                                           
+                                        </a>
+                                        <a href="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
+                                            <button type="button" class="au-btn au-btn-icon au-btn--green">
+                                                <i class="zmdi zmdi-plus"></i> Tambah Soal Essay
+                                            </button>                                           
                                         </a>
                                     </div>
                                 </div>
@@ -55,6 +60,14 @@
                                             </button>
                                             <strong>Berhasil!</strong> {{ session('pesan') }}
                                         </div>
+                                        @elseif (session()->has('errpesan'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                <span class="sr-only">Close</span>
+                                            </button>
+                                            <strong>GAGAL!</strong> {{ session('errpesan') }}
+                                        </div>
                                         @endif
 
                                         @if ($errors->any())
@@ -67,7 +80,7 @@
                                         </div>
                                         @endif
 
-                                        <input type="text" id="fn_table" value="List Soal" hidden>
+                                        <input type="text" id="fn_table" value="Daftar Soal" hidden>
                                         <div wire:ignore>
                                             <table wire:ignore id="table" class="table table-striped table-bordered"
                                                 style="width:100%">
@@ -116,13 +129,83 @@
                                                         @endphp
                                                         <td>{{ $k }}</td>
                                                         @php
-                                                            $ipn = $item->poin != null ? $item->poin : "default";
+                                                            $ipn = $item->poin != null ? $item->poin : "berdasarkan sistem";
                                                         @endphp
                                                         <td>{{ $ipn }}</td>
                                                         <td>
                                                             <a href="{{ route('editSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
                                                                 <button name="edit" id="edit" class="btn btn-warning">
-                                                                    <i class="fas fa-edit"></i>
+                                                                    Edit
+                                                                </button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                        $count++;
+                                                    @endphp
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <input type="text" id="fn_table" value="Daftar Soal" hidden>
+                                        <div wire:ignore>
+                                            <table wire:ignore id="table" class="table table-striped table-bordered"
+                                                style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Kunci Jawaban</th>
+                                                        <th>Poin</th>
+                                                        <th class="not-export-col">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $count = 1;
+                                                    @endphp
+                                                    @foreach ($dataSoalEssay as $item)
+                                                    <tr>
+                                                        <td>{{ $count }}</td>
+                                                        <td>{{ $item->jawaban_guru }}</td>
+                                                        {{-- @php
+                                                        $k;
+                                                            switch($item->kunci_jawaban){
+                                                                case 'pilihan_a':
+                                                                $k = "A";
+                                                                break;
+
+                                                                case 'pilihan_b':
+                                                                $k = "B";
+                                                                break;
+
+                                                                case 'pilihan_c':
+                                                                $k = "C";
+                                                                break;
+
+                                                                case 'pilihan_d':
+                                                                $k = "D";
+                                                                break;
+
+                                                                case 'pilihan_e':
+                                                                $k = "E";
+                                                                break;
+
+                                                                default:
+                                                                $k = "Tidak di ketahui";
+                                                                break;
+                                                            }
+                                                        @endphp --}}
+                                                        
+                                                        {{-- <td>{{ $k }}</td> --}}
+                                                        @php
+                                                            $ipn = $item->poin != null ? $item->poin : "berdasarkan sistem";
+                                                        @endphp
+                                                        <td>{{ $ipn }}</td>
+                                                        <td>
+                                                            <a href="{{ route('editSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
+                                                                <button name="edit" id="edit" class="btn btn-warning">
+                                                                    Edit
                                                                 </button>
                                                             </a>
                                                         </td>

@@ -18,8 +18,8 @@
                                     <h2 class="title-1">@yield('title') - {{ $dataUl['judul_ulangan'] }}</h2>
                                     @if ($no_soal > 1)
                                     <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
-                                        <button type="button" class="au-btn au-btn-icon au-btn--blue">
-                                            <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
+                                        <button type="button" class="au-btn au-btn-icon au-btn--green">
+                                            <i class="zmdi zmdi-format-list-bulleted"></i> Daftar Soal 
                                         </button>
                                     </a>
                                     @endif
@@ -38,6 +38,17 @@
                             <strong>Berhasil!</strong> {{ session('pesan') }}
                         </div>
                         @endif
+
+                        <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                            <i class="zmdi zmdi-arrow-left"></i>Kembali
+                        </a>
+                        {{-- @if ($no_soal > 1)
+                            <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
+                                <button type="button" class="au-btn au-btn-icon au-btn--green">
+                                    <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
+                                </button>
+                            </a>
+                        @endif --}}
 
                         {{-- @if ($no_soal == 1)
                             <a href="{{ route('customSoalGuru', ['id_ul' => $id_ul]) }}">

@@ -7,6 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title') - {{ config('app.name') }}</title>
+    
+    <!-- Favicons -->
+        <link href="{{ asset('tpl/img/logo-sekolah.png') }}" rel="icon">
 
     <!-- Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
@@ -52,7 +55,7 @@
     <link href="{{ asset('lms/timepicker/jquery.timepicker.css') }}" rel="stylesheet">
 
     {{-- SUMMERNOTE --}}
-    <link href="{{ asset('lms/vendor/summernote/summernote-bs4.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('lms/vendor/summernote/summernote.min.css') }}" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
     <link href="{{ asset('lms/css/theme.css') }}" rel="stylesheet" media="all">
@@ -95,6 +98,11 @@
 
         .stickyTimer + .contentTimer {
             padding-top: 102px;
+        }
+        
+        ul  {
+          list-style: circle !important;
+          /*margin-left: 20px !important;*/
         }
     </style>
     
@@ -167,7 +175,7 @@
     <script src="{{ asset('lms/timepicker/jquery.timepicker.js') }}"></script>
 
     {{-- summernote --}}
-    <script src="{{ asset('lms/vendor/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('lms/vendor/summernote/summernote.min.js') }}"></script>
 
     <!-- Main JS-->
     <script src="{{ asset('lms/js/main.js') }}"></script>
@@ -219,6 +227,20 @@
             $('#table').DataTable( {
                 "scrollX": true,
                 "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ],
+                "language": {
+                    "lengthMenu": "Menampilkan _MENU_ data per laman",
+                    "zeroRecords": "Mohon maaf data belum tersedia",
+                    "info": "Menampilkan laman ke- _PAGE_ dari _PAGES_ laman",
+                    "infoEmpty": "Data belum tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search":         "Cari:",
+                    "paginate": {
+                        "first":      "Awal",
+                        "last":       "Akhir",
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 dom: 'Bflrtip',
                 buttons: [
                     {
@@ -247,6 +269,20 @@
             $('#tabel').DataTable({
                 "scrollX": true,
                 "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                "language": {
+                    "lengthMenu": "Menampilkan _MENU_ data per laman",
+                    "zeroRecords": "Mohon maaf data belum tersedia",
+                    "info": "Menampilkan laman ke- _PAGE_ dari _PAGES_ laman",
+                    "infoEmpty": "Data belum tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search":         "Cari:",
+                    "paginate": {
+                        "first":      "Awal",
+                        "last":       "Akhir",
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 dom: 'Bflrtip',
                 buttons: [
                     {
@@ -281,6 +317,20 @@
             $('#tbl_siswa').DataTable( {
                 "scrollX": true,
                 "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ],
+                "language": {
+                    "lengthMenu": "Menampilkan _MENU_ data per laman",
+                    "zeroRecords": "Mohon maaf data belum tersedia",
+                    "info": "Menampilkan laman ke- _PAGE_ dari _PAGES_ laman",
+                    "infoEmpty": "Data belum tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search":         "Cari:",
+                    "paginate": {
+                        "first":      "Awal",
+                        "last":       "Akhir",
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
                 "search": {
                     "search": month,
                 }
@@ -288,7 +338,21 @@
 
             $('#tbl_no_ex').DataTable( {
                 "scrollX": true,
-                "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ]
+                "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ],
+                "language": {
+                    "lengthMenu": "Menampilkan _MENU_ data per laman",
+                    "zeroRecords": "Mohon maaf data belum tersedia",
+                    "info": "Menampilkan laman ke- _PAGE_ dari _PAGES_ laman",
+                    "infoEmpty": "Data belum tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search":         "Cari:",
+                    "paginate": {
+                        "first":      "Awal",
+                        "last":       "Akhir",
+                        "next":       "Selanjutnya",
+                        "previous":   "Sebelumnya"
+                    },
+                },
             });
         });
     </script>

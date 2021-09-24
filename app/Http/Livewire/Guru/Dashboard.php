@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    // public $countDM = 0;
+    public $jml;
 
     public function getAcc($id)
     {
@@ -58,44 +58,49 @@ class Dashboard extends Component
             $idg = $key->id;
         }
 
-        $jml = DB::select(
-            'select COUNT(*) AS jml FROM (
-            SELECT kelas.nama_kelas FROM detail_mapels 
+        $this->jml = DB::select(
+            'select kelas.nama_kelas, kelas.id as kid FROM detail_mapels 
             JOIN kelas ON detail_mapels.id_kelas = kelas.id 
             WHERE detail_mapels.id_guru = ? 
-            GROUP BY kelas.nama_kelas
-        ) jml',
+            GROUP BY kelas.nama_kelas, kelas.id',
             [$idg]
         );
-        return $jml[0]->jml;
+
+        return count($this->jml);
+        // return $jml[0]->jml;
     }
 
     public function countSiswa()
     {
-        $dataGuru = DB::select('select id from gurus where user_id = ?', [Auth::user()->id]);
-        foreach ($dataGuru as $key) {
-            $idg = $key->id;
-        }
+        // $dataGuru = DB::select('select id from gurus where user_id = ?', [Auth::user()->id]);
+        // foreach ($dataGuru as $key) {
+        //     $idg = $key->id;
+        // }
 
-        $jml = DB::select(
-            'select kelas.id FROM detail_mapels 
-            JOIN kelas ON detail_mapels.id_kelas = kelas.id 
-            WHERE detail_mapels.id_guru = ?',
-            [$idg]
-        );
+        // $jml = DB::select(
+        //     'select kelas.id as kid FROM detail_mapels 
+        //     JOIN kelas ON detail_mapels.id_kelas = kelas.id 
+        //     WHERE detail_mapels.id_guru = ?',
+        //     [$idg]
+        // );
 
         $sw = 0;
-        for ($i = 0; $i < count($jml); $i++) {
-            $jmls = DB::select(
-                'select COUNT(*) AS jmls FROM (
-                SELECT siswas.id FROM siswas
-                JOIN kelas ON kelas.id = siswas.id_kelas
-                WHERE kelas.id = ?
-            ) jmls',
-                [$i]
-            );
-            $sw = $sw + intval($jmls[0]->jmls);
+        foreach ($this->jml as $j) {
+            $jmls = DB::select('select count(*) as jml from siswas where id_kelas = ?', [$j->kid]);
+            $sw = $sw + intval($jmls[0]->jml);
         }
+
+        // for ($i = 0; $i < count($jml); $i++) {
+        //     $jmls = DB::select(
+        //         'select COUNT(*) AS jmls FROM (
+        //         SELECT siswas.id FROM siswas
+        //         JOIN kelas ON kelas.id = siswas.id_kelas
+        //         WHERE kelas.id = ?
+        //     ) jmls',
+        //         [$i]
+        //     );
+        //     $sw = $sw + intval($jmls[0]->jmls);
+        // }
 
         return $sw;
     }
@@ -124,6 +129,7 @@ class Dashboard extends Component
             'jmlKelas' => $this->countKelas(),
             'jmlSiswa' => $this->countSiswa(),
             'dataAcc' => $this->getAcc(Auth::user()->id),
+            'dMap' => $this->getDMap(),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);

@@ -38,6 +38,8 @@
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
+                                        <h4 class="text-center">{{ $dtgs[0]->nama_tugas }}</h4>
+                                        <hr>
                                         @php
                                             $tgl = date('j F Y', strtotime($dtgs[0]->tanggal));
                                             $wkt = date('H:i', strtotime($dtgs[0]->tanggal));
@@ -85,15 +87,15 @@
                                         <hr>
                                         @php
                                             $fn = $dtgs[0]->file_tugas;
+                                            $oft = substr($fn, 14);
                                         @endphp
                                         @if ($dtgs[0]->file_tugas != null)
                                         <h5>Berikut adalah file untuk tugas ini:</h5>
-                                        <a href="{{ route('downloadOldTugas', ['oldtugas' => $fn]) }}">{{ $fn }}</a>
+                                        <a href="{{ route('downloadOldTugas', ['oldtugas' => $fn]) }}">{{ $oft }}</a>
                                         <hr>
                                         @endif
-                                        <h5>Deskripsi tugas:</h5>
+                                        <h5>Deskripsi / Instruksi tugas:</h5>
                                         {!! $dtgs[0]->content !!}
-                                        
                                     </div>
                                 </div>
                             </div>

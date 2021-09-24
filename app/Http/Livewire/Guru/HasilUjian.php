@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class HasilUjian extends Component
 {
-    public $nama_mapel, $nama_kelas, $id_ul, $judul_ulangan;
+    public $nama_mapel, $nama_kelas, $id_ul, $judul_ulangan, $nav_dmid;
 
     public function mount($nav_dmid, $id_ul)
     {
@@ -28,6 +28,7 @@ class HasilUjian extends Component
         $this->judul_ulangan = $dUl[0]->judul_ulangan;
 
         $this->id_ul = $id_ul;
+        $this->nav_dmid = $nav_dmid;
     }
 
     public function getHasil($id_ul)

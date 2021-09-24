@@ -14,14 +14,22 @@
                     <div class="container-fluid">
                         <input type="hidden" id="refresh" value="no">
 
-                        @if (session()->has('pesan'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                <span class="sr-only">Close</span>
-                            </button>
-                            <strong>Berhasil!</strong> {{ session('pesan') }}
-                        </div>
+                        @if (session()->has('pesan-s'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Tutup</span>
+                                </button>
+                                <strong>Berhasil!</strong> {{ session('pesan-s') }}
+                            </div>
+                        @elseif (session()->has('pesan-e'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Tutup</span>
+                                </button>
+                                <strong>GAGAL!</strong> {{ session('pesan-e') }}
+                            </div>
                         @endif
 
                         @foreach ($detailGuru as $g)
@@ -34,6 +42,8 @@
                                     Kemudian silahkan membuatnya kembali di peran yang diinginkan.
                                 </p>
                             </div>
+
+                            <hr>
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -48,12 +58,12 @@
                                 </div>
                             </div>
 
-                            <hr>
+                            <br>
 
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-user"></i>
-                                    <strong class="card-title pl-2">Profile Card</strong>
+                                    <strong class="card-title pl-2">Kartu Profil</strong>
                                     <button class="btn btn-warning float-right" data-toggle="modal"
                                         data-target="#mdlEditGuru" wire:click="loadDetail({{ $g->id }})">
                                         <i class="fa fa-pen" aria-hidden="true"></i> Edit
@@ -130,14 +140,14 @@
                             </div>
                         </div>
                         @endforeach
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
                                     <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
                                             href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -149,22 +159,21 @@
             tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit Guru {{ $name }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form wire:submit.prevent="submit">
-                        {{-- @csrf --}}
+                    @if ($name != null)
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Guru</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nama Lengkap</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                    id="name" name="name" wire:model.defer="name">
+                                        id="name" name="name" wire:model.defer="name">
                                     @error('name')
-                                    <span id="error-msg">{{ $message }}</span>
+                                        <span id="error-msg">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
@@ -172,18 +181,21 @@
                                     <input wire:model.debounce.800ms="email" type="email" 
                                         class="form-control @error('email') is-invalid @enderror"
                                         id="email" name="email">
-                                        @error('email')
+                                    @error('email')
                                         <span id="error-msg">{{ $message }}</span>
-                                        @enderror
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                        {{-- @endforeach --}}
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Tutup</button>
                             <button type="button" class="btn btn-warning" wire:click="updateGuru()">Edit</button>
                         </div>
-                    </form>
+                    @else
+                        <div class="modal-body">
+                            <p>Mohon Tunggu... Sedang memuat...</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -165,7 +165,10 @@
                                                     @endif
                                                     <div x-show="isUploading">
                                                         <progress max="100" x-bind:value="progress"></progress>
-                                                        <div wire:loading wire:target="file_tgs_siswa">Mengunggah...</div>
+                                                        <br>
+                                                        <div wire:loading wire:target="file_tgs_siswa">
+                                                            <strong><span style="color:red;">Sedang Mengunggah... Mohon Tunggu...</span></strong>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 @endif
@@ -194,13 +197,25 @@
                                                 </button>
                                                 <br>
                                             @endif
-                                            <span>Berikut adalah file tugas yang sebelumnya: <br><a href="{{ route('downloadOldTugasSiswa', ['oldtugas' => $old_tgs_siswa]) }}">{{ $old_tgs_siswa }}</a></span>
+                                            @php
+                                                $foldtgs = substr($old_tgs_siswa, 14);
+                                            @endphp
+                                            <span>Berikut adalah file tugas yang sebelumnya: <br><a href="{{ route('downloadOldTugasSiswa', ['oldtugas' => $old_tgs_siswa]) }}">{{ $foldtgs }}</a></span>
                                         @endif
                                     </div>
+                                    
+                                    @if ($eror)
+                                        <div class="alert alert-danger" role="alert">
+                                            Mohon isi <strong>Catatan</strong> ATAU unggah <strong>File Tugas</strong>.
+                                            {{-- {{ $psn }} --}}
+                                        </div>
+                                        {{-- <p style="color:red;">{{ $psn }}</p> --}}
+                                    @endif
 
                                     <br>
                                     <div class="form-group">
-                                        <label for ="content_siswa">Catatan untuk tugas yang ingin dikumpulkan</label><small>&ensp;(opsional)</small>
+                                        <label for ="content_siswa">Catatan untuk tugas yang ingin dikumpulkan</label>
+                                        <!--<small>&ensp;(opsional)</small>-->
                                         <textarea wire:model ="content_siswa" id="content_siswa" class="form-control" name="content_siswa" 
                                         @if ($nilai != null) disabled @endif></textarea>
                         
@@ -227,14 +242,14 @@
                                 </div>
                             </div>
                         
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="copyright">
                                         <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
                                                 href="https://colorlib.com">Colorlib</a>.</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
@@ -247,7 +262,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="mdlDelTgsLabel">Delete Confirmation</h5>
+                        <h5 class="modal-title" id="mdlDelTgsLabel">Konfirmasi Hapus</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -256,7 +271,10 @@
                         @if ($del_psn)
                         <span style="color:red;">File lama berhasil dihapus!</span>
                         @else
-                        Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file tugas <strong>{{ $old_tgs_siswa }}</strong>?
+                        @php
+                            $foldtgs = substr($old_tgs_siswa, 14);
+                        @endphp
+                        Apakah Anda yakin ingin <strong>MENGHAPUS</strong> file tugas <strong>{{ $foldtgs }}</strong>?
                         @endif
                     </div>
                     <div class="modal-footer">

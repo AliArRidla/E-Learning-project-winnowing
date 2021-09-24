@@ -46,8 +46,23 @@ class DashboardSiswa extends Component
         join detail_mapels as dm on dm.id = mat.id_detMapel
         join mapels as m on dm.id_mapel = m.id
         where dm.id_kelas = ?', [$this->id_kelas]);
+        
+        // foreach($listTugas as lt){
+            
+        // }
 
         return $listTugas;
+    }
+
+    public function getUlangan()
+    {
+        $listUlangan = DB::select('select ul.judul_ulangan, ul.tgl_ulangan, 
+        ul.id as ulid, ul.waktu_mulai, ul.waktu_selesai, dm.id as dmid
+        from ulangans as ul
+        join detail_mapels as dm on dm.id = ul.id_det_mapel
+        where dm.id_kelas = ?', [$this->id_kelas]);
+
+        return $listUlangan;
     }
 
     public function getAcc($id)
@@ -85,6 +100,7 @@ class DashboardSiswa extends Component
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'mapels' => $this->getMapelSiswa(),
             'tugas' => $this->getTugas(),
+            'ulangan' => $this->getUlangan(),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);

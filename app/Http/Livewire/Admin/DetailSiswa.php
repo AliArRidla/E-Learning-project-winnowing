@@ -10,7 +10,19 @@ use Livewire\Component;
 
 class DetailSiswa extends Component
 {
-    public $idu, $ids, $nis, $name, $id_kelas, $email, $no_hp, $peran, $jenis_kelamin, $alamat;
+    public $idu, $ids, $nis, $name, $id_kelas, $email, $no_hp, $peran, $jenis_kelamin, $alamat, $old_email, $old_nis;
+
+    protected $messages = [
+        'name.required' => 'Mohon isi kolom Nama',
+        'name.min' => 'Mohon isi kolom Nama minimal 3 karakter.',
+        'email.required' => 'Mohon isi kolom Email',
+        'email.email' => 'Format Email tidak valid.',
+        'email.unique' => 'Email sudah terpakai. Mohon gunakan yang lain.',
+        'id_kelas.required' => 'Mohon pilih salah satu Nama Kelas',
+        'nis.required' => 'Mohon isi kolom NIS',
+        'nis.min' => 'Mohon isi kolom NIS minimal 3 karakter.',
+        'nis.unique' => 'NIS sudah terpakai. Mohon gunakan yang lain.',
+    ];
 
     public function mount($id)
     {
@@ -22,10 +34,30 @@ class DetailSiswa extends Component
         if (Auth::user()->hasRole('admin')) {
             $this->validate([
                 'name' => 'required|min:3',
-                'email' => 'required|email',
-                'nis' => 'required|min:3',
                 'id_kelas' => 'required',
             ]);
+
+            if ($this->old_email == $this->email) {
+                $this->validate([
+                    'email' => 'required|email',
+                ]);
+            } else {
+                $this->validate([
+                    'email' => 'required|email|unique:users',
+                ]);
+            }
+
+            if ($this->old_nis == $this->nis) {
+                $this->validate([
+                    'nis' => 'required|min:3',
+                ]);
+            } else {
+                $this->validate([
+                    'nis' => 'required|min:3|unique:siswas,nis',
+                ]);
+            }
+
+
 
             // dd($this->name, $this->email, $this->nis, $this->id_kelas, $this->ids, $this->idu);
             $s = Siswa::find($this->ids)->update([
@@ -38,10 +70,10 @@ class DetailSiswa extends Component
                     'name' => $this->name,
                     'email' => $this->email,
                 ]);
-                session()->flash('pesan', 'Data berhasi diubah');
+                session()->flash('pesan-s', 'Data berhasi diubah');
                 return redirect(route('profilSID', ['id' => $this->ids]));
             } else {
-                session()->flash('pesan', 'Data GAGAL diubah');
+                session()->flash('pesan-e', 'Data GAGAL diubah');
                 return redirect(route('profilSID', ['id' => $this->ids]));
             }
         } else {
@@ -63,9 +95,11 @@ class DetailSiswa extends Component
         foreach ($siswa as $key) {
             $this->idu = $key->user_id;
             $this->nis = $key->nis;
+            $this->old_nis = $key->nis;
             $this->name = $key->name;
             $this->id_kelas = $key->id_kelas;
             $this->email = $key->email;
+            $this->old_email = $key->email;
         }
         return $siswa;
     }

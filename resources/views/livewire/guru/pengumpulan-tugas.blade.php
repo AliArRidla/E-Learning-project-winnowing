@@ -98,7 +98,7 @@
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
-                                                <span class="sr-only">Close</span>
+                                                <span class="sr-only">Tutup</span>
                                             </button>
                                             <strong>Berhasil!</strong> {{ session('pesan') }}
                                         </div>
@@ -214,15 +214,18 @@
                     
                     <div class="modal-body">
                         {{-- <strong><label for="">Detail Tugas Siswa {{ $nama_siswa }}</label></strong> --}}
+                        @if ($fileTgs_siswa != null)
                         <label for="">Dokumen tugas siswa:</label>
                         <br><a href="{{ route('downloadOldTugasSiswa', ['oldtugas' => $fileTgs_siswa]) }}">{{ $fileTgs_siswa }}</a>
+                        @endif
+                        <hr>
                         @if ($contentSiswa != null)
-                            <hr>
+                            <!--<hr>-->
                             {{ $contentSiswa }}
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="all_null">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="all_null">Tutup</button>
                     </div>
                     @else
                         <div class="modal-body">
@@ -257,7 +260,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" wire:click="all_null">Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" wire:click="all_null">Tutup</button>
                         @if ($old_nilai == null)
                         <button type="button" class="btn btn-warning" wire:click="beriNilai">Simpan</button>
                         @else

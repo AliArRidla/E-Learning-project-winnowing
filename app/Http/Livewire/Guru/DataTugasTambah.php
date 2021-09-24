@@ -19,8 +19,8 @@ class DataTugasTambah extends Component
 
     protected $messages = [
         'id_materi.required' => 'Mohon pilih materi',
-        'nama_tugas.required' => 'Mohon isi Nama Tugas.',
-        'tanggal_dl.required' => 'Mohon isi Tanggal tugas berakhir.',
+        'nama_tugas.required' => 'Mohon isi kolom Judul Tugas.',
+        'tanggal_dl.required' => 'Mohon isi kolom Tanggal tugas berakhir.',
     ];
 
     public function mount($nav_dmid)
@@ -90,7 +90,9 @@ class DataTugasTambah extends Component
             ]);
 
             if ($tgs) {
-                $this->file_tugas->storeAs('file_tugas', $this->ftugas, 'public');
+                if($this->file_tugas != null){
+                    $this->file_tugas->storeAs('file_tugas', $this->ftugas, 'public');
+                }
                 session()->flash('pesan', 'Tugas berhasil ditambah');
                 return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
             } else {

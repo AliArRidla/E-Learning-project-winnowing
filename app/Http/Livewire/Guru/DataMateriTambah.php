@@ -16,7 +16,7 @@ class DataMateriTambah extends Component
     public $nama_mapel, $nama_kelas, $eror, $psn, $extensi, $fname;
 
     protected $messages = [
-        'nama_materi.required' => 'Mohon isi Nama Materi.',
+        'nama_materi.required' => 'Mohon isi kolom Judul Materi.',
     ];
 
     public function mount($nav_dmid)
@@ -50,7 +50,7 @@ class DataMateriTambah extends Component
 
         if ($this->file_materi == null && $this->content == null) {
             $this->eror = true;
-            $this->psn = "Harus mengisi salah satu!";
+            // $this->psn = "Harus mengisi salah satu!";
         } else {
             if ($this->file_materi != null) {
                 $ori = $this->file_materi->getClientOriginalName();
@@ -65,7 +65,9 @@ class DataMateriTambah extends Component
             ]);
 
             if ($cMat) {
-                $this->file_materi->storeAs('file-materi', $this->fname, 'public');
+                if ($this->file_materi != null) {
+                    $this->file_materi->storeAs('file-materi', $this->fname, 'public');
+                }
                 session()->flash('pesan', 'Materi berhasil ditambah');
                 return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));
             } else {

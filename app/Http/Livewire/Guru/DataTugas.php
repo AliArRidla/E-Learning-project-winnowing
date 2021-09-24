@@ -11,7 +11,7 @@ use Livewire\WithFileUploads;
 class DataTugas extends Component
 {
     use WithFileUploads;
-    public $tujuan, $idTgs, $id_materi, $nama_tugas, $file_tugas, $content, $nav_dmid, $idTgas, $id_mat;
+    public $tujuan, $id_tgs, $nama_tugas, $file_tugas, $content, $nav_dmid, $id_mat;
     public $nama_materi, $nama_mapel, $nama_kelas;
     public $countDM = 0;
 
@@ -19,27 +19,32 @@ class DataTugas extends Component
     {
         $this->nav_dmid = $nav_dmid;
 
-        $dm = DB::select('select m.nama_mapel, k.nama_kelas, mat.nama_materi
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas
         from detail_mapels as dm 
         join mapels as m on dm.id_mapel = m.id
         join kelas as k on dm.id_kelas = k.id
-        join materis as mat on mat.id_detMapel = dm.id
         where dm.id = ?', [$nav_dmid]);
 
         foreach ($dm as $d) {
             $this->nama_mapel = $d->nama_mapel;
             $this->nama_kelas = $d->nama_kelas;
-            $this->nama_materi = $d->nama_materi;
         }
+    }
+    
+    public function allNull()
+    {
+        $this->nama_materi = null;
+        $this->id_mat = null;
     }
 
     public function loadTgs($id)
     {
-        $tgs = Tugas::find($id)->get();
-        foreach ($tgs as $key) {
-            $this->nama_tugas = $key->nama_tugas;
-            $this->id_tgs = $key->id;
-        }
+        $this->id_tgs = $id;
+        $tgs = Tugas::find($id);
+        // foreach ($tgs as $key) {
+        $this->nama_tugas = $tgs['nama_tugas'];
+            // $this->id_tgs = $key->id;
+        // }
     }
 
     public function delTgs()
@@ -48,8 +53,10 @@ class DataTugas extends Component
         $tgs = Tugas::find($this->id_tgs);
         // $file_mat = $dMap->file_materi;
         // dd();
-        unlink('storage/file_tugas/' . $tgs['file_tugas']);
-        $dMap->delete();
+        if ($tgs['file_tugas'] != null) {
+            unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/file_tugas/' . $tgs['file_tugas']);
+        }
+        $tgs->delete();
         session()->flash('pesan', 'Data berhasil dihapus');
         return redirect(route('dataTugas', ['nav_dmid' => $this->nav_dmid]));
     }

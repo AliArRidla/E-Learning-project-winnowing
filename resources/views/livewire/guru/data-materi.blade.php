@@ -1,4 +1,4 @@
-@section('title', 'List Materi')
+@section('title', 'Daftar Materi')
 <main id="main">
     <div>
         {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
@@ -82,7 +82,7 @@
                                                     <button name="delete" id="delete" class="btn btn-danger btn-sm" 
                                                     wire:click="loadMat({{ $item->id }})"
                                                     data-toggle="modal" data-target="#mdlDelMat">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </div>
                                             </div>
@@ -101,27 +101,30 @@
             </div>
             <!-- END MAIN CONTENT-->
         </div>
-        {{-- @include('layouts.modals') --}}
         <!-- Modal delete kelas -->
-        <div wire:ignore.self class="modal fade" id="mdlDelMat" tabindex="-1" aria-labelledby="mdlDelMatLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
+        <div wire:ignore.self class="modal fade" id="mdlDelMat" data-backdrop="static" data-keyboard="false"
+            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
+                    @if ($id_mat != null)
                     <div class="modal-header">
-                        <h5 class="modal-title" id="mdlDelMatLabel">Delete Confirmation</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h5 class="modal-title" id="mdlDelMatLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    {{-- @foreach ($jurusanByID as $item) --}}
                     <div class="modal-body">
                         Apakah Anda yakin ingin <strong>MENGHAPUS</strong> materi <strong>{{ $nama_materi }}</strong>?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger mr-auto" wire:click="delMat">Yakin!</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="allNull">Tidak</button>
                     </div>
-                    {{-- @endforeach --}}
+                    @else
+                    <div class="modal-body">
+                        <p>Mohon Tunggu... Sedang memuat</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -17,8 +17,7 @@
                                 <div class="overview-wrap">
                                     <h2 class="title-1">Data Kelas</h2>
                                     <button type="button" class="au-btn au-btn-icon au-btn--blue"
-                                        wire:click="toogleModalAddEdit('add', 0)" data-toggle="modal"
-                                        data-target="#mdlKelas">
+                                    wire:click="toogleModal('add', 0)" data-toggle="modal" data-target="#mdlKelas">
                                         <i class="zmdi zmdi-plus"></i>tambah Kelas
                                     </button>
                                 </div>
@@ -30,17 +29,25 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
 
-                                        @if (session()->has('msg'))
+                                        @if (session()->has('pesan-s'))
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
-                                                <span class="sr-only">Close</span>
+                                                <span class="sr-only">Tutup</span>
                                             </button>
-                                            <strong>Berhasil!</strong> {{ session('msg') }}
+                                            <strong>Berhasil!</strong> {{ session('pesan-s') }}
+                                        </div>
+                                        @elseif (session()->has('pesan-e'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                <span class="sr-only">Tutup</span>
+                                            </button>
+                                            <strong>GAGAL!</strong> {{ session('pesan-e') }}
                                         </div>
                                         @endif
 
-                                        @if ($errors->any())
+                                        {{-- @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
                                                 @foreach ($errors->all() as $error)
@@ -48,7 +55,7 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        @endif
+                                        @endif --}}
 
                                         <!-- Button trigger modal -->
                                         {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdlAddGuru">
@@ -80,15 +87,21 @@
                                                         <td>{{ $item->nama_kelas }}</td>
                                                         <td>
                                                             <button name="edit" id="edit" class="btn btn-warning"
-                                                                wire:click="toogleModalAddEdit('edit', {{ $item->kid }})"
+                                                                wire:click="toogleModal('edt', {{ $item->kid }})" 
                                                                 data-toggle="modal" data-target="#mdlKelas">
-                                                                <i class="fas fa-edit"></i>
+                                                                Edit
                                                             </button>
+                                                            @php
+                                                                $findSiswa = DB::select('select siswas.id from siswas where id_kelas = ?', [$item->kid]);
+                                                            @endphp
+                                                            @if ($findSiswa == null)
+                                                            &emsp;&emsp;||&emsp;&emsp;
                                                             <button name="delete" id="delete" class="btn btn-danger"
-                                                                wire:click="loadByID({{ $item->kid }})"
+                                                                wire:click="toogleModal('del', {{ $item->kid }})" 
                                                                 data-toggle="modal" data-target="#mdlDelKelas">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                Hapus
                                                             </button>
+                                                            @endif
                                                         </td>
 
                                                     </tr>
@@ -114,27 +127,40 @@
         </div>
         {{-- @include('layouts.modals') --}}
         <!-- Modal delete kelas -->
-        <div wire:ignore.self class="modal fade" id="mdlDelKelas" tabindex="-1" aria-labelledby="mdlDelKelasLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
+        <div wire:ignore.self class="modal fade" id="mdlDelKelas" data-backdrop="static" data-keyboard="false"
+            tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="mdlDelKelasLabel">Delete Confirmation</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    {{-- @foreach ($jurusanByID as $item) --}}
-                    <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus kelas <strong>{{ $nama_kelas }}</strong> ?
-                        SEMUA YANG TERDAFTAR DI KELAS <strong>{{ $nama_kelas }}</strong> AKAN TERHAPUS!
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger mr-auto"
-                            wire:click="deleteKelas({{ $idk }})">Yakin!</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                    </div>
-                    {{-- @endforeach --}}
+                    @if ($del == true)
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mdlDelKelasLabel">Konfirmasi Hapus</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @if ($nama_kelas != null)
+                            <div class="modal-body">
+                                <!--<h3>PERINGATAN!!</h3>-->
+                                <!--SEMUA YANG TERDAFTAR DI KELAS <strong>{{ $nama_kelas }}</strong> AKAN TERHAPUS!-->
+                                <!--<hr>-->
+                                Apakah Anda yakin ingin menghapus kelas <strong>{{ $nama_kelas }}</strong> ?
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger mr-auto"
+                                    wire:click="deleteKelas({{ $idk }})">Yakin!</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="allNull">Tidak</button>
+                            </div>
+                        @else
+                            <div class="modal-body">
+                                <p>Mohon Tunggu... Sedang memuat</p>
+                            </div>
+                        @endif
+                    @else
+                        <div class="modal-body">
+                            <p>Mohon Tunggu... Sedang memuat</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -143,20 +169,19 @@
             tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        @if ($add)
-                        <h5 class="modal-title" id="staticBackdropLabel">Tambah Kelas {{ $idk }}</h5>
-                        @elseif ($edit)
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit Kelas {{ $idk }}</h5>
-                        @endif
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            wire:click="reload()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form wire:submit.prevent="submit">
+                    @if ($edt == true || $add == true)
+                        <div class="modal-header">
+                            @if ($add == true)
+                                <h5 class="modal-title" id="staticBackdropLabel">Tambah Kelas</h5>
+                            @elseif ($edt == true)
+                                <h5 class="modal-title" id="staticBackdropLabel">Edit Kelas</h5>
+                            @endif
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
-                            {{-- @if ($add) --}}
+                            @if ($add == true)
                             <div class="form-group">
                                 <div>
                                     <label for="id_jurusan" class=" form-control-label">Jurusan</label>
@@ -166,39 +191,76 @@
                                         class="form-control-sm form-control @error('id_jurusan') is-invalid @enderror">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($dataJurusan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_jurusan }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->nama_jurusan }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @error('id_jurusan')
-                                <span id="error-msg">{{ $message }}</span>
+                                    <span id="error-msg">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- @elseif ($edit)
-
-                        @endif --}}
                             <div class="form-group">
                                 <label for="nama_kelas">Nama Kelas</label>
                                 <input wire:model.defer="nama_kelas" type="text" id="nama_kelas"
-                                class="form-control @error('nama_kelas') is-invalid @enderror"
+                                    class="form-control @error('nama_kelas') is-invalid @enderror"
                                     name="nama_kelas" placeholder="Contoh: XI IPA 3">
                                 @error('nama_kelas')
-                                <span id="error-msg">{{ $message }}</span>
+                                    <span id="error-msg">{{ $message }}</span>
                                 @enderror
                             </div>
+                        @elseif ($edt == true)
+                            @if ($idk == null)
+                                <p>Mohon Tunggu... Sedang memuat</p>
+                            @else
+                                <div class="form-group">
+                                    <div>
+                                        <label for="id_jurusan" class=" form-control-label">Jurusan</label>
+                                    </div>
+                                    <div>
+                                        <select wire:model.defer="id_jurusan" name="id_jurusan" id="id_jurusan"
+                                            class="form-control-sm form-control @error('id_jurusan') is-invalid @enderror">
+                                            <option value="">-- Pilih Jurusan --</option>
+                                            @foreach ($dataJurusan as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nama_jurusan }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('id_jurusan')
+                                    <span id="error-msg">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_kelas">Nama Kelas</label>
+                                    <input wire:model.defer="nama_kelas" type="text" id="nama_kelas"
+                                        class="form-control @error('nama_kelas') is-invalid @enderror"
+                                        name="nama_kelas" placeholder="Contoh: XI IPA 3">
+                                    @error('nama_kelas')
+                                    <span id="error-msg">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            @endif
+                        @endif
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
-                                wire:click="reload()">Close</button>
-                            @if ($add)
-                            <button type="button" class="btn btn-primary" wire:click="addKelas()">Tambah</button>
-                            @elseif ($edit)
-                            <button type="button" class="btn btn-warning" wire:click="editKelas()">Edit</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" wire:click="allNull">Tutup</button>
+                            @if ($add == true)
+                                <button type="button" class="btn btn-primary" wire:click="addKelas()">Tambah</button>
+                            @elseif ($edt == true)
+                                @if ($idk == null)
+                                    <p>Mohon Tunggu... Sedang memuat</p>
+                                @else
+                                    <button type="button" class="btn btn-warning" wire:click="editKelas()">Edit</button>
+                                @endif
                             @endif
                         </div>
-                    </form>
+                    @else
+                    <div class="modal-body">
+                        <p>Mohon Tunggu... Sedang memuat</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
+
     </div>
 </main>

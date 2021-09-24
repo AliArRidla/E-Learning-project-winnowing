@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">List Materi dan Tugas Siswa</h2>
+                                    <h2 class="title-1">Daftar Materi dan Tugas Siswa</h2>
                                 </div>
                             </div>
                         </div>

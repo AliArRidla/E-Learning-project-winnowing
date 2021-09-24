@@ -18,7 +18,7 @@
     </div>
     <nav class="navbar-mobile">
         <div class="container-fluid">
-            <ul class="navbar-mobile__list list-unstyled">
+            <ul class="navbar-mobile__list list-unstyled" style="list-style: none !important; margin-left: 0px;">
                 @auth
                     <li class="{{ (request()->is('admin/dashboard')) ? 'active' : '' }}">
                         <a href="{{ route('dashboardAdm') }}" id="dash">
@@ -33,19 +33,19 @@
                         <a href="{{ route('dataKelas') }}" id="dk">
                             <i class="fas fa-chart-bar"></i>Data Kelas</a>
                     </li>
-                    <li class="{{ (request()->routeIs('dataGuru')) ? 'active' : '' }}">
+                    <li class="{{ (request()->routeIs('dataGuru') || request()->routeIs('profilGID')) ? 'active' : '' }}">
                         <a href="{{ route('dataGuru') }}" id="dg">
                             <i class="fas fa-chart-bar"></i>Data Guru</a>
                     </li>
                     @if ($cekKelas > 0)
-                    <li class="{{ (request()->routeIs('dataSiswa')) ? 'active' : '' }}">
+                    <li class="{{ (request()->routeIs('dataSiswa') || request()->routeIs('profilSID')) ? 'active' : '' }}">
                         <a href="{{ route('dataSiswa') }}" id="ds">
                             <i class="fas fa-chart-bar"></i>Data Siswa</a>
                     </li>
                     <li class="has-sub {{ (request()->routeIs('dataMapel') || request()->routeIs('detailMapel')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Data Mata Pelajaran</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list" style="list-style: none !important; margin-left: 0px;">
                             <li class="{{ (request()->routeIs('dataMapel')) ? 'active' : '' }}">
                                 <a href="{{ route('dataMapel') }}">Mata Pelajaran</a>
                             </li>
@@ -73,7 +73,7 @@
     </div>
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
-            <ul class="list-unstyled navbar__list" id="nalist">
+            <ul class="list-unstyled navbar__list" id="nalist" style="list-style: none !important; margin-left: 0px;">
                 @auth
                     {{-- @if (Auth::user()->hasRole('admin')) --}}
                     <li class="{{ (request()->is('admin/dashboard')) ? 'active' : '' }}">
@@ -89,19 +89,19 @@
                         <a href="{{ route('dataKelas') }}" id="dk">
                             <i class="fas fa-chart-bar"></i>Data Kelas</a>
                     </li>
-                    <li class="{{ (request()->routeIs('dataGuru')) ? 'active' : '' }}">
+                    <li class="{{ (request()->routeIs('dataGuru') || request()->routeIs('profilGID')) ? 'active' : '' }}">
                         <a href="{{ route('dataGuru') }}" id="dg">
                             <i class="fas fa-chart-bar"></i>Data Guru</a>
                     </li>
                     @if ($cekKelas > 0)
-                    <li class="{{ (request()->routeIs('dataSiswa')) ? 'active' : '' }}">
+                    <li class="{{ (request()->routeIs('dataSiswa') || request()->routeIs('profilSID')) ? 'active' : '' }}">
                         <a href="{{ route('dataSiswa') }}" id="ds">
                             <i class="fas fa-chart-bar"></i>Data Siswa</a>
                     </li>
                     <li class="has-sub {{ (request()->routeIs('dataMapel') || request()->routeIs('detailMapel')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Data Mata Pelajaran</a>
-                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <ul class="list-unstyled navbar__sub-list js-sub-list" style="list-style: none !important; margin-left: 0px;">
                             <li class="{{ (request()->routeIs('dataMapel')) ? 'active' : '' }}">
                                 <a href="{{ route('dataMapel') }}">Mata Pelajaran</a>
                             </li>

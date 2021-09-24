@@ -18,8 +18,8 @@ class DataTugasEdit extends Component
 
     protected $messages = [
         'id_materi.required' => 'Mohon pilih materi',
-        'nama_tugas.required' => 'Mohon isi Nama Tugas.',
-        'tanggal_dl.required' => 'Mohon isi Tanggal tugas berakhir.',
+        'nama_tugas.required' => 'Mohon isi kolom Judul Tugas.',
+        'tanggal_dl.required' => 'Mohon isi kolom Tanggal tugas berakhir.',
     ];
 
     public function mount($nav_dmid, $idTgs)
@@ -123,12 +123,17 @@ class DataTugasEdit extends Component
         $this->resetValidation();
     }
 
+    public function file_null()
+    {
+        $this->file_tugas = null;
+    }
+
     public function delFileTgs()
     {
         Tugas::find($this->idTgs)->update([
             'file_tugas' => null,
         ]);
-        unlink('storage/file_tugas/' . $this->oldTugas);
+        unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/file_tugas/' . $this->oldTugas);
         $this->oldTugas = null;
         $this->del_psn = true;
     }

@@ -14,6 +14,17 @@ class TambahUlangan extends Component
     public $nama_mapel, $nama_kelas, $dmjudul_ulangan, $dmtgl_ulangan;
     public $emjudul_ulangan, $emtgl_ulangan, $emtwaktu_mulai, $emtwaktu_selesai;
     public $emmsg = '', $emsama = false;
+    
+    protected $messages = [
+        'judul_ulangan.required' => 'Mohon isi kolom Judul Ulangan',
+        'twaktu_mulai.required' => 'Mohon isi kolom Waktu Ulangan Dimulai.',
+        'twaktu_selesai.required' => 'Mohon isi kolom Waktu Ulangan Selesai.',
+        'tgl_ulangan.required' => 'Mohon isi Tanggal Ulangan dimulai.',
+        'emjudul_ulangan.required' => 'Mohon isi kolom Judul Ulangan',
+        'emtwaktu_mulai.required' => 'Mohon isi kolom Waktu Ulangan Dimulai.',
+        'emtwaktu_selesai.required' => 'Mohon isi kolom Waktu Ulangan Selesai.',
+        'emtgl_ulangan.required' => 'Mohon isi Tanggal Ulangan dimulai.',
+    ];
 
     public function mount($nav_dmid)
     {
@@ -91,6 +102,13 @@ class TambahUlangan extends Component
         }
     }
 
+    public function allNull()
+    {
+        $this->ulid = null;
+        $this->emjudul_ulangan = null;
+        $this->emtgl_ulangan = null;
+    }
+
     public function editUl($ulid)
     {
         if ($this->emtwaktu_mulai >= $this->emtwaktu_selesai) {
@@ -106,6 +124,14 @@ class TambahUlangan extends Component
             $this->emmsg = "";
             $this->emsama = false;
             // dd($ulid, $this->emjudul_ulangan, $this->emtgl_ulangan, $this->emtwaktu_mulai, $this->emtwaktu_selesai);
+            
+            $this->validate([
+                'emjudul_ulangan' => 'required',
+                'emtgl_ulangan' => 'required',
+                'emtwaktu_mulai' => 'required',
+                'emtwaktu_selesai' => 'required',
+            ]);
+            
             $eUl = Ulangan::find($ulid)->update([
                 // 'id_det_mapel' => $this->tujuan,
                 'judul_ulangan' => $this->emjudul_ulangan,
@@ -127,10 +153,10 @@ class TambahUlangan extends Component
     public function delUl()
     {
         $delUl = Ulangan::find($this->ulid);
-        dd($delUl);
-        // $delUl->delete();
-        // return redirect(route('presensiGuru', ['nav_dmid' => $this->nav_dmid]));
-        // session()->flash('msg', 'Data berhasil dihapus');
+        // dd($delUl);
+        $delUl->delete();
+        return redirect(route('ulanganGuru', ['nav_dmid' => $this->nav_dmid]));
+        session()->flash('msg', 'Data berhasil dihapus');
     }
 
     public function reload()

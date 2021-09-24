@@ -286,7 +286,7 @@ section {
 /*Page Objects*/
 .page-wrapper {
     overflow: hidden;
-    background: #ffffff;
+    background: #e5e5e5;
     padding-bottom: 8vh;
 }
 
@@ -401,9 +401,20 @@ section {
     height: 100vh;
 }
 
+.page-content--bge55 {
+    background: #e5e5e5;
+    height: 100%;
+}
+
 .login-wrap {
     max-width: 540px;
     padding-top: 8vh;
+    margin: 0 auto;
+}
+
+.login-wrapp {
+    max-width: 540px;
+    padding-top: 2vh;
     margin: 0 auto;
 }
 
@@ -450,7 +461,7 @@ section {
 }
 
 .login-content {
-    background: #e5e5e5;
+    background: #ffffff;
     padding: 30px 30px 20px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;

@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">List Presensi Siswa</h2>
+                                    <h2 class="title-1">Daftar Presensi Siswa</h2>
                                 </div>
                             </div>
                         </div>
@@ -35,6 +35,7 @@
                                         </div>
                                         @endif
 
+                                        @if ($dataAbsen != null)
                                         <div class="row">
                                             @foreach ($dataAbsen as $i)
                                             <div class="col-sm-6">
@@ -104,6 +105,12 @@
                                             </div>
                                             @endforeach
                                         </div>
+                                        @else
+                                        <div class="mx-auto d-block">
+                                            Belum ada Presensi yang dapat Anda lakukan.
+                                        </div>
+                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>

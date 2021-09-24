@@ -1,4 +1,4 @@
-@section('title', 'List Ulangan')
+@section('title', 'Daftar Ulangan')
 <main id="main">
     <div>
         {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
@@ -132,6 +132,8 @@
                                                         <td>
                                                             @if ($cekNilai != null)
                                                             {{ $cekNilai[0]->nilai }}
+                                                            @else
+                                                            -
                                                             @endif
                                                         </td>
                                                         <td>

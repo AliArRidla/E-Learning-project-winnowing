@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Siswa;
 
 use App\Models\NilaiUlangan;
+use App\Models\SoalEssay;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -10,12 +11,14 @@ use Livewire\Component;
 class KerjakanUlangan extends Component
 {
     public $nav_dmid, $id_ul, $is_poin, $id_siswa, $poinNow, $benar, $salah;
-    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e;
+    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e, $jawaban_siswa;
     public $tgl_ulangan, $waktu_selesai, $tgl_waktu, $pesan;
     public $saveMe = false, $showSoal = true;
     public $pilihan = [];
     public $id_soal = [];
+    public $id_soal_essays = [];
     public $poin = [];
+
 
     public function mount($nav_dmid, $id_ul)
     {
@@ -37,6 +40,15 @@ class KerjakanUlangan extends Component
             array_push($this->id_soal, $d->id);
             if ($this->is_poin == 1 || $this->is_poin == '1') {
                 array_push($this->poin, $d->poin);
+            }
+        }
+
+        // pilih soal essays
+        $dSoEs = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        foreach ($dSoEs as $dE) {
+            array_push($this->id_soal_essays, $dE->id);
+            if ($this->is_poin == 1 || $this->is_poin == '1') {
+                array_push($this->poin, $dE->poin);
             }
         }
 
@@ -90,16 +102,26 @@ class KerjakanUlangan extends Component
             'benar' => $this->benar,
             'salah' => $this->salah,
         ]);
+        // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        $jawaban_siswa = DB::table('soal_essays')
+                            ->where('id',$this->id_soal_essays)
+                            ->update([
+                                'jawaban_siswa' => $this->jawaban_siswa,
+                                // 'poin' => $this->poin,
+                        ]);         
+                        // var_dump($this->jawaban_siswa);
 
-        // $cNilai = true;
+        // $jawabanEssaySiswa = DB::update('update soal_essays set jawaban_siswa = berubah where id = ?', [$this->id_soal_essays]);;
 
         $this->showSoal = false;
 
-        if ($cNilai) {
+        if ($cNilai ) {
             $this->pesan = '1';
             // $this->saveMe = true;
             // session()->flash('pesan', 'Anda telah berhasil melakukan ujian');
             // return redirect(route('ulanganSiswa', ['nav_dmid' => $this->nav_dmid]));
+        // } else if ($jawaban_siswa) {
+        //     $this->pesan = '0';
         } else {
             $this->pesan = '0';
             // $this->saveMe = true;
@@ -109,6 +131,8 @@ class KerjakanUlangan extends Component
         $this->saveMe = true;
 
         // dd($this->benar, $this->salah, $this->poinNow, $this->id_soal, $this->pilihan);
+
+
     }
 
     public function getUl()
@@ -130,6 +154,45 @@ class KerjakanUlangan extends Component
         //     array_push($this->id_soal, $d->id);
         // }
         return $data;
+    }
+
+    public function getSoalEssays()
+    {
+        $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // foreach ($data as $d) {
+        //     array_push($this->id_soal, $d->id);
+        // }
+        // var_dump($dataEssay);
+        return $dataEssay;
+    }
+
+    public function simpanJawabanEssays(){
+
+        // $jawaban_siswa = DB::update('update soal_essays 
+        // set id_siswa => $this->id_siswa, 
+        // where name = ?', ['John']);
+
+        // $jawaban_siswa = DB::table('soal_essays')
+        //                     ->where($this->id_soal_essays)
+        //                     ->update([
+        //                         // 'id_siswa' => $this->id_siswa,
+        //                         // 'id_ulangan' => $this->id_siswa,
+        //                         // 'soal' => $this->id_siswa,
+        //                         'jawaban_siswa' => $this->jawaban_siswa,
+        //                 ]); 
+
+        // $jawaban_siswa = SoalEssay::updated();
+
+        // $jawabanEssaySiswa = SoalEssay::create([
+        //     'id_siswa' => $this->id_siswa,
+        //     'id_ulangan' => $this->id_ul,
+        //     'soal' => $this->soal,
+        //     'jawaban_guru' => $this->benar,
+        //     'jawaban_siswa' => $this->salah,
+        //     'poin' => $this->salah,
+        // ]);
+
+        // return $jawaban_siswa;
     }
 
     public function getAcc($id)
@@ -167,8 +230,9 @@ class KerjakanUlangan extends Component
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataUl' => $this->getUl(),
             'dataSoal' => $this->getSoals(),
+            'dataEssay' => $this->getSoalEssays(),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);
-    }
+    }    
 }

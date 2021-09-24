@@ -101,306 +101,180 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="row">
+                        <!--<button class="btn btn-primary" wire:click="ddm">DDM</button>-->
+                        <div class="row">
                             <div class="col-lg-6">
-                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-                                    <div class="au-card-title"
-                                        style="background-image:url('images/bg-title-01.jpg');">
-                                        <div class="bg-overlay bg-overlay--blue"></div>
-                                        <h3>
-                                            <i class="zmdi zmdi-account-calendar"></i>{{ date('F d, Y') }}</h3>
-                                        <button class="au-btn-plus">
-                                            <i class="zmdi zmdi-plus"></i>
-                                        </button>
-                                    </div>
-                                    <div class="au-task js-list-load">
-                                        <div class="au-task__title">
-                                            <p>Recent Activities</p>
-                                        </div>
-                                        <div class="au-task-list js-scrollbar3">
-                                            <div class="au-task__item au-task__item--danger">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Meeting about plan for Admin Template 2018</a>
-                                                    </h5>
-                                                    <span class="time">10:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--warning">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Create new task for Dashboard</a>
-                                                    </h5>
-                                                    <span class="time">11:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--primary">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Meeting about plan for Admin Template 2018</a>
-                                                    </h5>
-                                                    <span class="time">02:00 PM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--success">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Create new task for Dashboard</a>
-                                                    </h5>
-                                                    <span class="time">03:30 PM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--danger js-load-item">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Meeting about plan for Admin Template 2018</a>
-                                                    </h5>
-                                                    <span class="time">10:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--warning js-load-item">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Create new task for Dashboard</a>
-                                                    </h5>
-                                                    <span class="time">11:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--warning js-load-item">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Create new task for Dashboard</a>
-                                                    </h5>
-                                                    <span class="time">11:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div class="au-task__item au-task__item--warning js-load-item">
-                                                <div class="au-task__item-inner">
-                                                    <h5 class="task">
-                                                        <a href="#">Create new task for Dashboard</a>
-                                                    </h5>
-                                                    <span class="time">11:00 AM</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-task__footer">
-                                            <button class="au-btn au-btn-load js-load-btn">load more</button>
-                                        </div>
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <!-- <h3 class="title-2 m-b-40">Grafik Data Guru</h3> -->
+                                        <div id="barChartGuru"></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-                                    <div class="au-card-title"
-                                        style="background-image:url('images/bg-title-02.jpg');">
-                                        <div class="bg-overlay bg-overlay--blue"></div>
-                                        <h3>
-                                            <i class="zmdi zmdi-comment-text"></i>New Messages</h3>
-                                        <button class="au-btn-plus">
-                                            <i class="zmdi zmdi-plus"></i>
-                                        </button>
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <!-- <h3 class="title-2 m-b-40">Grafik Data Siswa</h3> -->
+                                        <div id="barChartSiswa"></div>
                                     </div>
-                                    <div class="au-inbox-wrap js-inbox-wrap">
-                                        <div class="au-message js-list-load">
-                                            <div class="au-message__noti">
-                                                <p>You Have
-                                                    <span>2</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 bg-white border-b border-gray-200">
+                                        <h3>Aktivitas Data Guru</h3>
+                                        <br>
+                                        @if ($dataGuru != null)
+                                        @foreach ($dataGuru as $item)
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                      <h5 class="card-title">{{ $item->name }}</h5>
+                                                      @php
+                                                          $tgl = date('j F Y', strtotime($item->updated_at));
+                                                      @endphp
+                                                      <p class="card-text"><small class="text-muted">Akun tersebut Diperbarui pada {{ $tgl }}</small></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        @else
+                                        <h4 class="text-center">Data Guru Belum Ada</h4>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 bg-white border-b border-gray-200">
+                                        <h3>Aktivitas Data Siswa</h3>
+                                        <br>
+                                        @if ($dataSiswa != null)
+                                        @foreach ($dataSiswa as $item)
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                      <h5 class="card-title">{{ $item->name }}</h5>
+                                                      @php
+                                                          $tgl = date('j F Y', strtotime($item->updated_at));
+                                                      @endphp
+                                                      <p class="card-text"><small class="text-muted">Akun tersebut Diperbarui pada {{ $tgl }}</small></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        @else
+                                        <h4 class="text-center">Data Siswa Belum Ada</h4>
+                                        @endif
 
-                                                    new messages
-                                                </p>
-                                            </div>
-                                            <div class="au-message-list">
-                                                <div class="au-message__item unread">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-02.jpg') }}"
-                                                                        alt="John Smith">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">John Smith</h5>
-                                                                <p>Have sent a photo</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>12 Min ago</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="au-message__item unread">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap online">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-03.jpg') }}"
-                                                                        alt="Nicholas Martinez">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Nicholas Martinez</h5>
-                                                                <p>You are now connected on message</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>11:00 PM</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="au-message__item">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap online">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-04.jpg') }}"
-                                                                        alt="Michelle Sims">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Michelle Sims</h5>
-                                                                <p>Lorem ipsum dolor sit amet</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>Yesterday</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="au-message__item">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-05.jpg') }}"
-                                                                        alt="Michelle Sims">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Michelle Sims</h5>
-                                                                <p>Purus feugiat finibus</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>Sunday</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="au-message__item js-load-item">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap online">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-04.jpg') }}"
-                                                                        alt="Michelle Sims">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Michelle Sims</h5>
-                                                                <p>Lorem ipsum dolor sit amet</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>Yesterday</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="au-message__item js-load-item">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="{{ asset('lms/images/icon/avatar-05.jpg') }}"
-                                                                        alt="Michelle Sims">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Michelle Sims</h5>
-                                                                <p>Purus feugiat finibus</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span>Sunday</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="au-message__footer">
-                                                <button class="au-btn au-btn-load js-load-btn">load more</button>
-                                            </div>
-                                        </div>
-                                        <div class="au-chat">
-                                            <div class="au-chat__title">
-                                                <div class="au-chat-info">
-                                                    <div class="avatar-wrap online">
-                                                        <div class="avatar avatar--small">
-                                                            <img src="{{ asset('lms/images/icon/avatar-02.jpg') }}"
-                                                                alt="John Smith">
-                                                        </div>
-                                                    </div>
-                                                    <span class="nick">
-                                                        <a href="#">John Smith</a>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="au-chat__content">
-                                                <div class="recei-mess-wrap">
-                                                    <span class="mess-time">12 Min ago</span>
-                                                    <div class="recei-mess__inner">
-                                                        <div class="avatar avatar--tiny">
-                                                            <img src="{{ asset('lms/images/icon/avatar-02.jpg') }}"
-                                                                alt="John Smith">
-                                                        </div>
-                                                        <div class="recei-mess-list">
-                                                            <div class="recei-mess">Lorem ipsum dolor sit amet,
-                                                                consectetur
-                                                                adipiscing
-                                                                elit non iaculis</div>
-                                                            <div class="recei-mess">Donec tempor, sapien ac viverra
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="send-mess-wrap">
-                                                    <span class="mess-time">30 Sec ago</span>
-                                                    <div class="send-mess__inner">
-                                                        <div class="send-mess-list">
-                                                            <div class="send-mess">Lorem ipsum dolor sit amet,
-                                                                consectetur
-                                                                adipiscing
-                                                                elit non iaculis</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="au-chat-textfield">
-                                                <form class="au-form-icon">
-                                                    <input class="au-input au-input--full au-input--h65" type="text"
-                                                        placeholder="Type a message">
-                                                    <button class="au-input-icon">
-                                                        <i class="zmdi zmdi-camera"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> --}}
-                        <footer>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="copyright">
-                                        <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
-                                                href="https://colorlib.com">Colorlib</a>.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- END MAIN CONTENT-->
         </div>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript">
+            document.addEventListener('livewire:load', function () {
+                var chartMonthsG = <?php echo json_encode($chartMonthsG); ?>;
+                var barChartGuru = <?php echo json_encode($barChartGuru); ?>;
+                Highcharts.chart('barChartGuru', {
+                    title: {
+                        text: 'Grafik Data Guru',
+                    },
+                    xAxis: {
+                        categories: chartMonthsG,
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Grafik Data Guru',
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                    },
+                    plotOptions: {
+                        series: {
+                            allowPointSelect: true,
+                        }
+                    },
+                    series: [{
+                        name: 'Data Guru',
+                        data: barChartGuru
+                    }],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 200,
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom',
+                                }
+                            }
+                        }]
+                    }
+                });
+                
+                var barChartSiswa =  <?php echo json_encode($barChartSiswa) ?>;
+                var chartMonthsS =  <?php echo json_encode($chartMonthsS) ?>;
+                Highcharts.chart('barChartSiswa', {
+                    title: {
+                        text: 'Grafik Data Siswa'
+                    },
+                    xAxis: {
+                        categories: chartMonthsS
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Grafik Data Siswa'
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                    },
+                    plotOptions: {
+                        series: {
+                            allowPointSelect: true,
+                        }
+                    },
+                    series: [{
+                        name: 'Data Siswa',
+                        data: barChartSiswa,
+                    }],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 200,
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom',
+                                }
+                            }
+                        }]
+                    }
+                });
+            });
+        </script>
     </div>
 </main>

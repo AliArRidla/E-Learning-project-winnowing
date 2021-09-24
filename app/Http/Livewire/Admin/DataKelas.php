@@ -10,7 +10,13 @@ use Livewire\Component;
 class DataKelas extends Component
 {
     public $idk, $nama_kelas, $id_jurusan;
-    public $add = false, $edit = false;
+    public $edt = null, $add = null, $del = null;
+
+    protected $messages = [
+        'id_jurusan.required' => 'Mohon pilih salah satu Nama Jurusan',
+        'nama_kelas.required' => 'Mohon isi kolom Nama Kelas',
+        'nama_kelas.min' => 'Mohon isi kolom Nama Kelas minimal 3 karakter.',
+    ];
 
     public function addKelas()
     {
@@ -27,11 +33,11 @@ class DataKelas extends Component
                 'nama_kelas' => $this->nama_kelas,
             ]);
             if ($kelas) {
+                session()->flash('pesan-s', 'Data berhasil ditambah');
                 return redirect(route('dataKelas'));
-                session()->flash('msg', 'Data berhasil ditambah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL ditambah');
                 return redirect(route('dataKelas'));
-                session()->flash('msg', 'Data GAGAL ditambah');
             }
         } else {
             return redirect(route('login'));
@@ -53,11 +59,11 @@ class DataKelas extends Component
                 'nama_kelas' => $this->nama_kelas,
             ]);
             if ($k) {
+                session()->flash('pesan-s', 'Data berhasil diubah');
                 return redirect(route('dataKelas'));
-                session()->flash('msg', 'Data berhasil diubah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL diubah');
                 return redirect(route('dataKelas'));
-                session()->flash('msg', 'Data GAGAL diubah');
             }
         } else {
             return redirect(route('login'));
@@ -86,8 +92,8 @@ class DataKelas extends Component
         $delKelas = Kelas::find($idk);
         // dd($delKelas);
         $delKelas->delete();
+        session()->flash('pesan-s', 'Data berhasil dihapus');
         return redirect(route('dataKelas'));
-        session()->flash('msg', 'Data berhasil dihapus');
     }
 
     public function loadByID($idk)
@@ -98,9 +104,9 @@ class DataKelas extends Component
         $this->id_jurusan = $data['id_jurusan'];
         $this->nama_kelas = $data['nama_kelas'];
         // }
-        // $jurusan = DB::select('select * from jurusans where id = ?', [$idj]);
+        // $jurusan = DB::select('select * from jurusans where id = ?', [$idk]);
         // foreach ($jurusan as $i) {
-        //     $this->idj = $i->id;
+        //     $this->idk = $i->id;
         //     $this->nama_jurusan = $i->nama_jurusan;
         // }
         // return $jurusan;
@@ -108,25 +114,45 @@ class DataKelas extends Component
 
     // public function getByID()
     // {
-    //     // $this->idj = $idj;
-    //     $data = Jurusan::find($this->idj);
+    //     // $this->idk = $idk;
+    //     $data = Jurusan::find($this->idk);
     //     $this->nama_jurusan = $data->nama_jurusan;
     // }
 
-    public function toogleModalAddEdit($act, $idk)
+    public function toogleModal($act, $idk)
     {
         $this->idk = null;
         if ($act == 'add') {
             $this->add = true;
-            $this->edit = false;
-        } else if ($act == 'edit') {
-            $this->add = false;
-            $this->edit = true;
-            if ($idk > 0) {
+            $this->edt = null;
+            $this->del = null;
+        } else if ($act == 'edt') {
+            $this->add = null;
+            $this->edt = true;
+            $this->del = null;
+            if ($idk != null) {
+                $this->idk = $idk;
+                $this->loadByID($this->idk);
+            }
+        } else if ($act == 'del') {
+            $this->add = null;
+            $this->edt = null;
+            $this->del = true;
+            if ($idk != null) {
                 $this->idk = $idk;
                 $this->loadByID($this->idk);
             }
         }
+    }
+
+    public function allNull()
+    {
+        $this->add = null;
+        $this->edt = null;
+        $this->del = null;
+        $this->idk = null;
+        $this->nama_kelas = null;
+        $this->id_jurusan = null;
     }
 
     public function reload()

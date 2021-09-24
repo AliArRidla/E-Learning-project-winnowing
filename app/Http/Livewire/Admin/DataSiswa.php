@@ -14,14 +14,28 @@ class DataSiswa extends Component
 {
     public $ids, $name, $email, $password, $id_kelas, $nis;
 
+    protected $messages = [
+        'name.required' => 'Mohon isi kolom Nama',
+        'name.min' => 'Mohon isi kolom Nama minimal 3 karakter.',
+        'email.required' => 'Mohon isi kolom Email',
+        'email.email' => 'Format Email tidak valid.',
+        'email.unique' => 'Email sudah terpakai. Mohon gunakan yang lain.',
+        'password.required' => 'Mohon isi kolom Password',
+        'password.min' => 'Mohon isi kolom Password minimal 8 karakter.',
+        'id_kelas.required' => 'Mohon pilih salah satu Nama Kelas',
+        'nis.required' => 'Mohon isi kolom NIS',
+        'nis.min' => 'Mohon isi kolom NIS minimal 3 karakter.',
+        'nis.unique' => 'NIS sudah terpakai. Mohon gunakan yang lain.',
+    ];
+
     public function addSiswa()
     {
         $this->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'id_kelas' => 'required',
-            'nis' => 'required|unique:siswas,nis',
+            'nis' => 'required|min:3|unique:siswas,nis',
         ]);
 
         // dd($this->name, $this->email, $this->password, $this->id_kelas, $this->nis);
@@ -41,11 +55,11 @@ class DataSiswa extends Component
         ]);
 
         if ($siswa) {
+            session()->flash('pesan-s', 'Data berhasil ditambah');
             return redirect(route('dataSiswa'));
-            session()->flash('msg', 'Data berhasil ditambah');
         } else {
+            session()->flash('pesan-e', 'Data GAGAL ditambah');
             return redirect(route('dataSiswa'));
-            session()->flash('msg', 'Data GAGAL ditambah');
         }
     }
 
@@ -72,8 +86,8 @@ class DataSiswa extends Component
         $delSiswa = Siswa::find($ids);
         // dd($delSiswa);
         $delSiswa->delete();
+        session()->flash('pesan-s', 'Data berhasil dihapus');
         return redirect(route('dataSiswa'));
-        session()->flash('msg', 'Data berhasil dihapus');
     }
 
     public function getAllSiswa()

@@ -29,13 +29,21 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
 
-                                        @if (session()->has('msg'))
+                                        @if (session()->has('pesan-s'))
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
-                                                <span class="sr-only">Close</span>
+                                                <span class="sr-only">Tutup</span>
                                             </button>
-                                            <strong>Berhasil!</strong> {{ session('msg') }}
+                                            <strong>Berhasil!</strong> {{ session('pesan-s') }}
+                                        </div>
+                                        @elseif (session()->has('pesan-e'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                <span class="sr-only">Tutup</span>
+                                            </button>
+                                            <strong>GAGAL!</strong> {{ session('pesan-e') }}
                                         </div>
                                         @endif
 
@@ -48,7 +56,7 @@
                                             </p>
                                         </div>
 
-                                        @if ($errors->any())
+                                        {{-- @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
                                                 @foreach ($errors->all() as $error)
@@ -56,7 +64,7 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        @endif
+                                        @endif --}}
 
                                         <!-- Button trigger modal -->
                                         {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdlAddGuru">
@@ -95,12 +103,13 @@
                                                             <a name="detail" id="detail" class="btn btn-primary"
                                                                 href="{{ route('profilGID', ['id' => $item->id]) }}"
                                                                 role="button">
-                                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                                                Detail Guru
                                                             </a>
+                                                            <hr>
                                                             <button name="delete" id="delete" class="btn btn-danger" 
                                                             wire:click="saveIdDel({{ $item->user_id }}, '{{ $item->name }}')"
                                                             data-toggle="modal" data-target="#mdlDelGuru">
-                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                Hapus Data
                                                             </button>
                                                         </td>
 
@@ -127,25 +136,32 @@
         </div>
         {{-- @include('layouts.modals') --}}
         <!-- Modal delete guru -->
-  <div wire:ignore.self class="modal fade" id="mdlDelGuru" tabindex="-1" aria-labelledby="mdlDelGuruLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="mdlDelGuruLabel">Delete Confirmation</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div wire:ignore.self class="modal fade" id="mdlDelGuru" data-backdrop="static" data-keyboard="false"
+                tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mdlDelGuruLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="allNull">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @if ($names != null)
+                            Apakah Anda yakin ingin menghapus user <strong>{{ $names }}</strong> ?
+                        @else
+                            <p>Mohon Tunggu... Sedang memuat...</p>
+                        @endif
+                    </div>
+                    @if ($names !== null)
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mr-auto" wire:click="deleteUser({{ $idDel }})">Yakin!</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="allNull">Tidak</button>
+                    </div>
+                    @endif
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          Apakah Anda yakin ingin menghapus user <strong>{{ $names }}</strong> ?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger mr-auto" wire:click="deleteUser({{ $idDel }})">Yakin!</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-        </div>
-      </div>
-    </div>
-  </div>
         <!-- Modal add guru -->
         <div wire:ignore.self class="modal fade" id="mdlAddGuru" data-backdrop="static" data-keyboard="false"
             tabindex="-1" data-focus="true" data-show="true" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -153,12 +169,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Tambah Guru</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            wire:click="reload()">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form wire:submit.prevent="submit">
+                    {{-- <form wire:submit.prevent="submit"> --}}
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -197,11 +212,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"
-                                wire:click="reload()">Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Tutup</button>
                             <button type="button" class="btn btn-primary" wire:click="addGuru()">Daftarkan</button>
                         </div>
-                    </form>
+                    {{-- </form> --}}
                 </div>
             </div>
         </div>

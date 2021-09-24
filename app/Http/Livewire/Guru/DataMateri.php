@@ -6,15 +6,19 @@ use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class DataMateri extends Component
 {
-    public $nav_dmid, $nama_materi, $id_mat, $nama_mapel, $nama_kelas;
+    use WithFileUploads;
+    public $nav_dmid, $id_mat;
+    public $nama_materi, $nama_mapel, $nama_kelas;
+    
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
 
-        $dm = DB::select('select m.nama_mapel, k.nama_kelas 
+        $dm = DB::select('select m.nama_mapel, k.nama_kelas
         from detail_mapels as dm 
         join mapels as m on dm.id_mapel = m.id
         join kelas as k on dm.id_kelas = k.id
@@ -28,11 +32,18 @@ class DataMateri extends Component
 
     public function loadMat($id)
     {
-        $dMap = Materi::find($id)->get();
-        foreach ($dMap as $key) {
-            $this->nama_materi = $key->nama_materi;
-            $this->id_mat = $key->id;
-        }
+        $this->id_mat = $id;
+        $dMap = Materi::find($id);
+        // foreach ($dMap as $key) {
+        $this->nama_materi = $dMap['nama_materi'];
+        // $this->id_mat = $dMap['id'];
+        // }
+    }
+
+    public function allNull()
+    {
+        $this->nama_materi = null;
+        $this->id_mat = null;
     }
 
     public function delMat()
@@ -41,7 +52,9 @@ class DataMateri extends Component
         $dMap = Materi::find($this->id_mat);
         // $file_mat = $dMap->file_materi;
         // dd();
-        unlink('storage/file-materi/' . $dMap['file_materi']);
+        if ($dMap['file_materi'] != null) {
+            unlink($_SERVER['DOCUMENT_ROOT'].'/storage/public/file-materi/' . $dMap['file_materi']);
+        }
         $dMap->delete();
         session()->flash('pesan', 'Data berhasil dihapus');
         return redirect(route('dataMateri', ['nav_dmid' => $this->nav_dmid]));

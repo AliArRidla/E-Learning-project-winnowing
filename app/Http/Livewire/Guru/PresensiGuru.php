@@ -13,6 +13,13 @@ class PresensiGuru extends Component
     public $msg = '', $sama = false;
     public $nama_mapel, $nama_kelas, $hari_absen;
 
+    protected $messages = [
+        'tgl_absen.required' => 'Mohon isi Tanggal Presensi dimulai',
+        'twaktu_mulai.required' => 'Mohon isi kolom Waktu Presensi Dimulai.',
+        'twaktu_selesai.required' => 'Mohon isi kolom Waktu Presensi Selesai.',
+        'jangka_waktu.required' => 'Mohon isi Jangka Waktu presensi.',
+    ];
+
     public function mount($nav_dmid)
     {
         $this->nav_dmid = $nav_dmid;
@@ -65,6 +72,13 @@ class PresensiGuru extends Component
         } else {
             return redirect(route('login'));
         }
+    }
+
+    public function allNull()
+    {
+        $this->pid = null;
+        $this->nama_kelas = null;
+        $this->nama_mapel = null;
     }
 
     public function saveID($pid)

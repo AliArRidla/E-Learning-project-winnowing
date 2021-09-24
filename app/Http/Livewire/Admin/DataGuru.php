@@ -14,10 +14,14 @@ class DataGuru extends Component
     public $name, $email, $password;
     public $idDel, $names;
 
-    // public function mount()
-    // {
-    //     $this->reload();
-    // }
+    protected $messages = [
+        'name.required' => 'Mohon isi kolom Nama',
+        'email.required' => 'Mohon isi kolom Email',
+        'email.email' => 'Format Email tidak valid.',
+        'email.unique' => 'Email sudah terpakai. Mohon gunakan yang lain.',
+        'password.required' => 'Mohon isi kolom Password',
+        'password.min' => 'Mohon isi kolom Password minimal 8 karakter.',
+    ];
 
     public function addGuru()
     {
@@ -50,11 +54,11 @@ class DataGuru extends Component
             ]);
 
             if ($guru) {
+                session()->flash('pesan-s', 'Data berhasil ditambah');
                 return redirect(route('dataGuru'));
-                session()->flash('msg', 'Data berhasil ditambah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL ditambah');
                 return redirect(route('dataGuru'));
-                session()->flash('msg', 'Data GAGAL ditambah');
             }
             // Guru::create([
             //     'user_id' => $userG->id,
@@ -65,6 +69,11 @@ class DataGuru extends Component
         } else {
             return redirect(route('login'));
         }
+    }
+
+    public function allNull()
+    {
+        $this->names = null;
     }
 
     public function getAll()
@@ -108,8 +117,8 @@ class DataGuru extends Component
         $delUser = User::find($id);
         // $delGuru->delete();
         $delUser->delete();
+        session()->flash('pesan-s', 'Data berhasil dihapus');
         return redirect(route('dataGuru'));
-        session()->flash('msg', 'Data berhasil dihapus');
         // dd($delGuru);
     }
 

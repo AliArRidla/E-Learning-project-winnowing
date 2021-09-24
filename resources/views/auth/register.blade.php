@@ -65,7 +65,7 @@
         <div class="register-link">
             <p>
                 Sudah Punya Akun?
-                <a href="{{ route('login') }}">Daftar</a>
+                <a href="{{ route('login') }}">Masuk</a>
             </p>
         </div>
     {{-- </x-auth-card> --}}

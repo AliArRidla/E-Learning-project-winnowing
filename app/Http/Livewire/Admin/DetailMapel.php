@@ -16,6 +16,8 @@ use function PHPUnit\Framework\isEmpty;
 class DetailMapel extends Component
 {
     public $id_mapel, $id_dm, $nama_mapel, $nama_kelas, $name, $id_kelas, $id_guru;
+    public $edt = null, $add = null, $del = null, $er_msg = false, $er_msg2 = false;
+    public $old_id_mapel, $old_id_kelas, $old_id_guru;
 
     protected $messages = [
         'id_mapel.required' => 'Mohon pilih mata pelajaran',
@@ -25,53 +27,113 @@ class DetailMapel extends Component
 
     public function tambahDM()
     {
+        $this->er_msg = false;
+        $this->er_msg2 = false;
+        $this->nama_mapel = null;
+        $this->nama_kelas = null;
+        $this->name = null;
         $this->validate([
             'id_mapel' => 'required',
             'id_kelas' => 'required',
             'id_guru' => 'required',
         ]);
+        
+        $find = DB::select(
+            'select id from detail_mapels
+                where id_mapel = ? and id_guru = ? and id_kelas = ?',
+                [$this->id_mapel, $this->id_guru, $this->id_kelas]
+        );
 
-        $crDM = ModelsDetailMapel::create([
-            'id_mapel' => $this->id_mapel,
-            'id_kelas' => $this->id_kelas,
-            'id_guru' => $this->id_guru,
-        ]);
-
-        if ($crDM) {
-            session()->flash('pesan', 'Detail Mapel berhasil ditambah');
-            return redirect(route('detailMapel'));
+        if ($find != null) {
+            $fguru = DB::select('select u.name from users as u join gurus as g on g.user_id = u.id where g.id = ?', [$this->id_guru]);
+            foreach($fguru as $g){
+                $this->name = $g->name;
+            }
+            $fmap = Mapel::find($this->id_mapel);
+            $this->nama_mapel = $fmap['nama_mapel'];
+            $fkel = Kelas::find($this->id_kelas);
+            $this->nama_kelas = $fkel['nama_kelas'];
+            $this->er_msg = true;
         } else {
-            session()->flash('pesan', 'Detail Mapel GAGAL ditambah');
-            return redirect(route('detailMapel'));
+            $find2 = DB::select(
+                'select id from detail_mapels
+                    where id_mapel = ? and id_kelas = ?',
+                [$this->id_mapel, $this->id_kelas]
+            );
+            if ($find2 != null) {
+                $fmap = Mapel::find($this->id_mapel);
+                $this->nama_mapel = $fmap['nama_mapel'];
+                $fkel = Kelas::find($this->id_kelas);
+                $this->nama_kelas = $fkel['nama_kelas'];
+                $this->er_msg2 = true;
+            } else {
+                $dmap = ModelsDetailMapel::create([
+                    'id_mapel' => $this->id_mapel,
+                    'id_kelas' => $this->id_kelas,
+                    'id_guru' => $this->id_guru,
+                ]);
+
+                if ($dmap) {
+                    // $this->reset();
+                    session()->flash('pesan', 'Detail Mapel berhasil ditambah');
+                    return redirect(route('detailMapel'));
+                } else {
+                    session()->flash('pesan', 'Detail Mapel GAGAL ditambah');
+                    return redirect(route('detailMapel'));
+                }
+            }
         }
     }
 
     public function editDM()
     {
+        $this->er_msg = false;
+        $this->er_msg2 = false;
+        $this->nama_mapel = null;
+        $this->nama_kelas = null;
+        $this->name = null;
         $this->validate([
             'id_mapel' => 'required',
             'id_kelas' => 'required',
             'id_guru' => 'required',
         ]);
-
-        $uDM = ModelsDetailMapel::find($this->id_dm)->update([
-            'id_mapel' => $this->id_mapel,
-            'id_kelas' => $this->id_kelas,
-            'id_guru' => $this->id_guru,
-        ]);
-
-        if ($uDM) {
-            session()->flash('pesan', 'Detail Mapel berhasil diubah');
-            return redirect(route('detailMapel'));
+        
+        $find = DB::select(
+            'select id from detail_mapels
+                where id_mapel = ? and id_guru = ? and id_kelas = ?',
+                [$this->id_mapel, $this->id_guru, $this->id_kelas]
+        );
+        
+        if ($find != null) {
+            $fguru = DB::select('select u.name from users as u join gurus as g on g.user_id = u.id where g.id = ?', [$this->id_guru]);
+            foreach($fguru as $g){
+                $this->name = $g->name;
+            }
+            $fmap = Mapel::find($this->id_mapel);
+            $this->nama_mapel = $fmap['nama_mapel'];
+            $fkel = Kelas::find($this->id_kelas);
+            $this->nama_kelas = $fkel['nama_kelas'];
+            $this->er_msg = true;
         } else {
-            session()->flash('pesan', 'Detail Mapel GAGAL diubah');
-            return redirect(route('detailMapel'));
+            $uDM = ModelsDetailMapel::find($this->id_dm)->update([
+                'id_mapel' => $this->id_mapel,
+                'id_kelas' => $this->id_kelas,
+                'id_guru' => $this->id_guru,
+            ]);
+                
+            if ($uDM) {
+                session()->flash('pesan', 'Detail Mapel berhasil diubah');
+                return redirect(route('detailMapel'));
+            } else {
+                session()->flash('pesan', 'Detail Mapel GAGAL diubah');
+                return redirect(route('detailMapel'));
+            }
         }
     }
 
     public function loadByID($dmid)
     {
-        $this->id_dm = $dmid;
+        // $this->id_dm = $dmid;
         $detDM = DB::select('select m.id as mid, k.id as kid, 
         m.nama_mapel, k.nama_kelas, u.name, g.id as gid
         from detail_mapels as dm
@@ -88,6 +150,9 @@ class DetailMapel extends Component
             $this->id_mapel = $d->mid;
             $this->id_kelas = $d->kid;
             $this->id_guru = $d->gid;
+            $this->old_id_mapel = $d->mid;
+            $this->old_id_kelas = $d->kid;
+            $this->old_id_guru = $d->gid;
         }
     }
 
@@ -110,8 +175,37 @@ class DetailMapel extends Component
         order by k.nama_kelas, m.nama_mapel asc');
     }
 
-    public function clearAll()
+    public function toogleModal($act, $id_dm)
     {
+        $this->id_dm = null;
+        if ($act == 'add') {
+            $this->add = true;
+            $this->edt = null;
+            $this->del = null;
+        } else if ($act == 'edt') {
+            $this->add = null;
+            $this->edt = true;
+            $this->del = null;
+            if ($id_dm != null) {
+                $this->id_dm = $id_dm;
+                $this->loadByID($this->id_dm);
+            }
+        } else if ($act == 'del') {
+            $this->add = null;
+            $this->edt = null;
+            $this->del = true;
+            if ($id_dm != null) {
+                $this->id_dm = $id_dm;
+                $this->loadByID($this->id_dm);
+            }
+        }
+    }
+
+    public function allNull()
+    {
+        $this->add = null;
+        $this->edt = null;
+        $this->del = null;
         $this->id_dm = null;
         $this->id_kelas = null;
         $this->id_guru = null;

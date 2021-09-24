@@ -9,11 +9,17 @@ use Livewire\Component;
 
 class DataJurusan extends Component
 {
-    public $idj, $nama_jurusan;
-    public $add = false, $edit = false;
+    public $idj = null, $nama_jurusan;
+    public $edt = null, $add = null, $del = null;
+
+    protected $messages = [
+        'nama_jurusan.required' => 'Mohon isi kolom Nama Jurusan',
+        'nama_jurusan.min' => 'Mohon isi kolom Nama Jurusan minimal 3 karakter.',
+    ];
 
     public function addJurusan()
     {
+        //console.log("LOG");
         if (Auth::user()->hasRole('admin')) {
             $this->validate([
                 'nama_jurusan' => 'required|string|min:3',
@@ -23,15 +29,21 @@ class DataJurusan extends Component
                 'nama_jurusan' => $this->nama_jurusan,
             ]);
             if ($jurusan) {
+                session()->flash('pesan-s', 'Data berhasil ditambah');
                 return redirect(route('dataJurusan'));
-                session()->flash('msg', 'Data berhasil ditambah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL ditambah');
                 return redirect(route('dataJurusan'));
-                session()->flash('msg', 'Data GAGAL ditambah');
             }
         } else {
             return redirect(route('login'));
         }
+    }
+
+    public function edtFalse()
+    {
+        $this->edt = false;
+        $this->idj = null;
     }
 
     public function editJurusan()
@@ -45,11 +57,11 @@ class DataJurusan extends Component
 
             $j = Jurusan::find($this->idj)->update(['nama_jurusan' => $this->nama_jurusan]);
             if ($j) {
+                session()->flash('pesan-s', 'Data berhasil diubah');
                 return redirect(route('dataJurusan'));
-                session()->flash('msg', 'Data berhasil diubah');
             } else {
+                session()->flash('pesan-e', 'Data GAGAL diubah');
                 return redirect(route('dataJurusan'));
-                session()->flash('msg', 'Data GAGAL diubah');
             }
         } else {
             return redirect(route('login'));
@@ -71,18 +83,18 @@ class DataJurusan extends Component
         $delJurusan = Jurusan::find($idj);
         // dd($delJurusan);
         $delJurusan->delete();
+        session()->flash('pesan-s', 'Data berhasil dihapus');
         return redirect(route('dataJurusan'));
-        session()->flash('msg', 'Data berhasil dihapus');
     }
 
     public function loadByID($idj)
     {
+        // $this->edt = true;
         $this->idj = $idj;
         $data = Jurusan::find($this->idj);
-        if($data== null){
+        if ($data == null) {
             $this->nama_jurusan = '';
-        }
-        else{
+        } else {
             $this->nama_jurusan = $data['nama_jurusan'];
         }
         // $jurusan = DB::select('select * from jurusans where id = ?', [$idj]);
@@ -100,20 +112,38 @@ class DataJurusan extends Component
     //     $this->nama_jurusan = $data->nama_jurusan;
     // }
 
-    public function toogleModalAddEdit($act, $idj)
+    public function toogleModal($act, $idj)
     {
         $this->idj = null;
         if ($act == 'add') {
             $this->add = true;
-            $this->edit = false;
-        } else if ($act == 'edit') {
-            $this->add = false;
-            $this->edit = true;
-            if ($idj > 0) {
+            $this->edt = null;
+            $this->del = null;
+        } else if ($act == 'edt') {
+            $this->add = null;
+            $this->edt = true;
+            $this->del = null;
+            if ($idj != null) {
+                $this->idj = $idj;
+                $this->loadByID($this->idj);
+            }
+        } else if ($act == 'del') {
+            $this->add = null;
+            $this->edt = null;
+            $this->del = true;
+            if ($idj != null) {
                 $this->idj = $idj;
                 $this->loadByID($this->idj);
             }
         }
+    }
+
+    public function allNull()
+    {
+        $this->add = null;
+        $this->edt = null;
+        $this->del = null;
+        $this->idj = null;
     }
 
     public function reload()

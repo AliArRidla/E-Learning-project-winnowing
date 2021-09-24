@@ -23,6 +23,11 @@
                             </div>
                         </div>
                         
+                        <hr>
+                        <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
+                            <i class="zmdi zmdi-arrow-left"></i>Kembali
+                        </a>
+                        
                         <div class="py-6">
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -64,6 +69,7 @@
                                                         <th>Benar</th>
                                                         <th>Salah</th>
                                                         <th>Nilai</th>
+                                                        <th>Review Essays</th>
                                                         <th>Waktu Pengumpulan</th>
                                                         {{-- <th class="not-export-col">Aksi</th> --}}
                                                     </tr>
@@ -80,6 +86,11 @@
                                                         <td>{{ $item->benar }}</td>
                                                         <td>{{ $item->salah }}</td>
                                                         <td>{{ $item->nilai }}</td>
+                                                        <td align="center"><a href=""> 70%  &nbsp &nbsp &nbsp
+                                                            <button type="button" class="au-btn au-btn-icon au-btn--blue">
+                                                                <i class="zmdi zmdi-format-list-bulleted"></i>Review 
+                                                            </button>
+                                                        </a></td>
                                                         @php
                                                             $pdate = date('j F Y - H:i', strtotime($item->pengumpulan));
                                                         @endphp

@@ -45,7 +45,10 @@
                                         <br>
                                         <label>Silahkan unduh file dibawah ini!</label>
                                         <br>
-                                        <a href="{{ route('downloadMatGuru', ['filemat' => $dm->file_materi]) }}">{{ $dm->file_materi }}</a>
+                                        @php
+                                            $fm = substr($dm->file_materi, 14);
+                                        @endphp
+                                        <a href="{{ route('downloadMatGuru', ['filemat' => $dm->file_materi]) }}">{{ $fm }}</a>
                                         @endif
                                         <hr>
                                         <label><strong>Deskripsi Materi</strong></label> 
@@ -63,14 +66,14 @@
                                 </div>
                         </div>
                         
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
                                     <p>Copyright © 2018 LESGO. All rights reserved. Template by <a
                                             href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

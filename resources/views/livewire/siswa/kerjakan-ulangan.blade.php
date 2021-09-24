@@ -57,56 +57,88 @@
                                         $count = 1;
                                         @endphp
                                         @foreach ($dataSoal as $item)
-                                        <div>
-                                            <h4>Soal nomor {{ $count }}</h4>
-                                        </div>
-                                        <br>
-                                        <div>
-                                            {!! $item->soal !!}
-                                        </div>
-                                        <br>
-                                        {{-- @foreach ($this->pilihan as $key => $item) --}}
-                                        <div>
-                                            <form>
-                                                <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil1" value="pilihan_a">
-                                                    <label class="form-check-label" for="exampleRadios1">
-                                                        A. {!! $item->pilihan_a !!}
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil2" value="pilihan_b">
-                                                    <label class="form-check-label" for="exampleRadios2">
-                                                        B. {!! $item->pilihan_b !!}
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil3" value="pilihan_c">
-                                                    <label class="form-check-label" for="exampleRadios2">
-                                                        C. {!! $item->pilihan_c !!}
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil4" value="pilihan_d">
-                                                    <label class="form-check-label" for="exampleRadios2">
-                                                        D. {!! $item->pilihan_d !!}
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil5" value="pilihan_e">
-                                                    <label class="form-check-label" for="exampleRadios2">
-                                                        E. {!! $item->pilihan_e !!}
-                                                    </label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <hr>
-                                        <br>
+                                            {{-- @foreach ($dataSoalEssay as $itemEssay) --}}
+                                            <div>
+                                                <h4>Soal nomor {{ $count }}</h4>
+                                            </div>
+                                            <br>
+                                            <div>
+                                                {!! $item->soal !!}
+                                            </div>
+                                            <br>
+                                            {{-- @foreach ($this->pilihan as $key => $item) --}}
+                                            <div>
+                                                <form>
+                                                    <div class="form-check">
+                                                        <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil1" value="pilihan_a">
+                                                        A. <label class="form-check-label" for="exampleRadios1">
+                                                            <span>{!! $item->pilihan_a !!}</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil2" value="pilihan_b">
+                                                        B. <label class="form-check-label" for="exampleRadios2">
+                                                            <span>{!! $item->pilihan_b !!}</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil3" value="pilihan_c">
+                                                        C. <label class="form-check-label" for="exampleRadios2">
+                                                            <span>{!! $item->pilihan_c !!}</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil4" value="pilihan_d">
+                                                        D. <label class="form-check-label" for="exampleRadios2">
+                                                            <span>{!! $item->pilihan_d !!}</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input wire:model="pilihan.{{ $item->id }}" class="form-check-input" type="radio" name="pilihan{{ $count }}" id="pil5" value="pilihan_e">
+                                                        E. <label class="form-check-label" for="exampleRadios2">
+                                                            <span>{!! $item->pilihan_e !!}</span>
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <hr>
+                                            
+                                            @php
+                                                $count++;
+                                            @endphp
+                                            {{-- @endforeach --}}
+                                        @endforeach    
+                                        
                                         @php
-                                            $count++;
+                                        $countEssay = 1;
                                         @endphp
+                                        @foreach ($dataEssay as $itemEssay)
+                                        <div>
+                                            <h4>Soal essay nomor {{ $countEssay }}</h4>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            {!! $itemEssay->soal !!}
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
+                                                </div>
+                                                <div class="col-md-10" wire:ignore>
+                                                    <textarea type="text" id="jawaban_siswa"  wire:model.defer="jawaban_siswa" name="jawaban_siswa"
+                                                    class="form-control @error('jawaban_siswa') is-invalid @enderror"> 
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @php
+                                        $countEssay++;
+                                    @endphp
                                         @endforeach
-                                        @endif
+                                        @endif   
+
                                     </div>
                                 </div>
                             </div>
@@ -117,12 +149,10 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <h2 class="title-1"> </h2>
-                                    {{-- <a href="#"> --}}
-                                        <button type="button" class="btn btn-warning btn-lg"
+                                    <button type="button" class="btn btn-warning btn-lg"
                                         data-toggle="modal" data-target="#mdlSimpan">
                                             Simpan &ensp; <i class="zmdi zmdi-check"></i>
-                                        </button>
-                                    {{-- </a> --}}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +200,7 @@
                             
                         // If the count down is over, write some text 
                         if (distance < 0) {
-                            clearInterval(x);
+                            // clearInterval(x);
                             document.getElementById("myTimer").innerHTML = "WAKTU BERAKHIR!";
                             @this.simpanJawaban();
                         }
@@ -203,10 +233,9 @@
                 </div>
                 <div class="modal-body">
                     Apakah Anda yakin ingin <strong>MENYELESAIKAN</strong> ulangan <strong>SEKARANG</strong>?
-                    {{-- <br> Waktu Anda tersisa <strong><span id="myTimer"></span></strong>! --}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger mr-auto" wire:click="simpanJawaban">Yakin!</button>
+                    <button type="button" class="btn btn-danger mr-auto" data-dismiss="modal" wire:click="simpanJawaban">Yakin!</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                 </div>
             </div>

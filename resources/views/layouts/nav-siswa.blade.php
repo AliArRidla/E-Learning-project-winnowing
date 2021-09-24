@@ -20,7 +20,7 @@
     </div>
     <nav class="navbar-mobile">
         <div class="container-fluid">
-            <ul class="navbar-mobile__list list-unstyled">
+            <ul class="navbar-mobile__list list-unstyled" style="list-style: none !important; margin-left: 0px;">
                 @auth
                     <li class="{{ (request()->is('siswa/dashboard')) ? 'active' : '' }}">
                         <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}" id="dash">
@@ -35,7 +35,7 @@
                     <li class="has-sub {{ (request()->is('siswa/*/'.$item->dmid) || request()->is('siswa/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list" style="list-style: none !important; margin-left: 0px;">
 
                             <li class="has-sub {{ (request()->is('siswa/data-materi/'.$item->dmid) 
                                 || request()->is('siswa/det-data-materi/'.$item->dmid.'/*') ||
@@ -65,7 +65,7 @@
     </div>
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
-            <ul class="list-unstyled navbar__list" id="nalist">
+            <ul class="list-unstyled navbar__list" id="nalist" style="list-style: none !important; margin-left: 0px;">
                 @auth
                     <li class="{{ (request()->is('siswa/dashboard')) ? 'active' : '' }}">
                         <a href="{{ (request()->is('siswa/kerjakan-ulangan/*')) ? '#' : route('dashboardSiswa') }}" id="dash">
@@ -81,7 +81,7 @@
                     <li class="has-sub {{ (request()->is('siswa/*/'.$item->dmid) || request()->is('siswa/*/'.$item->dmid.'/*')) ? 'active' : '' }}">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-chalkboard-teacher"></i>{{ $item->nama_mapel }}</a>
-                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <ul class="list-unstyled navbar__sub-list js-sub-list" style="list-style: none !important; margin-left: 0px;">
 
                             <li class="has-sub {{ (request()->is('siswa/data-materi/'.$item->dmid) 
                             || request()->is('siswa/det-data-materi/'.$item->dmid.'/*') ||
