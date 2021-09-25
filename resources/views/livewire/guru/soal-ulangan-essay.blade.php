@@ -110,21 +110,23 @@
                                                     @enderror
 
                                                     <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-md-1">
-                                                                <label for="jawaban_guru" class="form-control-label">Jawaban Essay : </label>
-                                                            </div>
-                                                            <div class="col-md-10" wire:ignore>
-                                                                <textarea type="text" id="jawaban_guru"  wire:model.defer="jawaban_guru" name="jawaban_guru"
-                                                                class="form-control @error('jawaban_guru') is-invalid @enderror"> 
+                                                <label for="jawaban_guru" class="form-control-label">Kunci
+                                                    Jawaban</label>
+                                                <div class="form-group" wire:ignore>
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <textarea type="text" id="jawaban_guru"
+                                                                wire:model.defer="jawaban_guru" name="jawaban_guru"
+                                                                class="form-control @error('jawaban_guru') is-invalid @enderror">
                                                                 </textarea>
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    @error('jawaban_guru')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                    @enderror
+                                                </div>
 
+                                                @error('jawaban_guru')
+                                                    <span id="error-msg">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                                     {{-- <div class="form-group" wire:ignore>
                                                         <div class="row">
                                                             <div class="col-md-1">

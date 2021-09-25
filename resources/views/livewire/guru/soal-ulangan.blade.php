@@ -76,6 +76,7 @@
                                                     <input wire:model.defer="poin" type="number" id="poin" name="poin" 
                                                     placeholder="Masukkan poin soal" class="form-control @error('poin') is-invalid @enderror">
                                                     <small class="form-text text-muted">Masukkan poin untuk soal nomor {{ $no_soal }}</small>
+                                    
                                                 </div>
                                                 @error('poin')
                                                 <span id="error-msg">{{ $message }}</span>
