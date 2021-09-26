@@ -74,7 +74,7 @@
                                                         {{-- <th class="not-export-col">Aksi</th> --}}
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody>                                                  
                                                     @php
                                                         $count = 1;
                                                     @endphp

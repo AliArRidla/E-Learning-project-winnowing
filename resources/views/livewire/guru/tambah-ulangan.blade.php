@@ -100,16 +100,17 @@
                                                                 <td>{{ $ipoin }}</td>
                                                                 @php
                                                                     $listOrCreate = '';
+                                                                    $listOrCreateEssay = '';
                                                                     $listOrCreate = DB::select(
-                                                                        'select count(*) as jml from (
-                                                                                                                                                                                                                                                                                                                                                select id from soals where id_ulangan = ?
-                                                                                                                                                                                                                                                                                                                                                ) jml',
-                                                                        [$item->ulid],
+                                                                        'select count(*) as jml from (select id from soals where id_ulangan = ? ) jml',[$item->ulid],
+                                                                    );
+                                                                    $listOrCreateEssay = DB::select(
+                                                                        'select count(*) as jmlEs from (select id from soal_essays where id_ulangan = ? ) jmlEs',[$item->ulid],
                                                                     );
                                                                 @endphp
                                                                 <td>
                                                                     {{-- {{ $listOrCreate }} --}}
-                                                                    @if ($listOrCreate[0]->jml == 0)
+                                                                    @if ($listOrCreate[0]->jml == 0 && $listOrCreateEssay[0]->jmlEs == 0)
                                                                         {{-- <a
                                                                             href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                                                             <button type="button"

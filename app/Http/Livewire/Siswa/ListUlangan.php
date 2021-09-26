@@ -39,8 +39,8 @@ class ListUlangan extends Component
             from ulangans as ul
             join detail_mapels as dm on dm.id = ul.id_det_mapel
             join kelas as k on dm.id_kelas = k.id
-            join mapels as m on dm.id_mapel = m.id
-            join soals as so on so.id_ulangan = ul.id
+            join mapels as m on dm.id_mapel = m.id            
+            join soal_essays as so on so.id_ulangan = ul.id
             where dm.id = ?
             group by ul.id, ul.judul_ulangan, ul.tgl_ulangan,
             ul.waktu_mulai, ul.waktu_selesai, k.nama_kelas, m.nama_mapel',
