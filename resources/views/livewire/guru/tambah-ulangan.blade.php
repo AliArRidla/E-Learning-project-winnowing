@@ -102,15 +102,15 @@
                                                                     $listOrCreate = '';
                                                                     $listOrCreate = DB::select(
                                                                         'select count(*) as jml from (
-                                                                                                                                                                                                        select id from soals where id_ulangan = ?
-                                                                                                                                                                                                        ) jml',
+                                                                                                                                                                                                                                                                                                                                                select id from soals where id_ulangan = ?
+                                                                                                                                                                                                                                                                                                                                                ) jml',
                                                                         [$item->ulid],
                                                                     );
                                                                 @endphp
                                                                 <td>
                                                                     {{-- {{ $listOrCreate }} --}}
                                                                     @if ($listOrCreate[0]->jml == 0)
-                                                                        <a
+                                                                        {{-- <a
                                                                             href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
                                                                             <button type="button"
                                                                                 class="btn btn-success btn-sm">
@@ -124,7 +124,21 @@
                                                                                 class="btn btn-success btn-sm">
                                                                                 Buat Soal Essay
                                                                             </button>
-                                                                        </a>
+                                                                        </a> --}}
+                                                                        <div class="dropdown">
+                                                                            <button
+                                                                                class="btn btn-success dropdown-toggle" type="button" 
+                                                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                Buat Soal
+                                                                            </button>
+                                                                            <div class="dropdown-menu"
+                                                                                aria-labelledby="dropdownMenuButton">
+                                                                                <a class="dropdown-item"
+                                                                                    href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda</a>
+                                                                                <a class="dropdown-item"
+                                                                                    href="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Essay</a>
+                                                                            </div>
+                                                                        </div>
 
                                                                     @else
                                                                         <a
@@ -144,7 +158,7 @@
                                                                         wire:click="saveID({{ $item->ulid }})">
                                                                         Edit
                                                                     </button>
-                                                                   
+
                                                                     {{-- <button type="button" class="btn btn-warning btn-sm">
                                                                 Edit
                                                             </button> --}}
@@ -154,10 +168,11 @@
                                                                         wire:click="saveID({{ $item->ulid }})">
                                                                         Hapus
                                                                         {{-- <i class="fa fa-trash" aria-hidden="true"></i> --}}
-                                                                    </button> 
-                                                                    
+                                                                    </button>
+
                                                                 </td>
-                                                                <hr><td>
+                                                                <hr>
+                                                                <td>
                                                                     <a
                                                                         href="{{ route('listHasilGuru', ['id_ul' => $item->ulid, 'nav_dmid' => $nav_dmid]) }}">
                                                                         <button type="button"
