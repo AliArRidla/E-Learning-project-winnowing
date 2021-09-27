@@ -19,7 +19,7 @@
                                     @if ($no_soal > 1)
                                     <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
                                         <button type="button" class="au-btn au-btn-icon au-btn--green">
-                                            <i class="zmdi zmdi-format-list-bulleted"></i> Daftar Soal 
+                                            <i class="zmdi zmdi-format-list-bulleted"></i> Daftar Soal
                                         </button>
                                     </a>
                                     @endif
@@ -42,24 +42,11 @@
                         <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
                             <i class="zmdi zmdi-arrow-left"></i>Kembali
                         </a>
-                        {{-- @if ($no_soal > 1)
-                            <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
-                                <button type="button" class="au-btn au-btn-icon au-btn--green">
-                                    <i class="zmdi zmdi-format-list-bulleted"></i> List Soal 
-                                </button>
-                            </a>
-                        @endif --}}
 
-                        {{-- @if ($no_soal == 1)
-                            <a href="{{ route('customSoalGuru', ['id_ul' => $id_ul]) }}">
-                                <button type="button"
-                                    class="au-btn au-btn-icon au-btn--blue ml-2">
-                                    <i class="zmdi zmdi-arrow-left"></i> Kembali
-                                </button>
-                            </a>
-                        @endif --}}
 
                         <div class="py-6">
+
+
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
@@ -73,10 +60,10 @@
                                                     <label for="poin" class=" form-control-label">Poin: </label>
                                                 </div>
                                                 <div class="col-12 col-md-7">
-                                                    <input wire:model.defer="poin" type="number" id="poin" name="poin" 
+                                                    <input wire:model.defer="poin" type="number" id="poin" name="poin"
                                                     placeholder="Masukkan poin soal" class="form-control @error('poin') is-invalid @enderror">
                                                     <small class="form-text text-muted">Masukkan poin untuk soal nomor {{ $no_soal }}</small>
-                                    
+
                                                 </div>
                                                 @error('poin')
                                                 <span id="error-msg">{{ $message }}</span>
@@ -103,7 +90,7 @@
                                                     <div wire:ignore class="form-group">
                                                         <textarea type="text" id="ed_soal" wire:model.defer="ed_soal" name="ed_soal"
                                                         class="form-control @error('ed_soal') is-invalid @enderror">
-                                                        
+
                                                         </textarea>
                                                     </div>
                                                     @error('ed_soal')
@@ -117,7 +104,7 @@
                                                             </div>
                                                             <div class="col-md-10" wire:ignore>
                                                                 <textarea type="text" id="pilA"  wire:model.defer="pilA" name="pilA"
-                                                                class="form-control @error('pilA') is-invalid @enderror"> 
+                                                                class="form-control @error('pilA') is-invalid @enderror">
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -149,7 +136,7 @@
                                                             </div>
                                                             <div class="col-md-10">
                                                                 <textarea type="text" id="pilC"  wire:model.defer="pilC"
-                                                                class="form-control @error('pilC') is-invalid @enderror" name="pilC"> 
+                                                                class="form-control @error('pilC') is-invalid @enderror" name="pilC">
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -166,7 +153,7 @@
                                                             </div>
                                                             <div class="col-md-10">
                                                                 <textarea type="text" id="pilD"  wire:model.defer="pilD"
-                                                                class="form-control @error('pilD') is-invalid @enderror" name="pilD"> 
+                                                                class="form-control @error('pilD') is-invalid @enderror" name="pilD">
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -183,7 +170,7 @@
                                                             </div>
                                                             <div class="col-md-10">
                                                                 <textarea type="text" id="pilE"  wire:model.defer="pilE"
-                                                                class="form-control @error('pilE') is-invalid @enderror" name="pilE"> 
+                                                                class="form-control @error('pilE') is-invalid @enderror" name="pilE">
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -353,7 +340,7 @@
 
                 });
             </script>
-            
+
             <!-- END MAIN CONTENT-->
         </div>
     </div>
