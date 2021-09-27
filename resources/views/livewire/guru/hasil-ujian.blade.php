@@ -22,12 +22,12 @@
                                 {{-- </div> --}}
                             </div>
                         </div>
-                        
+
                         <hr>
                         <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}" type="button" class="au-btn au-btn-icon au-btn--blue">
                             <i class="zmdi zmdi-arrow-left"></i>Kembali
                         </a>
-                        
+
                         <div class="py-6">
                             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -74,10 +74,11 @@
                                                         {{-- <th class="not-export-col">Aksi</th> --}}
                                                     </tr>
                                                 </thead>
-                                                <tbody>                                                  
+                                                <tbody>
                                                     @php
                                                         $count = 1;
                                                     @endphp
+
                                                     @if ($dataHasil != null)
                                                     @foreach ($dataHasil as $item)
                                                     <tr>
@@ -86,11 +87,11 @@
                                                         <td>{{ $item->benar }}</td>
                                                         <td>{{ $item->salah }}</td>
                                                         <td>{{ $item->nilai }}</td>
-                                                        <td align="center"><a href=""> 70%  &nbsp &nbsp &nbsp
-                                                            <button type="button" class="au-btn au-btn-icon au-btn--blue">
-                                                                <i class="zmdi zmdi-format-list-bulleted"></i>Review 
+                                                        <td align="center">
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                                Launch demo modal
                                                             </button>
-                                                        </a></td>
+                                                        </td>
                                                         @php
                                                             $pdate = date('j F Y - H:i', strtotime($item->pengumpulan));
                                                         @endphp
@@ -114,3 +115,29 @@
 
     </div>
 </main>
+
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body row">
+        <div class="col-md-6" style="border: 1px solid #000">
+            <h2 align="center">Nilai Guru</h2>
+        </div>
+        <div class="col-md-6" style="border: 1px solid #000">
+            <h2 align="center">Nilai Siswa</h2>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+    </div>
+</div>
