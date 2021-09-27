@@ -128,10 +128,13 @@
         </div>
         <div class="modal-body row">
         <div class="col-md-6" style="border: 1px solid #000">
-            <h2 align="center">Nilai Guru</h2>
+            <h2 align="center">Kunci Jawaban</h2>
         </div>
         <div class="col-md-6" style="border: 1px solid #000">
-            <h2 align="center">Nilai Siswa</h2>
+            <h2 align="center">Jawaban Siswa</h2>
+        </div>
+         <div class="col-md-6" style="border: 1px solid #000">
+            <h2 align="center">Hasil</h2>
         </div>
         </div>
         <div class="modal-footer">
