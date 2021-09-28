@@ -10,7 +10,7 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
-                <div class="section__content section__content--p30">
+                <div class="section_content section_content--p30">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
@@ -78,8 +78,25 @@
                                                     @php
                                                         $count = 1;
                                                     @endphp
+                                                          <tr>
+                                                        <td>{{ $count++ }}</td>
+                                                        //data ngawur yg penting muncul dulu
+                                                        <td>coba</td>
+                                                        <td>coba</td>
+                                                        <td>coba</td>
+                                                        <td>coba</td>
+                                                        <td align="center">
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                                Review Hasil Ujian
+                                                            </button>
+                                                        </td>
+                                                        @php
+                                                            $pdate = date('j F Y - H:i');
+                                                        @endphp
+                                                        <td>{{ $pdate }}</td>
+                                                    </tr>
 
-                                                    @if ($dataHasil != null)
+                                                    {{--  @if ($dataHasil != null)
                                                     @foreach ($dataHasil as $item)
                                                     <tr>
                                                         <td>{{ $count++ }}</td>
@@ -98,7 +115,7 @@
                                                         <td>{{ $pdate }}</td>
                                                     </tr>
                                                     @endforeach
-                                                    @endif
+                                                    @endif  --}}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -127,15 +144,22 @@
         </button>
         </div>
         <div class="modal-body row">
-        <div class="col-md-6" style="border: 1px solid #000">
-            <h2 align="center">Kunci Jawaban</h2>
-        </div>
-        <div class="col-md-6" style="border: 1px solid #000">
-            <h2 align="center">Jawaban Siswa</h2>
-        </div>
-         <div class="col-md-6" style="border: 1px solid #000">
-            <h2 align="center">Hasil</h2>
-        </div>
+            <table id="table" class="table table-striped table-bordered"
+            style="width:100%">
+                <thead>
+                    <th>Nilai Guru</th>
+                    <th>Nilai Siswa</th>
+                    <th>Presentase</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
