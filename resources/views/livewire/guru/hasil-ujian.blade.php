@@ -78,7 +78,7 @@
                                                     @php
                                                         $count = 1;
                                                     @endphp
-                                                          <tr>
+                                                    {{-- <tr>
                                                         <td>{{ $count++ }}</td>
                                                         //data ngawur yg penting muncul dulu
                                                         <td>coba</td>
@@ -94,28 +94,28 @@
                                                             $pdate = date('j F Y - H:i');
                                                         @endphp
                                                         <td>{{ $pdate }}</td>
-                                                    </tr>
+                                                    </tr> --}}
 
-                                                    {{--  @if ($dataHasil != null)
-                                                    @foreach ($dataHasil as $item)
-                                                    <tr>
-                                                        <td>{{ $count++ }}</td>
-                                                        <td>{{ $item->name }}</td>
-                                                        <td>{{ $item->benar }}</td>
-                                                        <td>{{ $item->salah }}</td>
-                                                        <td>{{ $item->nilai }}</td>
-                                                        <td align="center">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                                                Launch demo modal
-                                                            </button>
-                                                        </td>
-                                                        @php
-                                                            $pdate = date('j F Y - H:i', strtotime($item->pengumpulan));
-                                                        @endphp
-                                                        <td>{{ $pdate }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                    @endif  --}}
+                                                     @if ($dataHasil != null)
+                                                        @foreach ($dataHasil as $item)
+                                                        <tr>
+                                                            <td>{{ $count++ }}</td>
+                                                            <td>{{ $item->name }}</td>
+                                                            <td>{{ $item->benar }}</td>
+                                                            <td>{{ $item->salah }}</td>
+                                                            <td>{{ $item->nilai }}</td>
+                                                            <td align="center">
+                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                                                    <i class="zmdi zmdi-format-list-bulleted"></i> Review
+                                                                </button>
+                                                            </td>
+                                                            @php
+                                                                $pdate = date('j F Y - H:i', strtotime($item->pengumpulan));
+                                                            @endphp
+                                                            <td>{{ $pdate }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    @endif 
                                                 </tbody>
                                             </table>
                                         </div>
@@ -147,15 +147,19 @@
             <table id="table" class="table table-striped table-bordered"
             style="width:100%">
                 <thead>
-                    <th>Nilai Guru</th>
-                    <th>Nilai Siswa</th>
-                    <th>Presentase</th>
+                    <th>Jawaban Guru</th>
+                    <th>Jawaban Siswa</th>
+                    <th>Presentase Kemiripan</th>
+                    <th>Poin Bobot</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        @foreach ($dataHasilEssay as $item)
+                        <td>{{$item->jawaban_guru}}</td>
+                        <td>{{$item->jawaban_siswa}}</td>
+                        <td>{{$item->similarity}}</td>
+                        <td>{{$item->poin}}</td>
+                        @endforeach                        
                     </tr>
                 </tbody>
             </table>
