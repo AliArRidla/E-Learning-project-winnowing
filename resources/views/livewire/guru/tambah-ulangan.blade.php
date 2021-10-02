@@ -100,16 +100,12 @@
                                                                 <td>{{ $ipoin }}</td>
                                                                 @php
                                                                     $listOrCreate = '';
-                                                                    $listOrCreate = DB::select(
-                                                                        'select count(*) as jml from (
-                                                                                                                                                                                                        select id from soals where id_ulangan = ?
-                                                                                                                                                                                                        ) jml',
-                                                                        [$item->ulid],
-                                                                    );
+                                                                    $listOrCreate = DB::select('select count(*) as jml from (select id from soals where id_ulangan = ?) jml',[$item->ulid],);
+                                                                    $listOrCreateEssay = DB::select('select count(*) as jml from (select id from soal_essays where id_ulangan = ?) jml',[$item->ulid],);
                                                                 @endphp
                                                                 <td>
                                                                     {{-- {{ $listOrCreate }} --}}
-                                                                    @if ($listOrCreate[0]->jml == 0)
+                                                                    @if ($listOrCreate[0]->jml == 0 && $listOrCreateEssay[0]->jml == 0)
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                           Buat Soal
@@ -630,7 +626,7 @@
          </div>
              <div class="modal-footer">
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" class="btn btn-primary">Tambah Soal</a>
+                 {{-- <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" class="btn btn-primary">Tambah Soal</a> --}}
 
              </div>
 

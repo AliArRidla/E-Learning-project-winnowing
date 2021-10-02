@@ -90,10 +90,10 @@ class KerjakanUlangan extends Component
 
         $this->salah = count($this->id_soal) - $this->benar;
 
-        if ($this->poin == null) {
-            $nilai = 100 / count($this->id_soal) * $this->benar;
-            $this->poinNow = number_format($nilai, 2, ',', '');
-        }
+        // if ($this->poin == null) {
+        //     $nilai = 100 / count($this->id_soal) * $this->benar;
+        //     $this->poinNow = number_format($nilai, 2, ',', '');
+        // }
         // dd($this->benar, $this->salah, $this->poinNow, $this->id_soal, $this->pilihan);
         $cNilai = NilaiUlangan::create([
             'id_siswa' => $this->id_siswa,
@@ -150,19 +150,12 @@ class KerjakanUlangan extends Component
     public function getSoals()
     {
         $data = DB::select('select * from soals where id_ulangan = ?', [$this->id_ul]);
-        // foreach ($data as $d) {
-        //     array_push($this->id_soal, $d->id);
-        // }
         return $data;
     }
 
     public function getSoalEssays()
     {
         $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-        // foreach ($data as $d) {
-        //     array_push($this->id_soal, $d->id);
-        // }
-        // var_dump($dataEssay);
         return $dataEssay;
     }
 
