@@ -40,7 +40,7 @@ class ListUlangan extends Component
             join detail_mapels as dm on dm.id = ul.id_det_mapel
             join kelas as k on dm.id_kelas = k.id
             join mapels as m on dm.id_mapel = m.id            
-            join soal_essays as so on so.id_ulangan = ul.id
+            join soals as so on so.id_ulangan = ul.id
             where dm.id = ?
             group by ul.id, ul.judul_ulangan, ul.tgl_ulangan,
             ul.waktu_mulai, ul.waktu_selesai, k.nama_kelas, m.nama_mapel',
@@ -48,6 +48,28 @@ class ListUlangan extends Component
             );
 
             return $dataUl;
+        } else {
+            return redirect(route('login'));
+        }
+    }
+
+    public function getUlanganSiswaEssay(){
+        if (Auth::user()->hasRole('siswa')) {
+            $dataUlEs = DB::select(
+                'select ul.id as id_ul, ul.judul_ulangan, ul.tgl_ulangan,
+            ul.waktu_mulai, ul.waktu_selesai, k.nama_kelas, m.nama_mapel
+            from ulangans as ul
+            join detail_mapels as dm on dm.id = ul.id_det_mapel
+            join kelas as k on dm.id_kelas = k.id
+            join mapels as m on dm.id_mapel = m.id            
+            join soal_essays as so on so.id_ulangan = ul.id
+            where dm.id = ?
+            group by ul.id, ul.judul_ulangan, ul.tgl_ulangan,
+            ul.waktu_mulai, ul.waktu_selesai, k.nama_kelas, m.nama_mapel',
+                [$this->nav_dmid]
+            );
+
+            return $dataUlEs;
         } else {
             return redirect(route('login'));
         }
@@ -87,6 +109,7 @@ class ListUlangan extends Component
         return view('livewire.siswa.list-ulangan', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataUl' => $this->getUlanganSiswa(),
+            'dataUlEs' => $this->getUlanganSiswaEssay(),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);

@@ -64,8 +64,9 @@ class HasilUjian extends Component
                     // 'poin' => $this->poin,
             ]); 
             }
+        $jawabanUpdate = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
             // dd($jawaban);
-        return $jawaban;
+        return $jawabanUpdate;
     }
 
     public function getHasil($id_ul)

@@ -153,7 +153,9 @@
                     <th>Poin Bobot</th>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr>@php
+                        // dd($dataHasilEssay)
+                    @endphp
                         @foreach ($dataHasilEssay as $item)
                         <td>{{$item->jawaban_guru}}</td>
                         <td>{{$item->jawaban_siswa}}</td>
