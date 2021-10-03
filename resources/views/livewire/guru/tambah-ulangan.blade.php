@@ -111,14 +111,11 @@
                                                                           Buat Soal
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                          <a class="dropdown-item" data-toggle="modal" data-target="#pilganModal" href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda</a>
+                                                                          <a class="dropdown-item" href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda</a>
                                                                           <a class="dropdown-item" href="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Essay</a>
-                                                                          <a class="dropdown-item btn-modal-pilganEssay" data-toggle="modal" data-target="#pilganEssayModal" data-url1="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" data-url2="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda + Essay</a>
+                                                                          {{-- <a class="dropdown-item btn-modal-pilganEssay" data-toggle="modal" data-target="#pilganEssayModal" data-url1="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" data-url2="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda + Essay</a> --}}
                                                                         </div>
-                                                                      </div>
-
-
-
+                                                                      </div>                                                                  
                                                                     @else
                                                                         <a
                                                                             href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">
@@ -127,8 +124,6 @@
                                                                                 Daftar Soal
                                                                             </button>
                                                                         </a>
-
-
                                                                     @endif
                                                                     <hr>
                                                                     <button type="button"

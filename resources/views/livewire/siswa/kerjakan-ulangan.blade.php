@@ -112,31 +112,32 @@
                                         @php
                                         $countEssay = 1;
                                         @endphp
-                                        @foreach ($dataEssay as $itemEssay)
-                                        <div>
-                                            <h4>Soal essay nomor {{ $countEssay }}</h4>
-                                        </div>
-                                        <br>
-                                        <div>
-                                            {!! $itemEssay->soal !!}
-                                        </div>
-                                        <br>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                    <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
-                                                </div>
-                                                <div class="col-md-10" wire:ignore>
-                                                    <textarea type="text" id="jawaban_siswa"  wire:model.defer="jawaban_siswa" name="jawaban_siswa"
-                                                    class="form-control @error('jawaban_siswa') is-invalid @enderror"> 
-                                                    </textarea>
+                                            @foreach ($dataEssay as $itemEssay)
+                                            <div>
+                                                <h4>Soal essay nomor {{ $countEssay }}</h4>
+                                            </div>
+                                            <br>
+                                            <div>
+                                                {!! $itemEssay->soal !!}
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
+                                                    </div>
+                                                    <div class="col-md-10" wire:ignore>
+                                                        <textarea type="text" id="jawaban_siswa"  wire:model.defer="jawaban_siswa" name="jawaban_siswa"
+                                                        class="form-control @error('jawaban_siswa') is-invalid @enderror"> 
+                                                        </textarea>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        @php
-                                        $countEssay++;
-                                    @endphp
-                                        @endforeach
+                                            @php
+                                            $countEssay++;
+                                            @endphp
+                                            @endforeach
+                                            {{$dataEssay->links()}}
                                         @endif   
 
                                     </div>
@@ -197,7 +198,9 @@
                         // Output the result in an element with id="demo"
                         document.getElementById("myTimer").innerHTML = "Waktu Tersisa " + hours + " jam : "
                         + minutes + " menit : " + seconds + " detik ";
-                            
+                         
+                        // jika soal next simpan data nya                        
+                        
                         // If the count down is over, write some text 
                         if (distance < 0) {
                             // clearInterval(x);

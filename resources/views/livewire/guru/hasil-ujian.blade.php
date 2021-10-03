@@ -78,24 +78,6 @@
                                                     @php
                                                         $count = 1;
                                                     @endphp
-                                                    {{-- <tr>
-                                                        <td>{{ $count++ }}</td>
-                                                        //data ngawur yg penting muncul dulu
-                                                        <td>coba</td>
-                                                        <td>coba</td>
-                                                        <td>coba</td>
-                                                        <td>coba</td>
-                                                        <td align="center">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                                                Review Hasil Ujian
-                                                            </button>
-                                                        </td>
-                                                        @php
-                                                            $pdate = date('j F Y - H:i');
-                                                        @endphp
-                                                        <td>{{ $pdate }}</td>
-                                                    </tr> --}}
-
                                                      @if ($dataHasil != null)
                                                         @foreach ($dataHasil as $item)
                                                         <tr>
@@ -169,7 +151,7 @@
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
         </div>
     </div>
     </div>

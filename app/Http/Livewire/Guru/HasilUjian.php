@@ -9,9 +9,10 @@ use Livewire\Component;
 
 class HasilUjian extends Component
 {
-    public $nama_mapel, $nama_kelas, $id_ul, $judul_ulangan, $nav_dmid,$is_poin;
+    public $nama_mapel, $nama_kelas, $id_ul,$judul_ulangan, $nav_dmid,$is_poin;
     public $id_soal_essays = [];
     public $poin = [];
+    
 
     public function mount($nav_dmid, $id_ul)
     {
@@ -33,17 +34,24 @@ class HasilUjian extends Component
         $this->nav_dmid = $nav_dmid;
 
         // pilih soal essays
-        $dSoEs = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-        foreach ($dSoEs as $dE) {
-            array_push($this->id_soal_essays, $dE->id);
-            if ($this->is_poin == null || $this->is_poin == ' ') {
-                array_push($this->poin, $dE->poin);
-            }
+        $idEs = DB::select('select * from soal_essays ');
+        foreach ($idEs as $id) {
+            array_push($this->id_soal_essays,$id->id);
         }
+        
+        // $dSoEs = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // foreach ($dSoEs as $dE) {
+        //     array_push($this->id_soal_essays, $dE->id);
+        //     if ($this->is_poin == null || $this->is_poin == ' ') {
+        //         array_push($this->poin, $dE->poin);
+        //     }
+        // }
     }
 
-    public function getSimilarity($id_ul){
-        $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+    public function getSimilarity($id_ul,$id_soal_essays){
+        
+        $jawaban = DB::select('select * from soal_essays         
+        where id_ulangan = ?', [$this->id_ul]);        
         // for ($i=0; $i < count($jawaban) ; $i++) {         
             foreach ($jawaban as $item) {
                 
@@ -56,14 +64,32 @@ class HasilUjian extends Component
                 $w->SetNWindowValue($window);
                 $w->process();
 
-                $result = $w->GetJaccardCoefficient();
-                $similarity = DB::table('soal_essays')
-                ->where('id',$this->id_soal_essays)
-                ->update([
-                    'similarity' => $result,
-                    // 'poin' => $this->poin,
-            ]); 
+                $result = $w->GetJaccardCoefficient();     
+                $jmlSoal = count($this->id_soal_essays);
+
+                if ($jmlSoal < 2) {                
+                        $similarity = DB::table('soal_essays')
+                            ->where('id',$this->id_soal_essays)
+                            ->update([
+                                'similarity' => $result,
+                                // 'poin' => $this->poin,
+                        ]); 
+                    
+                    
+                }else{
+                    for ($i=0; $i < $jmlSoal ; $i++) {                     
+                    $similarity = DB::table('soal_essays')
+                            ->where('id',$this->id_soal_essays[$i])
+                            ->update([
+                                'similarity' => $result,
+                                // 'poin' => $this->poin,
+                        ]); 
+                    }
+                }
+                          
             }
+ 
+            
         $jawabanUpdate = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
             // dd($jawaban);
         return $jawabanUpdate;
@@ -77,8 +103,9 @@ class HasilUjian extends Component
         join nilai_ulangans as nu on nu.id_ulangan = ul.id
         join siswas as s on s.id = nu.id_siswa
         join users as u on u.id = s.user_id
+       
         where ul.id = ?', [$id_ul]);
-
+        // join soal_essays as soEs on soEs.id_ulangan = ul.id
         return $data;
     }
 
@@ -122,7 +149,8 @@ class HasilUjian extends Component
         return view('livewire.guru.hasil-ujian', [
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataHasil' => $this->getHasil($this->id_ul),
-            'dataHasilEssay' => $this->getSimilarity($this->id_ul),
+            'dataHasilEssay' => $this->getSimilarity($this->id_ul,$this->id_soal_essays),
+            // dd($this->id_soal_essays),
         ])->layout('layouts.layt', [
             'getDMapGuru' => $this->getDMap(),
         ]);

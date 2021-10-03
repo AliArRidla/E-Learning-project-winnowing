@@ -11,11 +11,12 @@ use Livewire\Component;
 class KerjakanUlangan extends Component
 {
     public $nav_dmid, $id_ul, $is_poin, $id_siswa, $poinNow, $benar, $salah;
-    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e, $jawaban_siswa;
+    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e;
     public $tgl_ulangan, $waktu_selesai, $tgl_waktu, $pesan;
     public $saveMe = false, $showSoal = true;
     public $pilihan = [];
     public $id_soal = [];
+    public $jawaban_siswa = [];
     public $id_soal_essays = [];
     public $poin = [];
 
@@ -90,10 +91,10 @@ class KerjakanUlangan extends Component
 
         $this->salah = count($this->id_soal) - $this->benar;
 
-        // if ($this->poin == null) {
-        //     $nilai = 100 / count($this->id_soal) * $this->benar;
-        //     $this->poinNow = number_format($nilai, 2, ',', '');
-        // }
+        if ($this->poin == null) {
+            $nilai = 100 / count($this->id_soal) * $this->benar;
+            $this->poinNow = number_format($nilai, 2, ',', '');
+        }
         // dd($this->benar, $this->salah, $this->poinNow, $this->id_soal, $this->pilihan);
         $cNilai = NilaiUlangan::create([
             'id_siswa' => $this->id_siswa,
@@ -103,13 +104,17 @@ class KerjakanUlangan extends Component
             'salah' => $this->salah,
         ]);
         // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-        $jawaban_siswa = DB::table('soal_essays')
-                            ->where('id',$this->id_soal_essays)
-                            ->update([
-                                'jawaban_siswa' => $this->jawaban_siswa,
-                                // 'poin' => $this->poin,
-                        ]);         
-                        // var_dump($this->jawaban_siswa);
+       $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        for ($i=0; $i < count($jawaban); $i++) { 
+            $jawaban_siswa = DB::table('soal_essays')
+            ->where('id',$this->id_soal_essays)
+            ->update([
+                'jawaban_siswa' => $this->jawaban_siswa,
+                // 'poin' => $this->poin,
+        ]);         
+        }
+        
+        //                 var_dump($this->jawaban_siswa);
 
         // $jawabanEssaySiswa = DB::update('update soal_essays set jawaban_siswa = berubah where id = ?', [$this->id_soal_essays]);;
 
@@ -155,37 +160,16 @@ class KerjakanUlangan extends Component
 
     public function getSoalEssays()
     {
-        $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // $dataEssay = DB::table('soal_essays')->where($this->id_ul)->value('id_ulangan')->paginate(1);
+        // $dataEssay = DB::table('soal_essays')->where('id_ulangan')->find($this->id_ul)->paginate(1); 
+        // $dataEssay = [];
+        $dataEssay = DB::table('soal_essays')->where('id_ulangan',$this->id_ul)->simplePaginate(1); 
         return $dataEssay;
     }
 
     public function simpanJawabanEssays(){
-
-        // $jawaban_siswa = DB::update('update soal_essays 
-        // set id_siswa => $this->id_siswa, 
-        // where name = ?', ['John']);
-
-        // $jawaban_siswa = DB::table('soal_essays')
-        //                     ->where($this->id_soal_essays)
-        //                     ->update([
-        //                         // 'id_siswa' => $this->id_siswa,
-        //                         // 'id_ulangan' => $this->id_siswa,
-        //                         // 'soal' => $this->id_siswa,
-        //                         'jawaban_siswa' => $this->jawaban_siswa,
-        //                 ]); 
-
-        // $jawaban_siswa = SoalEssay::updated();
-
-        // $jawabanEssaySiswa = SoalEssay::create([
-        //     'id_siswa' => $this->id_siswa,
-        //     'id_ulangan' => $this->id_ul,
-        //     'soal' => $this->soal,
-        //     'jawaban_guru' => $this->benar,
-        //     'jawaban_siswa' => $this->salah,
-        //     'poin' => $this->salah,
-        // ]);
-
-        // return $jawaban_siswa;
+        
     }
 
     public function getAcc($id)
@@ -224,6 +208,7 @@ class KerjakanUlangan extends Component
             'dataUl' => $this->getUl(),
             'dataSoal' => $this->getSoals(),
             'dataEssay' => $this->getSoalEssays(),
+            // dd($this->getSoalEssays()),
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);
