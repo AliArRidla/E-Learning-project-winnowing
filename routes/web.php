@@ -25,6 +25,7 @@ use App\Http\Livewire\Guru\DetailMateri;
 use App\Http\Livewire\Guru\DetailPresensi;
 use App\Http\Livewire\Guru\DetailTugas;
 use App\Http\Livewire\Guru\EditSoal;
+use App\Http\Livewire\Guru\EditSoalGuruEssay;
 use App\Http\Livewire\Guru\EditUlangan;
 use App\Http\Livewire\Guru\HasilUjian;
 use App\Http\Livewire\Guru\ListPresensi;
@@ -139,7 +140,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru/soal-ulangan-essay/{nav_dmid}/{id_ul}', SoalUlanganEssay::class)->name('soalGuruEssay');
     Route::get('/guru/list-soal-ulangan/{nav_dmid}/{id_ul}', ListSoal::class)->name('listSoalGuru');
     Route::get('/guru/edit-soal-ulangan/{nav_dmid}/{id_ul}/{noc}/{ids}', EditSoal::class)->name('editSoalGuru');
+    Route::get('/guru/edit-soal-ulangan-essay/{nav_dmid}/{id_ul}/{noc}/{ids}', EditSoalGuruEssay::class)->name('editSoalGuruEssay');
     Route::get('/guru/list-hasil-ulangan/{nav_dmid}/{id_ul}', HasilUjian::class)->name('listHasilGuru');
+    Route::get('/guru/edit-soal-ulangan-essay/{ids}', [EditSoalGuruEssay::class, 'saveSoal'])->name('saveSoal');
    
     // MATERI
     Route::get('/guru/list-materi/{nav_dmid}', DataMateri::class)->name('dataMateri');

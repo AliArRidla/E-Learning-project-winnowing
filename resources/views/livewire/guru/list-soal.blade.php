@@ -204,7 +204,7 @@
                                                         @endphp
                                                         <td>{{ $ipn }}</td>
                                                         <td>
-                                                            <a href="{{ route('editSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
+                                                            <a href="{{ route('editSoalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul, 'noc' => $count, 'ids' => $item->id]) }}">
                                                                 <button name="edit" id="edit" class="btn btn-warning">
                                                                     Edit
                                                                 </button>

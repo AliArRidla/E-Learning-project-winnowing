@@ -64,7 +64,7 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                     <div class="p-6 bg-white border-b border-gray-200">
                                         {{-- <h2>{{ $vw }}</h2> --}}
-                                        <form wire:submit.prevent>
+                                        <form wire:submit.prevent >
                                             <h4>Soal nomor {{ $no_soal }}</h4>
                                             <hr>
                                             @if ($dataUl['is_poin'] == '1')
@@ -74,7 +74,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-7">
                                                     <input wire:model.defer="poin" type="number" id="poin" name="poin" 
-                                                    placeholder="Masukkan poin soal" class="form-control @error('poin') is-invalid @enderror">
+                                                    placeholder="Masukkan poin soal" class="form-control @error('poin') is-invalid @enderror" required>
                                                     <small class="form-text text-muted">Masukkan poin untuk soal nomor {{ $no_soal }}</small>
                                                 </div>
                                                 @error('poin')
@@ -100,9 +100,9 @@
                                                         <label for="no_soal" class="form-control-label">Soal Essay {{ $no_soal }}</label>
                                                     </div>
                                                     <div wire:ignore class="form-group">
-                                                        <textarea type="text" id="ed_soal" wire:model.defer="ed_soal" name="ed_soal"
-                                                        class="form-control @error('ed_soal') is-invalid @enderror" required = "required">
-                                                        
+                                                        <textarea type="text" id="ed_soal" 
+                                                        wire:model.defer="ed_soal" name="ed_soal"
+                                                        class="form-control @error('ed_soal') is-invalid @enderror" required>                               
                                                         </textarea>
                                                     </div>
                                                     @error('ed_soal')
@@ -117,7 +117,7 @@
                                                         <div class="col-md-10">
                                                             <textarea type="text" id="jawaban_guru"
                                                                 wire:model.defer="jawaban_guru" name="jawaban_guru"
-                                                                class="form-control @error('jawaban_guru') is-invalid @enderror" required = "required">
+                                                                class="form-control @error('jawaban_guru') is-invalid @enderror" required>
                                                                 </textarea>
                                                         </div>
                                                     </div>
@@ -192,6 +192,8 @@
                                                     @error('pilE')
                                                         <span id="error-msg">{{ $message }}</span>
                                                     @enderror --}}
+                                                {{--  <button type="submit" class="btn btn-primary">MBUH</button>  --}}
+                                                {{--  <a type="submit" href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">MBUH</a>  --}}
                                         </form>
                                     </div>
                                 </div>
@@ -202,7 +204,8 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <h2 class="title-1"> </h2>
-                                    {{-- <a href="#"> --}}
+                                       <a href="{{ route('listSoalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $id_ul]) }}">
+                                          {{--  <a href="{{ route('ulanganGuru', ['nav_dmid' => $nav_dmid]) }}">   --}}
                                         <button type="button" class="au-btn au-btn-icon au-btn--green"
                                         wire:click="saveSoal">
                                             Simpan &ensp; <i class="zmdi zmdi-play"></i>
