@@ -172,7 +172,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/presensi/{id_pres}', PresensiSiswa::class)->name('presensiSiswa');
     // ULANGAN
     Route::get('/siswa/ulangan/{nav_dmid}', ListUlangan::class)->name('ulanganSiswa');
-    Route::get('/siswa/kerjakan-ulangan/{nav_dmid}/{id_ul}', KerjakanUlangan::class)->name('kerjakanUlSiswa');
+    // Route::get('/siswa/kerjakan-ulangan/{nav_dmid}/{id_ul}', KerjakanUlangan::class)->name('kerjakanUlSiswa');
+    Route::post('/siswa/kerjakan-ulangan/{nav_dmid}/{id_ul}', KerjakanUlangan::class)->name('kerjakanUlSiswa');
     // MATERI TUGAS
     Route::get('/siswa/data-materi/{nav_dmid}', SiswaDataMateri::class)->name('dataMateriSiswa');
     Route::get('/siswa/det-data-materi/{nav_dmid}/{id_mats}', DetDataMateri::class)->name('materiSiswa');

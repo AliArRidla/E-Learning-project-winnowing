@@ -121,24 +121,28 @@
                                             {!! $itemEssay->soal !!}
                                         </div>
                                         <br>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                    <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
-                                                </div>
-                                                <div class="col-md-10" wire:ignore>
-                                                    <textarea type="text" id="jawaban_siswa"  wire:model.defer="jawaban_siswa" name="jawaban_siswa"
-                                                    class="form-control @error('jawaban_siswa') is-invalid @enderror"> 
-                                                    </textarea>
+                                        <form action="" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
+                                                    </div>
+                                                    <div class="col-md-10" wire:ignore>
+                                                        <textarea type="text" id="jawaban_siswa"  wire:model="jawaban_siswa" name="jawaban_siswa"
+                                                        class="form-control @error('jawaban_siswa') is-invalid @enderror" > 
+                                                        </textarea>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                         @php
                                         $countEssay++;
-                                    @endphp
+                                        @endphp
+                                    
                                         @endforeach
-                                        @endif   
-
+                                        {{ $dataEssay->links() }}
+                                        @endif                                           
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +167,8 @@
                 <script>
                     document.addEventListener('livewire:load', function () {
                         window.onscroll = function() {myFunction()};
+                        // @this.simpanJawabanEssays();
+                        @this.simpanJawaban();
 
                         var header = document.getElementById("myTimer");
                         var sticky = header.offsetTop;
@@ -213,6 +219,10 @@
                                     event.returnValue = "\o/";
                                 }
                             });
+
+                            window.changes(function){
+                                @this.simpanJawabanEssay();
+                            }
                         // }
                     });
                 </script>
