@@ -112,7 +112,7 @@
                                         @php
                                         $countEssay = 1;
                                         @endphp
-                                        @foreach ($dataEssay as $itemEssay)
+                                        @foreach ($dataEssay as $index => $itemEssay)
                                         <div>
                                             <h4>Soal essay nomor {{ $countEssay }}</h4>
                                         </div>
@@ -120,7 +120,7 @@
                                         <div>
                                             {!! $itemEssay->soal !!}
                                         </div>
-                                        <br>
+                                        <br>                                        
                                         <form action="" method="POST">
                                             @csrf
                                             <div class="form-group">
@@ -129,19 +129,20 @@
                                                         <label for="jawaban_siswa" class="form-control-label">Jawaban Essay : </label>
                                                     </div>
                                                     <div class="col-md-10" wire:ignore>
-                                                        <textarea type="text" id="jawaban_siswa"  wire:model="jawaban_siswa" name="jawaban_siswa"
-                                                        class="form-control @error('jawaban_siswa') is-invalid @enderror" > 
+                                                        <textarea type="text" id="jawaban_siswa"  wire:model="jawaban_siswa.{{$index}}" name="jawaban_siswa"
+                                                        class="form-control @error('jawaban_siswa') is-invalid @enderror" value="pertama" > 
                                                         </textarea>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                         @php
-                                        $countEssay++;
+                                        $countEssay++;  
                                         @endphp
                                     
                                         @endforeach
-                                        {{ $dataEssay->links() }}
+                                        {{-- {{ $dataEssay->links() }} --}}
                                         @endif                                           
                                     </div>
                                 </div>
@@ -167,7 +168,7 @@
                 <script>
                     document.addEventListener('livewire:load', function () {
                         window.onscroll = function() {myFunction()};
-                        // @this.simpanJawabanEssays();
+                        @this.simpanJawabanEssays();
                         @this.simpanJawaban();
 
                         var header = document.getElementById("myTimer");
@@ -222,6 +223,7 @@
 
                             window.changes(function){
                                 @this.simpanJawabanEssay();
+                                @this.simpanJawaban();
                             }
                         // }
                     });

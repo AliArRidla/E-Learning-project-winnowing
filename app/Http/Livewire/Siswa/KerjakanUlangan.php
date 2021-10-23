@@ -12,17 +12,19 @@ use Livewire\WithPagination;
 class KerjakanUlangan extends Component
 {
     public $nav_dmid, $id_ul, $is_poin, $id_siswa, $poinNow, $benar, $salah;
-    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e, $jawaban_siswa;
+    public $soal, $pilihan_a, $pilihan_b, $pilihan_c, $pilihan_d, $pilihan_e;
     public $tgl_ulangan, $waktu_selesai, $tgl_waktu, $pesan;
     public $saveMe = false, $showSoal = true;
     public $pilihan = [];
     public $id_soal = [];
     public $id_soal_essays = [];
     public $poin = [];
+    public $jawaban_siswa = [];
 
 
     public function mount($nav_dmid, $id_ul)
-    {
+
+    {        
         $this->nav_dmid = $nav_dmid;
         $this->id_ul = $id_ul;
 
@@ -106,14 +108,15 @@ class KerjakanUlangan extends Component
         // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
         
         for ($i = 0; $i < count($this->id_soal_essays); $i++) {
-            // $this->jawaban_siswa = [];
+            
             $jawaban_siswa = DB::table('soal_essays')
                 ->where('id', $this->id_soal_essays[$i])
+                // ->update(array('jawaban_siswa' => $this->jawaban_siswa,));
                 ->update([
-                    'jawaban_siswa' => $this->jawaban_siswa,
+                    'jawaban_siswa' => $this->jawaban_siswa[$i],
                     // 'poin' => $this->poin,
                 ]);
-                
+            $this->jawaban_siswa[$i] = '';    
         }
         // dd($this->id_soal_essays);
         // dd($this->jawaban_siswa);
@@ -162,8 +165,8 @@ class KerjakanUlangan extends Component
 
     public function getSoalEssays()
     {
-        // $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-        $dataEssay = DB::table('soal_essays')->where('id_ulangan',$this->id_ul)->paginate(1);
+        $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // $dataEssay = DB::table('soal_essays')->where('id_ulangan',$this->id_ul)->paginate(1);
 
         return $dataEssay;
     }
@@ -171,19 +174,30 @@ class KerjakanUlangan extends Component
     public function simpanJawabanEssays()
     {
 
-
+        // ambil semua data dari soal essay berdasarkan id_ulangan nya 
         $dataEssay = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+
+        // ambil id ulangan
+            // ambil id soal nya 
+            // ambil id guru
+            // ambil id user 
+            // ambil jawaban nya 
+            // update ke tabel nya per soal
+        
         
         for ($i = 0; $i < count($this->id_soal_essays); $i++) {
-            // $this->jawaban_siswa = [];
-            $jawaban_siswa = DB::table('soal_essays')
-                ->where('id', $this->id_soal_essays[$i])
-                ->update([
-                    'jawaban_siswa' => $this->jawaban_siswa,
-                    // 'poin' => $this->poin,
-                ]);
+            
+            // $jawaban_siswa = DB::table('soal_essays')
+            //     ->whereIn('id', $this->id_soal_essays[$i])
+            //     ->update([
+            //         'jawaban_siswa' => $this->jawaban_siswa,
+            //         // 'poin' => $this->poin,
+            //     ]);
                 
         }
+        
+
+
 
         // $jawaban_siswa = DB::update('update soal_essays 
         // set id_siswa => $this->id_siswa, 
@@ -244,10 +258,13 @@ class KerjakanUlangan extends Component
     public function render()
     {
         return view('livewire.siswa.kerjakan-ulangan', [
+            // dd($this->jawaban_siswa), 
             'dataAcc' => $this->getAcc(Auth::user()->id),
             'dataUl' => $this->getUl(),
             'dataSoal' => $this->getSoals(),
             'dataEssay' => $this->getSoalEssays(),
+            
+            
         ])->layout('layouts.layt', [
             'getNavMapSiswa' => $this->getNavMap(),
         ]);

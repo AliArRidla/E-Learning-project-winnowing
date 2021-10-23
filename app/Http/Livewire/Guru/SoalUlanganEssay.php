@@ -63,11 +63,13 @@ class SoalUlanganEssay extends Component
                 
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru, $this->poin);
                 $cSoal = SoalEssay::create([
-                    'id_ulangan' => $this->id_ul,
+                    'user_id_guru' => Auth::user()->id,
+                    'id_ulangan' => $this->id_ul,                    
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
                     // 'jawaban_siswa' => 'kosong',
                     'poin' => $this->poin,
+                    
                 ]);
             } else {
                 // return reload
@@ -86,11 +88,15 @@ class SoalUlanganEssay extends Component
                 $this->hydrate();
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru);
                 $cSoal = SoalEssay::create([
-                    'id_ulangan' => $this->id_ul,
+                    'user_id_guru' => 1,
+                    'id_ulangan' => $this->id_ul,    
+                    // 'id_ulangan' => 3434,                 
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
                     // 'jawaban_siswa' => 'kosong',
+                    
                 ]);
+                // dd($cSoal);
             } else {
                 // return reload
                 session()->flash('errpesan', 'Data Soal nomor '.$this->no_soal.' GAGAL ditambahkan! Mohon isi semua kolom!');
