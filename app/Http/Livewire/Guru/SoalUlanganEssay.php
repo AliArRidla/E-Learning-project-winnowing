@@ -15,7 +15,7 @@ class SoalUlanganEssay extends Component
 
     // public $id_ul, $pilgan, $intPoin;
     // public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $jawaban_guru, $no_soal, $simpan;
-    public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan;
+    public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan,$id_guru;
     public $nav_dmid, $vld=false;
 
     public function mount($nav_dmid, $id_ul)
@@ -29,6 +29,8 @@ class SoalUlanganEssay extends Component
         $this->pilB = null;
         $this->pilB = null;
 
+        $dGur = DB::select('select user_id as id from role_user where user_id = ?', [Auth::user()->id]);
+        $this->id_guru = $dGur[0]->id;
         
         // menghitunh nomor soal
         $jmlSoal = DB::select(
@@ -63,7 +65,7 @@ class SoalUlanganEssay extends Component
                 
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru, $this->poin);
                 $cSoal = SoalEssay::create([
-                    'user_id_guru' => Auth::user()->id,
+                    'user_id_guru' => 2,
                     'id_ulangan' => $this->id_ul,                    
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
@@ -88,7 +90,7 @@ class SoalUlanganEssay extends Component
                 $this->hydrate();
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru);
                 $cSoal = SoalEssay::create([
-                    'user_id_guru' => 1,
+                    'user_id_guru' => $this->id_guru,
                     'id_ulangan' => $this->id_ul,    
                     // 'id_ulangan' => 3434,                 
                     'soal' => $this->ed_soal,                    

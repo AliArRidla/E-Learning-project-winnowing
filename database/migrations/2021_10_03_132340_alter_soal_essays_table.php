@@ -14,11 +14,17 @@ class AlterSoalEssaysTable extends Migration
     public function up()
     {
         Schema::table('soal_essays', function($table) {
-            $table->string('similarity');
-            $table->unsignedBigInteger('user_id');            
+            // $table->string('similarity');
+            // $table->unsignedBigInteger('user_id');            
             // tabel role user
-            $table->foreign('user_id')->references('id')->on('users')
-            ->onUpdate('cascade')->onDelete('cascade');            
+            // $table->foreign('user_id')->references('id')->on('users')
+            // ->onUpdate('cascade')->onDelete('cascade');
+            
+            // $table->foreign('user_id')->references('id')->on('users')
+            // ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id_guru')->references('id')->on('users')
+            ->onUpdate('cascade')->onDelete('cascade');
+
         });
     }
 
