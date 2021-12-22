@@ -32,8 +32,8 @@ jobs:
       name: "Build Images Docker"
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t E-Learning-project-winnowing .
+      - docker build -t uas-sister .
       - docker images
-      - docker tag E-Learning-project-winnowing $DOCKER_USERNAME/uas-sister-laravel
+      - docker tag uas-siter $DOCKER_USERNAME/uas-sister-laravel
       - docker push $DOCKER_USERNAME/uas-sister-laravel
       
