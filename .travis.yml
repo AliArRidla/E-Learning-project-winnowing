@@ -8,7 +8,7 @@ languange: php
 dist: trusty
 
 php:
-  - '^7.4'  
+  - '7.4'  
 
 # service yang digunakan
 services:
@@ -32,8 +32,8 @@ jobs:
       name: "Build Images Docker"
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t travis-ci-build-stages-demo .
+      - docker build -t E-Learning-project-winnowing .
       - docker images
-      - docker tag travis-ci-build-stages-demo $DOCKER_USERNAME/uas-sister-laravel
+      - docker tag E-Learning-project-winnowing $DOCKER_USERNAME/uas-sister-laravel
       - docker push $DOCKER_USERNAME/uas-sister-laravel
       
