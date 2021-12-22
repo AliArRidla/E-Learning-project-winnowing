@@ -81,23 +81,12 @@
                                                 <span id="error-msg">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            @endif
-                                            {{-- <div class="form-group">
-                                                <label for="jawaban_guru" class="form-control-label">Kunci Jawaban</label>
-                                                <select name="jawaban_guru" id="jawaban_guru" class="form-control" wire:model.defer="jawaban_guru">
-                                                    <option value="">-- Pilih Kunci --</option>
-                                                    <option value="pilihan_a">A</option>
-                                                    <option value="pilihan_b">B</option>
-                                                    <option value="pilihan_c">C</option>
-                                                    <option value="pilihan_d">D</option>
-                                                    <option value="pilihan_e">E</option>
-                                                </select>
-                                                @error('jawaban_guru')
-                                                <span id="error-msg">{{ $message }}</span>
-                                                @enderror
-                                            </div> --}}
+                                            @endif                                            
                                                     <div>
                                                         <label for="no_soal" class="form-control-label">Soal Essay {{ $no_soal }}</label>
+                                                        <div class="form-group" wire:ignore>
+                                                            <input type="hidden" wire:model.defer="id_soal" name="id_soal" id="id_soal" value="{{ $no_soal }}">                                                            
+                                                        </div>
                                                     </div>
                                                     <div wire:ignore class="form-group">
                                                         <textarea type="text" id="ed_soal" wire:model.defer="ed_soal" name="ed_soal"
@@ -126,72 +115,7 @@
                                                 @error('jawaban_guru')
                                                     <span id="error-msg">{{ $message }}</span>
                                                 @enderror
-                                            </div>
-                                                    {{-- <div class="form-group" wire:ignore>
-                                                        <div class="row">
-                                                            <div class="col-md-1">
-                                                                <label for="pilB" class="form-control-label">B.</label>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <textarea type="text" id="pilB" wire:model.defer="pilB"
-                                                                class="form-control @error('pilB') is-invalid @enderror" name="pilB">
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @error('pilB')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                    @enderror --}}
-
-                                                    {{-- <div class="form-group" wire:ignore>
-                                                        <div class="row">
-                                                            <div class="col-md-1">
-                                                                <label for="pilC" class="form-control-label">C.</label>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <textarea type="text" id="pilC"  wire:model.defer="pilC"
-                                                                class="form-control @error('pilC') is-invalid @enderror" name="pilC"> 
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @error('pilC')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                    @enderror --}}
-
-                                                    {{-- @if ($pilgan == 4 || $pilgan == 5) --}}
-                                                    {{-- <div class="form-group" wire:ignore>
-                                                        <div class="row">
-                                                            <div class="col-md-1">
-                                                                <label for="pilD" class="form-control-label">D.</label>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <textarea type="text" id="pilD"  wire:model.defer="pilD"
-                                                                class="form-control @error('pilD') is-invalid @enderror" name="pilD"> 
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @error('pilD')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                    @enderror --}}
-
-                                                    {{-- @if ($pilgan == 5) --}}
-                                                    {{-- <div class="form-group" wire:ignore>
-                                                        <div class="row">
-                                                            <div class="col-md-1">
-                                                                <label for="pilE" class="form-control-label">E.</label>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <textarea type="text" id="pilE"  wire:model.defer="pilE"
-                                                                class="form-control @error('pilE') is-invalid @enderror" name="pilE"> 
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @error('pilE')
-                                                        <span id="error-msg">{{ $message }}</span>
-                                                    @enderror --}}
+                                            </div>                                                   
                                         </form>
                                     </div>
                                 </div>

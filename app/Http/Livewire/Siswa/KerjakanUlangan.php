@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Siswa;
 
+use App\Models\JawabanEssay;
 use App\Models\NilaiUlangan;
 use App\Models\SoalEssay;
 use Illuminate\Support\Facades\Auth;
@@ -117,16 +118,35 @@ class KerjakanUlangan extends Component
         // if (!empty($cek_id)) { //jka ada 
             // if ($cek_id == $this->id_siswa) { // maka cek apakah sama dengan id yang sedang mengerjakan sekarang jika sama maka update jika beda 
                 // update
+                // for ($i = 0; $i < count($this->id_soal_essays); $i++) {
+            
+                //     $jawaban_siswa = DB::table('soal_essays')
+                //         ->where('id', $this->id_soal_essays[$i])
+                        // ->update(array('jawaban_siswa' => $this->jawaban_siswa,));
+                //         ->update([
+                //             'jawaban_siswa' => $this->jawaban_siswa[$i],
+                //             'user_id_siswa' => $this->id_siswa,
+                //             // 'poin' => $this->poin,
+                //         ]);
+                //     $this->jawaban_siswa[$i] = '';    
+                // }
+
                 for ($i = 0; $i < count($this->id_soal_essays); $i++) {
             
-                    $jawaban_siswa = DB::table('soal_essays')
-                        ->where('id', $this->id_soal_essays[$i])
+                    // $jawaban_siswa = DB::table('jawaban_essays')->insert([
+                    $jawaban_siswa = JawabanEssay::create([ 
+                        'id_ulangan' => $this->id_ul,
+                        'user_id' => $this->id_siswa,
+                        'id_soal' => $i+1,
+                        'jawaban_siswa' => $this->jawaban_siswa[$i],
+                    ]);
+                        // ->where('id', $this->id_soal_essays[$i])
                         // ->update(array('jawaban_siswa' => $this->jawaban_siswa,));
-                        ->update([
-                            'jawaban_siswa' => $this->jawaban_siswa[$i],
-                            'user_id_siswa' => $this->id_siswa,
+                        // ->update([
+                            // 'jawaban_siswa' => $this->jawaban_siswa[$i],
+                            // 'user_id_siswa' => $this->id_siswa,
                             // 'poin' => $this->poin,
-                        ]);
+                        // ]);
                     $this->jawaban_siswa[$i] = '';    
                 }
             // } else {

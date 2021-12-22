@@ -111,9 +111,9 @@
                                                                           Buat Soal
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                          <a class="dropdown-item" data-toggle="modal" data-target="#pilganModal" href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda</a>
+                                                                          <a class="dropdown-item" href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda</a>
                                                                           <a class="dropdown-item" href="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Essay</a>
-                                                                          <a class="dropdown-item btn-modal-pilganEssay" data-toggle="modal" data-target="#pilganEssayModal" data-url1="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" data-url2="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda + Essay</a>
+                                                                          {{-- <a class="dropdown-item btn-modal-pilganEssay" data-toggle="modal" data-target="#pilganEssayModal" data-url1="{{ route('soalGuruEssay', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" data-url2="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}">Pilihan Ganda + Essay</a> --}}
                                                                         </div>
                                                                       </div>
 
@@ -605,38 +605,38 @@
 
   {{-- @section('modal') --}}
   <!-- SET POIN -->
-  <div class="modal fade" id="pilganModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog" role="document">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h5 class="modal-title" id="setPoin">SET POIN</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
-           </button>
-         </div>
-         <div class="modal-body">
-         <form>
-                 <div class="form-group">
-                   <label for="exampleInputEmail1">Bobot Soal</label>
-                   <input type="number" class="form-control" id="poin" name="poin" aria-describedby="nilai" placeholder="masukkan poin">
-                 </div>
-                 <button type="submit" class="btn btn-primary">Submit</button>
-         </form>
+    {{-- <div class="modal fade" id="pilganModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="setPoin">SET POIN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                <form>
+                        <div class="form-group">
+                        <label for="exampleInputEmail1">Bobot Soal</label>
+                        <input type="number" class="form-control" id="poin" name="poin" aria-describedby="nilai" placeholder="masukkan poin">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
-         </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 {{-- <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" class="btn btn-primary">Tambah Soal</a> --}}
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="{{ route('soalGuru', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->ulid]) }}" class="btn btn-primary">Tambah Soal</a>
 
-             </div>
+                    </div>
 
-       </div>
-     </div>
-   </div>
+            </div>
+        </div>
+    </div> --}}
 
 
    {{-- PILIHAN SOAL ESSAY/PILGAN --}}
-   <div class="modal fade" id="pilganEssayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   {{-- <div class="modal fade" id="pilganEssayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog" role="document">
        <div class="modal-content">
          <div class="modal-header">
@@ -655,7 +655,7 @@
 
        </div>
      </div>
-   </div>
+   </div> --}}
    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
    <script>
        $(document).ready(function(){

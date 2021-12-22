@@ -15,7 +15,7 @@ class SoalUlanganEssay extends Component
 
     // public $id_ul, $pilgan, $intPoin;
     // public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $jawaban_guru, $no_soal, $simpan;
-    public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan,$id_guru;
+    public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan,$id_guru,$id_soal;
     public $nav_dmid, $vld=false;
 
     public function mount($nav_dmid, $id_ul)
@@ -65,7 +65,8 @@ class SoalUlanganEssay extends Component
                 
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru, $this->poin);
                 $cSoal = SoalEssay::create([
-                    'user_id_guru' => 2,
+                    // 'user_id_guru' => 2,                    
+                    'id_soal' => $this->id_soal,                    
                     'id_ulangan' => $this->id_ul,                    
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
@@ -93,6 +94,7 @@ class SoalUlanganEssay extends Component
                     'user_id_guru' => $this->id_guru,
                     'id_ulangan' => $this->id_ul,    
                     // 'id_ulangan' => 3434,                 
+                    'id_soal' => $this->no_soal,                    
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
                     // 'jawaban_siswa' => 'kosong',

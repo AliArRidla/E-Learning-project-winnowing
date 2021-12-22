@@ -45,15 +45,23 @@ class HasilUjian extends Component
     public function getSimilarity($id_ul){
         $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);        
         
-        foreach ($jawaban as $item) {                
-                
-        }
+        // perulangan untuk jawaban siswa 
+        // perulangan untuk jawaban guru 
 
-        for ($i=0; $i < count($jawaban) ; $i++) { 
+        for ($i=0; $i < count($jawaban) ; $i++) { // perulangan untuk membandingkan jawban 1 dengan 1
                 // var_dump($jawaban[$i]);                
-                $jawaban_siswa = DB::select('select * from soal_essays where id = ?', [$this->id_soal_essays[$i]]);
-                $jawaban_guru = DB::select('select * from soal_essays where id = ?', [$this->id_soal_essays[$i]]);
+                $jawaban__siswa = DB::select('select * from jawaban_essays where id_ulangan = ?', [$this->id_ul]);
+
+                // hitung berapa 
+                $jumlah_jawaban_siswa = DB::select('SELECT DISTINCT id_soal FROM jawaban_essays');
+                for ($i=0; $i < count($jumlah_jawaban_siswa); $i++) { 
+                        // jawaban nya di retrieve 
+                        $jawaban_siswa = DB::select('SELECT * FROM jawaban_essays WHERE id_soal = ?',[$i]);
+                }
+
+                $jawaban_guru = DB::select('select * from soal_essays where id_soal = ?', [$i]);
                 // var_dump($jawaban_siswa[0]);
+                // var_dump([$this->id_soal_essays[$i]]);
                 // var_dump($jawaban_guru[0]);
                 $prima = 7;
                 $n = 3;
@@ -66,8 +74,9 @@ class HasilUjian extends Component
                         $w->process();
                         $result = $w->GetJaccardCoefficient();                        
                 }
+                // var_dump($result);
                 $similarity = DB::table('soal_essays')
-                        ->where('id',$this->id_soal_essays[$i])
+                        ->where('id_soal',[$i])
                         ->update([
                         'similarity' => $result,
                         // 'poin' => $this->poin,

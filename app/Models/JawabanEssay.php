@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SoalEssay extends Model
+class JawabanEssay extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id_guru','user_id_siswa','id_ulangan', 'soal', 'jawaban_guru', 'jawaban_siswa', 'poin','id_soal',        
-    // 'id_ulangan',
+        'id_soal','user_id','id_ulangan', 'jawaban_siswa', 'poin',        
     ];
 
     public function ulangan()
@@ -20,11 +19,6 @@ class SoalEssay extends Model
 
     public function user_siswa()
     {
-        return $this->hasone(User::class, 'user_id_siswa');
-    }
-
-    public function user_guru()
-    {
-        return $this->hasone(User::class, 'user_id_guru');
+        return $this->hasone(User::class, 'user_id');
     }
 }

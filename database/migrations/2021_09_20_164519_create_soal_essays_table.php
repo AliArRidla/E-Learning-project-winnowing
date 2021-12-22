@@ -16,13 +16,14 @@ class CreateSoalEssaysTable extends Migration
         Schema::create('soal_essays', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_ulangan');
+            $table->unsignedBigInteger('id_soal')->nullable();  ;
             $table->longText('soal');            
             $table->string('jawaban_guru');
-            $table->string('jawaban_siswa')->nullable();
+            // $table->string('jawaban_siswa')->nullable();
             $table->integer('poin')->nullable();
             $table->string('similarity')->nullable();
             $table->unsignedBigInteger('user_id_guru')->nullable();   
-            $table->unsignedBigInteger('user_id_siswa')->nullable();   
+            // $table->unsignedBigInteger('user_id_siswa')->nullable();   
 
             // tabel role user
            
@@ -31,8 +32,8 @@ class CreateSoalEssaysTable extends Migration
             $table->foreign('id_ulangan')->references('id')->on('ulangans')
             ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->foreign('user_id_siswa')->references('id')->on('users')
-            ->onUpdate('cascade')->onDelete('cascade');  
+            // $table->foreign('user_id_siswa')->references('id')->on('users')
+            // ->onUpdate('cascade')->onDelete('cascade');  
             
             $table->foreign('user_id_guru')->references('id')->on('users')
             ->onUpdate('cascade')->onDelete('cascade');

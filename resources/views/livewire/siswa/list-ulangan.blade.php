@@ -81,97 +81,100 @@
                                                         @endforeach
                                                       @endforeach
                                                     @endif --}}
-
+                                                        
+                                                {{-- cek jika ada soal ganda dan soal essay tampilkan --}}
+                                                {{-- namun jika hanya ada essay tampilkan essay --}}
+                                                {{-- namun jika hanya ada ganda tampilkan ganda --}}
                                                     @if ($dataUlEs != null)
-                                                    @foreach ($dataUlEs as $item)
-                                                        <tr>
-                                                            <td>{{ $count++ }}</td>
-                                                            <td>{{ $item->judul_ulangan }}</td>
-                                                            @php
-                                                            $hari_ini; 
-                                                            $pdays=date('D', strtotime($item->tgl_ulangan));
-                                                            switch($pdays){
-                                                                case 'Sun':
-                                                                $hari_ini = "Minggu";
-                                                                break;
+                                                        @foreach ($dataUlEs as $item)
+                                                            <tr>
+                                                                <td>{{ $count++ }}</td>
+                                                                <td>{{ $item->judul_ulangan }}</td>
+                                                                @php
+                                                                $hari_ini; 
+                                                                $pdays=date('D', strtotime($item->tgl_ulangan));
+                                                                switch($pdays){
+                                                                    case 'Sun':
+                                                                    $hari_ini = "Minggu";
+                                                                    break;
 
-                                                                case 'Mon':
-                                                                $hari_ini = "Senin";
-                                                                break;
+                                                                    case 'Mon':
+                                                                    $hari_ini = "Senin";
+                                                                    break;
 
-                                                                case 'Tue':
-                                                                $hari_ini = "Selasa";
-                                                                break;
+                                                                    case 'Tue':
+                                                                    $hari_ini = "Selasa";
+                                                                    break;
 
-                                                                case 'Wed':
-                                                                $hari_ini = "Rabu";
-                                                                break;
+                                                                    case 'Wed':
+                                                                    $hari_ini = "Rabu";
+                                                                    break;
 
-                                                                case 'Thu':
-                                                                $hari_ini = "Kamis";
-                                                                break;
+                                                                    case 'Thu':
+                                                                    $hari_ini = "Kamis";
+                                                                    break;
 
-                                                                case 'Fri':
-                                                                $hari_ini = "Jumat";
-                                                                break;
+                                                                    case 'Fri':
+                                                                    $hari_ini = "Jumat";
+                                                                    break;
 
-                                                                case 'Sat':
-                                                                $hari_ini = "Sabtu";
-                                                                break;
+                                                                    case 'Sat':
+                                                                    $hari_ini = "Sabtu";
+                                                                    break;
 
-                                                                default:
-                                                                $hari_ini = "Tidak di ketahui";
-                                                                break;
-                                                            }
+                                                                    default:
+                                                                    $hari_ini = "Tidak di ketahui";
+                                                                    break;
+                                                                }
 
-                                                            date_default_timezone_set('Asia/Jakarta');
-                                                            $btime = date('H:i', strtotime($item->waktu_mulai));
-                                                            $etime = date('H:i', strtotime($item->waktu_selesai));
-                                                            $pday = date('l', strtotime($item->tgl_ulangan));
-                                                            $startdate = strtotime($item->tgl_ulangan);
-                                                            $datenow = date("M d");
-                                                            $daynow = date("l");
-                                                            $timenow = date("H:i", time());
-                                                            @endphp
-                                                            <td>{{ $hari_ini }}, {{ date('j M Y', strtotime($item->tgl_ulangan)) }} </td>
-                                                            <td>{{ $btime }} - {{ $etime }}</td>
-                                                            @php
-                                                                $cekNilai = DB::select('select nilai from nilai_ulangans 
-                                                                where id_siswa = ? and id_ulangan = ?', [$id_siswa, $item->id_ul]);                                                                
-                                                            @endphp
-                                                            <td>
-                                                                @if ($cekNilai != null)
-                                                                {{ $cekNilai[0]->nilai }}
-                                                                @else
-                                                                -
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                @if ($cekNilai == null)
-                                                                    @if ($datenow == date("M d", $startdate))
-                                                                        @if ($timenow >= $btime && $timenow <= $etime)
-                                                                        
-                                                                            {{-- @if ($dataUlEs != null)                                                                          
-                                                                            <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
-                                                                                <button type="button" class="btn btn-primary btn-md">
-                                                                                    Kerjakan Soal
-                                                                                </button>
-                                                                            </a>
-                                                                            @else
-                                                                                
-                                                                            @endif --}}
-                                                                            <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
-                                                                                <button type="button" class="btn btn-primary btn-md">
-                                                                                    Kerjakan Soal
-                                                                                </button>
-                                                                            </a>
+                                                                date_default_timezone_set('Asia/Jakarta');
+                                                                $btime = date('H:i', strtotime($item->waktu_mulai));
+                                                                $etime = date('H:i', strtotime($item->waktu_selesai));
+                                                                $pday = date('l', strtotime($item->tgl_ulangan));
+                                                                $startdate = strtotime($item->tgl_ulangan);
+                                                                $datenow = date("M d");
+                                                                $daynow = date("l");
+                                                                $timenow = date("H:i", time());
+                                                                @endphp
+                                                                <td>{{ $hari_ini }}, {{ date('j M Y', strtotime($item->tgl_ulangan)) }} </td>
+                                                                <td>{{ $btime }} - {{ $etime }}</td>
+                                                                @php
+                                                                    $cekNilai = DB::select('select nilai from nilai_ulangans 
+                                                                    where id_siswa = ? and id_ulangan = ?', [$id_siswa, $item->id_ul]);                                                                
+                                                                @endphp
+                                                                <td>
+                                                                    @if ($cekNilai != null)
+                                                                    {{ $cekNilai[0]->nilai }}
+                                                                    @else
+                                                                    -
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($cekNilai == null)
+                                                                        @if ($datenow == date("M d", $startdate))
+                                                                            @if ($timenow >= $btime && $timenow <= $etime)
+                                                                            
+                                                                                {{-- @if ($dataUlEs != null)                                                                          
+                                                                                <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
+                                                                                    <button type="button" class="btn btn-primary btn-md">
+                                                                                        Kerjakan Soal
+                                                                                    </button>
+                                                                                </a>
+                                                                                @else
+                                                                                    
+                                                                                @endif --}}
+                                                                                <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
+                                                                                    <button type="button" class="btn btn-primary btn-md">
+                                                                                        Kerjakan Soal
+                                                                                    </button>
+                                                                                </a>
+                                                                            @endif
                                                                         @endif
                                                                     @endif
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                    @else
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @elseif($dataUl != null)
                                                         @foreach ($dataUl as $item)
                                                             <tr>
                                                                 <td>{{ $count++ }}</td>
@@ -261,6 +264,7 @@
                                                             </tr>
                                                         @endforeach
                                                     @endif
+                                                        
 
                                                 </tbody>
                                             </table>
