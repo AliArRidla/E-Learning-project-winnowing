@@ -156,7 +156,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No.</th>
-                                                        <th>Kunci Jawaban</th>
+                                                        <th>Soal</th>
+                                                        <th>Kunci Jawaban</th>                                                        
                                                         <th>Poin</th>
                                                         <th class="not-export-col">Aksi</th>
                                                     </tr>
@@ -168,6 +169,7 @@
                                                     @foreach ($dataSoalEssay as $item)
                                                     <tr>
                                                         <td>{{ $count }}</td>
+                                                        <td>{{strip_tags($item->soal)}}</td>
                                                         <td>{{ $item->jawaban_guru }}</td>
                                                         {{-- @php
                                                         $k;

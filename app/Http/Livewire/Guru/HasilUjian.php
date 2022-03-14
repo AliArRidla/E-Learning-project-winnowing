@@ -9,109 +9,134 @@ use Livewire\Component;
 
 class HasilUjian extends Component
 {
-    public $nama_mapel, $nama_kelas, $id_ul, $judul_ulangan, $nav_dmid,$is_poin;
-    public $id_soal_essays = [];
-    public $poin = [];
+        public $nama_mapel, $nama_kelas, $id_ul, $judul_ulangan, $nav_dmid, $is_poin;
+        public $id_soal_essays = [];
+        public $poin = [];
 
-    public function mount($nav_dmid, $id_ul)
-    {
-        $dm = DB::select('select m.nama_mapel, k.nama_kelas 
+        public function mount($nav_dmid, $id_ul)
+        {
+                $dm = DB::select('select m.nama_mapel, k.nama_kelas 
         from detail_mapels as dm 
         join mapels as m on dm.id_mapel = m.id
         join kelas as k on dm.id_kelas = k.id
         where dm.id = ?', [$nav_dmid]);
 
-        foreach ($dm as $d) {
-            $this->nama_mapel = $d->nama_mapel;
-            $this->nama_kelas = $d->nama_kelas;
-        }
-
-        $dUl = Ulangan::find($id_ul)->get();
-        $this->judul_ulangan = $dUl[0]->judul_ulangan;
-
-        $this->id_ul = $id_ul;
-        $this->nav_dmid = $nav_dmid;
-
-        // pilih soal essays
-        $dSoEs = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-        foreach ($dSoEs as $dE) {
-            array_push($this->id_soal_essays, $dE->id);
-            if ($this->is_poin == null || $this->is_poin == ' ') {
-                array_push($this->poin, $dE->poin);
-            }
-        }
-    }
-
-    public function getSimilarity($id_ul){
-        $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);        
-        
-        // perulangan untuk jawaban siswa 
-        // perulangan untuk jawaban guru 
-
-        for ($i=0; $i < count($jawaban) ; $i++) { // perulangan untuk membandingkan jawban 1 dengan 1
-                // var_dump($jawaban[$i]);                
-                $jawaban__siswa = DB::select('select * from jawaban_essays where id_ulangan = ?', [$this->id_ul]);
-
-                // hitung berapa 
-                $jumlah_jawaban_siswa = DB::select('SELECT DISTINCT id_soal FROM jawaban_essays');
-                for ($i=0; $i < count($jumlah_jawaban_siswa); $i++) { 
-                        // jawaban nya di retrieve 
-                        $jawaban_siswa = DB::select('SELECT * FROM jawaban_essays WHERE id_soal = ?',[$i]);
+                foreach ($dm as $d) {
+                        $this->nama_mapel = $d->nama_mapel;
+                        $this->nama_kelas = $d->nama_kelas;
                 }
 
-                $jawaban_guru = DB::select('select * from soal_essays where id_soal = ?', [$i]);
-                // var_dump($jawaban_siswa[0]);
-                // var_dump([$this->id_soal_essays[$i]]);
-                // var_dump($jawaban_guru[0]);
-                $prima = 7;
-                $n = 3;
-                $window = 4;
-                for ($j=0; $j < count($jawaban_siswa) ; $j++) { 
-                        $w = new winnowing($jawaban_siswa[$j]->jawaban_siswa, $jawaban_guru[$j]->jawaban_guru);
-                        $w->SetPrimeNumber($prima);
-                        $w->SetNGramValue($n);
-                        $w->SetNWindowValue($window);
-                        $w->process();
-                        $result = $w->GetJaccardCoefficient();                        
-                }
-                // var_dump($result);
-                $similarity = DB::table('soal_essays')
-                        ->where('id_soal',[$i])
-                        ->update([
-                        'similarity' => $result,
-                        // 'poin' => $this->poin,
-                        ]); 
+                $dUl = Ulangan::find($id_ul)->get();
+                $this->judul_ulangan = $dUl[0]->judul_ulangan;
 
+                $this->id_ul = $id_ul;
+                $this->nav_dmid = $nav_dmid;
+
+                // pilih soal essays
+                $dSoEs = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+                foreach ($dSoEs as $dE) {
+                        array_push($this->id_soal_essays, $dE->id);
+                        if ($this->is_poin == null || $this->is_poin == ' ') {
+                                array_push($this->poin, $dE->poin);
+                        }
+                }
         }
 
-        //     foreach ($jawaban as $item) {
+        public function getSimilarity($id_ul)
+        {
+                $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
                 
-        //         $prima = 7;
-        //         $n = 3;
-        //         $window = 4;
-        //         $w = new winnowing($item->jawaban_guru, $item->jawaban_siswa);
-        //         $w->SetPrimeNumber($prima);
-        //         $w->SetNGramValue($n);
-        //         $w->SetNWindowValue($window);
-        //         $w->process();
 
-        //         $result = $w->GetJaccardCoefficient();
-        //         $similarity = DB::table('soal_essays')
-        //         ->where('id',$this->id_soal_essays)
-        //         ->update([
-        //             'similarity' => $result,
-        //             // 'poin' => $this->poin,
-        //         ]); 
-        //     }
-        // dd($jawaban);
-        $jawabanUpdate = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
-            
-        return $jawabanUpdate;
-    }
+                // perulangan untuk jawaban siswa 
+                // perulangan untuk jawaban guru 
 
-    public function getHasil($id_ul)
-    {
-        $data = DB::select('select ul.tgl_ulangan, ul.waktu_mulai, 
+                for ($i = 0; $i < count($jawaban); $i++) { // perulangan untuk membandingkan jawban 1 dengan 1
+                        // var_dump($jawaban[$i]);                
+                        // $jawaban_siswa = DB::select('select * from jawaban_essays where id_ulangan = ?', [$this->id_ul]);
+
+                        // hitung berapa 
+                        // $jumlah_jawaban_siswa = DB::select('SELECT DISTINCT id_soal FROM jawaban_essays');
+                        // for ($i = 0; $i < count($jumlah_jawaban_siswa); $i++) {
+                                // jawaban nya di retrieve 
+                                // $jawaban_siswa = DB::select('SELECT * FROM jawaban_essays WHERE id_soal = ?',[$i]);
+                        // }
+
+                        // $jawaban_guru = DB::select('select jawaban_guru from soal_essays where id_soal = ?', [$i]);
+                        // $jawaban_siswa = DB::select('select jawaban_siswa from jawaban_essays where id_soal = ?', [$i]);
+
+                        $jawaban_guru = DB::select('select jawaban_guru from soal_essays');
+                        $jawaban_siswa = DB::select('select jawaban_siswa from jawaban_essays');
+
+                        // var_dump($jawaban_siswa[0]);
+                        // var_dump([$this->id_soal_essays[$i]]);
+                        // var_dump($jawaban_guru[0]);
+                        $prima = 7;
+                        $n = 3;
+                        $window = 4;
+                        // for ($j = 0; $j < count($jawaban_siswa); $j++) {
+                                $w = new winnowing($jawaban_siswa[$i]->jawaban_siswa, $jawaban_guru[$i]->jawaban_guru);
+                                $w->SetPrimeNumber($prima);
+                                $w->SetNGramValue($n);
+                                $w->SetNWindowValue($window);
+                                $w->process();
+                                $result = $w->GetJaccardCoefficient();
+
+                                // $similarity = DB::table('soal_essays')
+                                //         ->where('id_soal', [$j])
+                                //         ->update([
+                                //                 'similarity' => $result,
+                                //                 // 'poin' => $this->poin,
+                                //         ]);
+                        // }
+
+
+
+                        $similarity = DB::table('soal_essays')
+                                ->where('id_soal',[$i])
+                                ->update([
+                                'similarity' => $result,
+                                // 'poin' => $this->poin,
+                                ]); 
+                        $result = '';
+                        // var_dump($result);
+                        // $similarity = DB::table('soal_essays')
+                        //         ->where('id_soal',[$i])
+                        //         ->update([
+                        //         'similarity' => $result,
+                        //         // 'poin' => $this->poin,
+                        //         ]); 
+
+                }
+
+                //     foreach ($jawaban as $item) {
+
+                //         $prima = 7;
+                //         $n = 3;
+                //         $window = 4;
+                //         $w = new winnowing($item->jawaban_guru, $item->jawaban_siswa);
+                //         $w->SetPrimeNumber($prima);
+                //         $w->SetNGramValue($n);
+                //         $w->SetNWindowValue($window);
+                //         $w->process();
+
+                //         $result = $w->GetJaccardCoefficient();
+                //         $similarity = DB::table('soal_essays')
+                //         ->where('id',$this->id_soal_essays)
+                //         ->update([
+                //             'similarity' => $result,
+                //             // 'poin' => $this->poin,
+                //         ]); 
+                //     }
+                // dd($jawaban);
+                $jawabanUpdate = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+
+                return $jawabanUpdate;
+                // $result = null;
+        }
+
+        public function getHasil($id_ul)
+        {
+                $data = DB::select('select ul.tgl_ulangan, ul.waktu_mulai, 
         ul.waktu_selesai, u.name, nu.nilai, nu.benar, nu.salah,
         nu.created_at as pengumpulan from ulangans as ul
         join nilai_ulangans as nu on nu.id_ulangan = ul.id
@@ -119,27 +144,27 @@ class HasilUjian extends Component
         join users as u on u.id = s.user_id
         where ul.id = ?', [$id_ul]);
 
-        return $data;
-    }
+                return $data;
+        }
 
-    public function getAcc($id)
-    {
-        $data = '';
-        if (Auth::user()->hasRole('guru')) {
-            $data = DB::select('select g.id as rid, g.user_id as uid, g.foto
+        public function getAcc($id)
+        {
+                $data = '';
+                if (Auth::user()->hasRole('guru')) {
+                        $data = DB::select('select g.id as rid, g.user_id as uid, g.foto
             from gurus as g
             join users as u on u.id = g.user_id
             where u.id = ?', [$id]);
-        } else {
-            return redirect(route('login'));
+                } else {
+                        return redirect(route('login'));
+                }
+                return $data;
         }
-        return $data;
-    }
 
-    public function getDMap()
-    {
-        $dMap = DB::select(
-            'select dm.id as dmid, u.name, m.nama_mapel, k.nama_kelas 
+        public function getDMap()
+        {
+                $dMap = DB::select(
+                        'select dm.id as dmid, u.name, m.nama_mapel, k.nama_kelas 
             from detail_mapels as dm
             join gurus as g on dm.id_guru = g.id
             join users as u on g.user_id = u.id
@@ -147,26 +172,26 @@ class HasilUjian extends Component
             join kelas as k on dm.id_kelas = k.id
             where g.user_id = ?
             order by k.nama_kelas asc',
-            [Auth::user()->id]
-        );
+                        [Auth::user()->id]
+                );
 
-        // foreach ($dMap as $k) {
-        //     $this->countDM++;
-        // }
+                // foreach ($dMap as $k) {
+                //     $this->countDM++;
+                // }
 
-        return $dMap;
-    }
+                return $dMap;
+        }
 
-    public function render()
-    {
-        return view('livewire.guru.hasil-ujian', [
-            'dataAcc' => $this->getAcc(Auth::user()->id),
-            'dataHasil' => $this->getHasil($this->id_ul),
-            'dataHasilEssay' => $this->getSimilarity($this->id_ul),
-        ])->layout('layouts.layt', [
-            'getDMapGuru' => $this->getDMap(),
-        ]);
-    }
+        public function render()
+        {
+                return view('livewire.guru.hasil-ujian', [
+                        'dataAcc' => $this->getAcc(Auth::user()->id),
+                        'dataHasil' => $this->getHasil($this->id_ul),
+                        'dataHasilEssay' => $this->getSimilarity($this->id_ul),
+                ])->layout('layouts.layt', [
+                        'getDMapGuru' => $this->getDMap(),
+                ]);
+        }
 }
 
 
@@ -283,7 +308,7 @@ class winnowing
                 for ($i = 0; $i < $panjang; $i++) {
                         if ($i > ($n - 2)) {
                                 $ng = '';
-                                for ($j = $n-1; $j >= 0; $j--) {
+                                for ($j = $n - 1; $j >= 0; $j--) {
                                         $ng .= $word[$i - $j];
                                 }
                                 $ngrams[] = $ng;
@@ -307,7 +332,7 @@ class winnowing
                                 // var_dump($i);
                                 // var_dump($length-$i);
                                 // var_dump(pow($this->prime_number, $length - $i));
-                        }                        
+                        }
                         return $result;
                 }
         }
@@ -340,7 +365,7 @@ class winnowing
                                 $x++;
                         }
                 }
-                
+
                 return $ngram;
         }
 

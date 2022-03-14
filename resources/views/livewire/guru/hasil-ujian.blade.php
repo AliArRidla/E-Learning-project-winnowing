@@ -147,19 +147,21 @@
             <table id="table" class="table table-striped table-bordered"
             style="width:100%">
                 <thead>
+                    <th>Soal</th>
                     <th>Jawaban Guru</th>
                     <th>Jawaban Siswa</th>
                     <th>Presentase Kemiripan</th>
-                    <th>Poin Bobot</th>
+                    {{-- <th>Poin Bobot</th> --}}
                 </thead>
                 <tbody>
                     @foreach ($dataHasilEssay as $item)
                     <tr>
-                        
+                        <td>{{strip_tags($item->soal)}}</td>
                         <td>{{$item->jawaban_guru}}</td>
-                        {{-- <td>{{$item->jawaban_siswa}}</td> --}}
+
+                        <td>{{$item->jawaban_guru}}</td>
                         <td>{{$item->similarity}}</td>
-                        <td>{{$item->poin}}</td>
+                        {{-- <td>{{$item->poin}}</td> --}}
                         
                     </tr>                    
                     @endforeach

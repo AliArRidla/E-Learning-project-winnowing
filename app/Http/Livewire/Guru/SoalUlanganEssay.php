@@ -42,7 +42,7 @@ class SoalUlanganEssay extends Component
             [$this->id_ul]
         );
 
-        $this->no_soal = 1;
+        $this->no_soal = 0;
 
         if (intval($jmlSoal[0]->jml) > 0) {
             $this->no_soal = intval($jmlSoal[0]->jml) + 1;
