@@ -15,7 +15,11 @@ class SoalUlanganEssay extends Component
 
     // public $id_ul, $pilgan, $intPoin;
     // public $id_ul, $ed_soal, $pilA, $pilB, $pilC, $pilD, $pilE, $poin, $jawaban_guru, $no_soal, $simpan;
+<<<<<<< HEAD
     public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan,$id_guru,$id_soal;
+=======
+    public $id_ul, $ed_soal, $poin, $jawaban_guru, $no_soal, $simpan;
+>>>>>>> parent of d0743e6 (add id user dan id guru)
     public $nav_dmid, $vld=false;
 
     public function mount($nav_dmid, $id_ul)
@@ -29,8 +33,6 @@ class SoalUlanganEssay extends Component
         $this->pilB = null;
         $this->pilB = null;
 
-        $dGur = DB::select('select user_id as id from role_user where user_id = ?', [Auth::user()->id]);
-        $this->id_guru = $dGur[0]->id;
         
         // menghitunh nomor soal
         $jmlSoal = DB::select(
@@ -65,8 +67,12 @@ class SoalUlanganEssay extends Component
                 
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru, $this->poin);
                 $cSoal = SoalEssay::create([
+<<<<<<< HEAD
                     // 'user_id_guru' => 2,                    
                     'id_soal' => $this->id_soal,                    
+=======
+                    'user_id_guru' => Auth::user()->id,
+>>>>>>> parent of d0743e6 (add id user dan id guru)
                     'id_ulangan' => $this->id_ul,                    
                     'soal' => $this->ed_soal,                    
                     'jawaban_guru' => $this->jawaban_guru,
@@ -91,7 +97,7 @@ class SoalUlanganEssay extends Component
                 $this->hydrate();
                 // dd($this->id_ul, $this->ed_soal, $this->pilA, $this->pilB, $this->pilC, $this->pilD, $this->pilE, $this->jawaban_guru);
                 $cSoal = SoalEssay::create([
-                    'user_id_guru' => $this->id_guru,
+                    'user_id_guru' => 1,
                     'id_ulangan' => $this->id_ul,    
                     // 'id_ulangan' => 3434,                 
                     'id_soal' => $this->no_soal,                    

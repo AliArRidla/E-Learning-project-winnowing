@@ -32,14 +32,14 @@ class CreateSoalEssaysTable extends Migration
             $table->foreign('id_ulangan')->references('id')->on('ulangans')
             ->onUpdate('cascade')->onDelete('cascade');
 
+<<<<<<< HEAD
             // $table->foreign('user_id_siswa')->references('id')->on('users')
             // ->onUpdate('cascade')->onDelete('cascade');  
             
+=======
+>>>>>>> parent of d0743e6 (add id user dan id guru)
             $table->foreign('user_id_guru')->references('id')->on('users')
-            ->onUpdate('cascade')->onDelete('cascade');
-
-            // $table->foreign('user_id_siswa')->references('id')->on('users')
-            // ->onUpdate('cascade')->onDelete('cascade');            
+            ->onUpdate('cascade')->onDelete('cascade');            
         
         });
     }

@@ -42,6 +42,7 @@ class HasilUjian extends Component
                 }
         }
 
+<<<<<<< HEAD
         public function getSimilarity($id_ul)
         {
                 $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
@@ -137,6 +138,38 @@ class HasilUjian extends Component
         public function getHasil($id_ul)
         {
                 $data = DB::select('select ul.tgl_ulangan, ul.waktu_mulai, 
+=======
+    public function getSimilarity($id_ul){
+        $jawaban = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+        // for ($i=0; $i < count($jawaban) ; $i++) {         
+            foreach ($jawaban as $item) {
+                
+                $prima = 7;
+                $n = 3;
+                $window = 4;
+                $w = new winnowing($item->jawaban_guru, $item->jawaban_siswa);
+                $w->SetPrimeNumber($prima);
+                $w->SetNGramValue($n);
+                $w->SetNWindowValue($window);
+                $w->process();
+
+                $result = $w->GetJaccardCoefficient();
+                $similarity = DB::table('soal_essays')
+                ->where('id',$this->id_soal_essays)
+                ->update([
+                    'similarity' => $result,
+                    // 'poin' => $this->poin,
+            ]); 
+            }
+        $jawabanUpdate = DB::select('select * from soal_essays where id_ulangan = ?', [$this->id_ul]);
+            // dd($jawaban);
+        return $jawabanUpdate;
+    }
+
+    public function getHasil($id_ul)
+    {
+        $data = DB::select('select ul.tgl_ulangan, ul.waktu_mulai, 
+>>>>>>> parent of d0743e6 (add id user dan id guru)
         ul.waktu_selesai, u.name, nu.nilai, nu.benar, nu.salah,
         nu.created_at as pengumpulan from ulangans as ul
         join nilai_ulangans as nu on nu.id_ulangan = ul.id

@@ -252,7 +252,7 @@
                                                                                 @else
                                                                                     
                                                                                 @endif --}}
-                                                                                <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]), }}">
+                                                                                <a href="{{ route('kerjakanUlSiswa', ['nav_dmid' => $nav_dmid, 'id_ul' => $item->id_ul]) }}">
                                                                                     <button type="button" class="btn btn-primary btn-md">
                                                                                         Kerjakan Soal
                                                                                     </button>

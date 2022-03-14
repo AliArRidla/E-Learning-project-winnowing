@@ -154,17 +154,30 @@
                     {{-- <th>Poin Bobot</th> --}}
                 </thead>
                 <tbody>
+<<<<<<< HEAD
                     @foreach ($dataHasilEssay as $item)
                     <tr>
                         <td>{{strip_tags($item->soal)}}</td>
                         <td>{{$item->jawaban_guru}}</td>
 
+=======
+                    <tr>@php
+                        // dd($dataHasilEssay)
+                    @endphp
+                        @foreach ($dataHasilEssay as $item)
+>>>>>>> parent of d0743e6 (add id user dan id guru)
                         <td>{{$item->jawaban_guru}}</td>
                         <td>{{$item->similarity}}</td>
+<<<<<<< HEAD
                         {{-- <td>{{$item->poin}}</td> --}}
                         
                     </tr>                    
                     @endforeach
+=======
+                        <td>{{$item->poin}}</td>
+                        @endforeach                        
+                    </tr>
+>>>>>>> parent of d0743e6 (add id user dan id guru)
                 </tbody>
             </table>
 
